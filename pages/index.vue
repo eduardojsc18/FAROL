@@ -55,6 +55,10 @@
             Amor, primeiro precisa colar o link :)
         </div>
 
+        <pre class="text-white">
+            {{ product }}
+        </pre>
+
     </div>
 </template>
 <script setup>
@@ -64,11 +68,8 @@ import helpers from "~/composables/helpers.js";
 const { customFetch, toBRL } = helpers()
 const search = ref('')
 
-const {data: product, pending, execute, status} = await useAsyncData(
-    `product`,
+const {data: product, pending, execute, status} = await useAsyncData(`product`,
     () => customFetch(`/items/MLB${search.value.match(/MLB-([A-Za-z0-9]+)/)[1]}`),
-    {
-        immediate: false
-    }
+    { immediate: false }
 )
 </script>
