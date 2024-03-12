@@ -51,7 +51,7 @@ export default function () {
             const config = useRuntimeConfig()
             const baseURL = config.public.apiBase
 
-            const access_token = await $fetch(`/api/get-access-token`)
+            const access_token = await $fetch(`/api/access-token`)
 
             return await $fetch(request, {
                 ...options,

@@ -37,6 +37,11 @@ export default defineNuxtConfig({
     build: {
         transpile: ['pinia-plugin-persistedstate'],
     },
+    nitro: {
+        storage: {
+            data: { driver: 'vercelKV' },
+        }
+    },
     runtimeConfig: {
         apiClientId: process.env.NUXT_API_CLIENT_ID,
         apiClientSecret: process.env.NUXT_API_CLIENT_SECRET,
