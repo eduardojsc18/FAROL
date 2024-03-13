@@ -1,0 +1,16 @@
+# ORDEM PARA PEGAR O TOKEN REFRESH
+#
+# 1 - Criar aplicação no ML
+# https://developers.mercadolivre.com.br/devcenter/
+#
+# 2 - PEGAR O TOKEN PARA AUTENTICAÇÃO
+# https://auth.mercadolivre.com.br/authorization?response_type=code&client_id=8732120065434732
+#
+# 3 - AUTENTICAR TOKEN
+# https://api.mercadolibre.com/oauth/token
+# HEADER {accept: application/json, content-type: application/x-www-form-urlencoded}
+# BODY { grant_type: refresh_token, client_id: client_id, client_secret: client_secret, refresh_token: [pegar valor de retorno do primeiro passo]}
+#
+# 4 - PEGAR O VALOR DE RETORNO DO refresh_token
+# SEMPRE PASSAR O ULTIMO refresh_token NA NOVA REQUISICAO
+#
