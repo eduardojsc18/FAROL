@@ -18,6 +18,6 @@
     <div @click.exact="useSidebar().minifyToggle()" v-if="!useSidebar().minify" class="lg:hidden bg-neutral-200/30 dark:bg-neutral-900/30 backdrop-blur fixed top-0 left-0 size-full"/>
 </template>
 <script setup>
-import { useSidebar } from "@/Stores/useSidebar.js";
+import { useSidebar } from "~/stores/useSidebar.js";
 import SidebarButtonShow from "~/components/UI/Layout/Admin/Sidebar/Button/SidebarButtonShow.vue";
 </script>
