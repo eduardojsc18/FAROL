@@ -10,4 +10,5 @@
 </template>
 <script setup>
 import { useSidebar } from "@/Stores/useSidebar.js";
+
 </script>

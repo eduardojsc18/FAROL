@@ -19,22 +19,5 @@
 </template>
 <script setup>
 import { useSidebar } from "@/Stores/useSidebar.js";
-import MyAccount from "~/components/UI/Layout/Admin/Sidebar/MyAccount.vue";
 import SidebarButtonShow from "~/components/UI/Layout/Admin/Sidebar/Button/SidebarButtonShow.vue";
-
-//Props
-
-//Emits
-
-//Variables
-
-//Watch
-
-//Computed
-
-//Methods
-
 </script>
-<style scoped>
-
-</style>
