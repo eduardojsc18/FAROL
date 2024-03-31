@@ -15,7 +15,7 @@
 <script setup>
 import helpers from "~/composables/helpers.js";
 import logoDefault from "assets/img/IMG_20240228_140009_538-removebg-preview.png";
-import { useSidebar } from "@/Stores/useSidebar.js";
+import { useSidebar } from "~/stores/useSidebar.js";
 
 const { customFetch } = helpers()
 
