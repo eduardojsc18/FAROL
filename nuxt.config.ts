@@ -44,7 +44,6 @@ export default defineNuxtConfig({
             data: { driver: 'vercelKV' },
         }
     },
-    ssr: false,
     routeRules: {
         '/': { redirect: { to: '/dashboard'}},
     },
