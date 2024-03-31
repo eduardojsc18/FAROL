@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+    darkMode: 'selector',
     content: [
         "./components/**/*.{js,vue,ts}",
         "./layouts/**/*.vue",
@@ -12,7 +13,7 @@ export default {
         extend: {},
     },
     plugins: [
-        require('tailwind-scrollbar')({nocompatible: true})
+        require('tailwind-scrollbar')({ nocompatible: true, preferredStrategy: 'pseudoelements' }),
     ],
 }
 

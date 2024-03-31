@@ -60,7 +60,7 @@ export default function () {
                     'Authorization': `Bearer ${access_token}`,
                     'Content-Type': 'application/json',
                 },
-            })
+            },)
         },
     }
 

@@ -9,15 +9,16 @@ export default defineNuxtConfig({
                 {name: 'viewport', content: 'width=device-width, initial-scale=1'},
                 {name: 'description', content: 'Sistema de gerenciamento'},
                 {name: 'format-detection', content: 'telephone=no'},
-                {name: 'theme-color', media: '(prefers-color-scheme: light)', content: '#FFFFFF'},
-                {name: 'theme-color', media: '(prefers-color-scheme: dark)', content: '#0f172a'},
+                {name: 'theme-color', media: '(prefers-color-scheme: light)', content: '#1b1b1c'},
+                {name: 'theme-color', media: '(prefers-color-scheme: dark)', content: '#1b1b1c'},
                 {name: 'apple-mobile-web-app-capable', content: 'yes'},
                 {name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent'},
             ],
             link: [
                 {href: '/favicon-animated.gif', rel: 'icon', type: 'image/gif'},
             ],
-        }
+        },
+        pageTransition: { name: 'page', mode: 'out-in' },
     },
     devtools: {enabled: true},
     css: ['~/assets/css/main.css'],
@@ -32,7 +33,8 @@ export default defineNuxtConfig({
         '@pinia-plugin-persistedstate/nuxt',
         '@vueuse/nuxt',
         'nuxt-lodash',
-        '@nuxtjs/google-fonts',
+        'nuxt-swiper',
+        // '@nuxtjs/google-fonts',
     ],
     build: {
         transpile: ['pinia-plugin-persistedstate'],
@@ -41,6 +43,10 @@ export default defineNuxtConfig({
         storage: {
             data: { driver: 'vercelKV' },
         }
+    },
+    ssr: false,
+    routeRules: {
+        '/': { redirect: { to: '/dashboard'}},
     },
     runtimeConfig: {
         apiClientId: process.env.NUXT_API_CLIENT_ID,

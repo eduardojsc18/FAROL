@@ -13,7 +13,6 @@ export default defineEventHandler(async (event) => {
 
     let versionTokens = {
         old_token: tokens?.new_token ?? config.apiToken,
-        new_token: '',
         expires_in: tokens?.expires_in ?? '',
     }
 
