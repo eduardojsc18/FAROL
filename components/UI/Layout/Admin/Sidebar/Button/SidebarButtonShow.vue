@@ -9,6 +9,5 @@
     </button>
 </template>
 <script setup>
-import { useSidebar } from "@/Stores/useSidebar.js";
-
+import {useSidebar} from "~/stores/useSidebar.js";
 </script>
