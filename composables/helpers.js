@@ -59,6 +59,7 @@ export default function () {
                 headers: {
                     'Authorization': `Bearer ${access_token}`,
                     'Content-Type': 'application/json',
+                    'Accept': 'application/json',
                 },
             },)
         },

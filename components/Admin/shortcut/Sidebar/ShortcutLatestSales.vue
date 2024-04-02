@@ -5,37 +5,44 @@
                 <p class="text-sm font-semibold text-neutral-800 dark:text-neutral-200 whitespace-nowrap">Ultimas vendas</p>
                 <p class="text-[10px] text-neutral-400 whitespace-nowrap">Atualizado em DD/MM/YYYY HH:MM:SS</p>
             </div>
-            <button @click="execFresh" data-tooltip="Clique para atualizar" class="btn-header-style lg:invisible group-hover/aside:visible text-neutral-400 hover:text-neutral-200">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3 h-3" :class="{'animate-spin': refresh}">
+            <button @click="execute" data-tooltip="Clique para atualizar" class="transition-none btn-header-style lg:invisible lg:group-hover/aside:visible text-neutral-400 hover:text-neutral-200">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3 h-3" :class="{'animate-spin': status === 'pending'}">
                     <path fill-rule="evenodd" d="M15.312 11.424a5.5 5.5 0 0 1-9.201 2.466l-.312-.311h2.433a.75.75 0 0 0 0-1.5H3.989a.75.75 0 0 0-.75.75v4.242a.75.75 0 0 0 1.5 0v-2.43l.31.31a7 7 0 0 0 11.712-3.138.75.75 0 0 0-1.449-.39Zm1.23-3.723a.75.75 0 0 0 .219-.53V2.929a.75.75 0 0 0-1.5 0V5.36l-.31-.31A7 7 0 0 0 3.239 8.188a.75.75 0 1 0 1.448.389A5.5 5.5 0 0 1 13.89 6.11l.311.31h-2.432a.75.75 0 0 0 0 1.5h4.243a.75.75 0 0 0 .53-.219Z" clip-rule="evenodd" />
                 </svg>
             </button>
         </div>
         <div>
             <Swiper :navigation="{nextEl: '.button-latest-sales-next', prevEl: '.button-latest-sales-prev'}" :modules="[SwiperNavigation]" :slides-per-view="2.2" space-between="5" :effect="'creative'" class="pb-3 !pl-4 relative h-40">
-                <SwiperSlide v-for="i in 10" :key="i" class="rounded-lg group relative bg-neutral-600 shadow-md !w-full !max-w-28 !flex flex-col p-2">
-                    <div class="!flex-grow ">
-
-                    </div>
-                    <div class="absolute w-full left-0 bottom-0 p-1">
-                        <div class="flex gap-2">
-                            <div class="w-full p-5 rounded-lg bg-neutral-400/50 backdrop-blur group-hover:shadow-md group-hover:-translate-y-px transition-all"/>
+                <SwiperSlide v-for="(order, index) in orders?.results" :key="order.id" class="!flex">
+                    <a :href="`https://www.mercadolivre.com.br/vendas/${order.id}/`" target="_blank" class="rounded-lg group relative bg-neutral-600 shadow-md w-28 !flex flex-col p-2">
+                        <div class="!flex-grow">
+                            <ul class="text-xs">
+                                <li v-for="order_item in order.order_items">
+                                    {{ order_item.item.title }}
+                                    - {{ order_item.quantity }} unid
+                                </li>
+                            </ul>
                         </div>
-                    </div>
+                        <div class="absolute w-full left-0 bottom-0 p-1">
+                            <div class="flex justify-start flex-wrap gap-2">
+                                <div class="p-1 rounded-lg bg-neutral-400/50 backdrop-blur group-hover:shadow-md group-hover:-translate-y-px transition-all text-[10px] leading-none" v-text="`R$ ${helpers().toBRL(order.total_amount)}`"/>
+                            </div>
+                        </div>
+                    </a>
                 </SwiperSlide>
                 <SwiperSlide class="rounded-lg relative !flex flex-col justify-center border text-lg text-neutral-400 border-neutral-500 shadow-md !w-full !max-w-28 p-2 font-medium !mr-0">
                     <div class="leading-tight">
                         Tudo certo por aqui!
                     </div>
-                    <button class="text-xs absolute bottom-2 mt-2 flex items-center justify-between leading-none gap-1 rounded-full border border-neutral-500 hover:bg-neutral-800 px-2 py-1.5">
+                    <button @click="execute" class="text-xs absolute bottom-2 mt-2 flex items-center justify-between leading-none gap-1 rounded-full border border-neutral-500 hover:bg-neutral-800 px-2 py-1.5">
                         Atualizar
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3 h-3" :class="{'animate-spin': refresh}">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3 h-3" :class="{'animate-spin': status === 'pending'}">
                             <path fill-rule="evenodd" d="M15.312 11.424a5.5 5.5 0 0 1-9.201 2.466l-.312-.311h2.433a.75.75 0 0 0 0-1.5H3.989a.75.75 0 0 0-.75.75v4.242a.75.75 0 0 0 1.5 0v-2.43l.31.31a7 7 0 0 0 11.712-3.138.75.75 0 0 0-1.449-.39Zm1.23-3.723a.75.75 0 0 0 .219-.53V2.929a.75.75 0 0 0-1.5 0V5.36l-.31-.31A7 7 0 0 0 3.239 8.188a.75.75 0 1 0 1.448.389A5.5 5.5 0 0 1 13.89 6.11l.311.31h-2.432a.75.75 0 0 0 0 1.5h4.243a.75.75 0 0 0 .53-.219Z" clip-rule="evenodd" />
                         </svg>
                     </button>
                 </SwiperSlide>
             </Swiper>
-            <div class="mt-1 max-md:hidden flex justify-end text-neutral-400">
+            <div class="mt-1 max-md:hidden lg:group-hover/aside:visible lg:invisible px-4 flex justify-end text-neutral-500">
                 <button class="button-latest-sales-prev disabled:opacity-10 disabled:cursor-not-allowed hover:text-neutral-200">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
                         <g clip-path="url(#a)">
@@ -58,14 +65,38 @@
     </div>
 </template>
 <script setup>
-const refresh = ref(false)
+import {useMe} from "~/stores/useMe.js";
+import helpers from "~/composables/helpers.js";
 
-function execFresh() {
-    refresh.value = true
-    setTimeout(() => refresh.value = false, 1000)
-}
+const { me } = useMe()
+const { customFetch } = helpers()
+
+const {data: orders, pending, execute, status} = await useAsyncData(
+    `SHORTCUT-LATEST-SALES`,
+    () => customFetch(`/orders/search?seller=${me.id}&sort=date_desc&limit=10`),
+    { immediate: true}
+)
+
+// if (orders.value?.results?.length) {
+//     orders.value.results = orders.value.results.map((order) => {
+//         return {
+//             ...order,
+//             order_items: order.order_items.map((product) => {
+//                 const {data: detail} = helpers().customFetch(`items/${product.item.id}`);
+//                 console.log(detail)
+//                 return {
+//                     ...product,
+//                     picture: [...detail.pictures]
+//                 }
+//             })
+//         }
+//     })
+//     // for (const order of orders.value.results) {
+//     //     for (const product of order.order_items) {
+//     //         const products = await helpers().customFetch(`orders/${product.item.id}/product`);
+//     //     }
+//     // }
+// }
+
 
 </script>
-<style scoped>
-
-</style>

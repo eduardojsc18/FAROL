@@ -1,8 +1,9 @@
 <template>
-    <aside class="self-stretch group/aside max-md:fixed z-[100] top-0 left-0 h-dvh lg:min-h-full max-md:bg-[#fffbf6] dark:max-md:bg-[#1b1b1c] transition-transform transform-gpu duration-500 will-change-auto" :class="{'max-md:-translate-x-full': useSidebar().minify}">
-        <nav class="w-[280px] flex flex-col h-dvh max-md:overflow-x-hidden max-md:pb-80 max-md:overflow-y-auto lg:min-h-full transition-[width] z-10" :class="{'lg:!w-[55px]': useSidebar().minify}">
-            <div class="lg:hidden p-2">
+    <aside class="self-stretch group/aside max-lg:fixed z-[99999] top-0 left-0 h-dvh lg:min-h-full max-lg:bg-[#fffbf6] dark:max-lg:bg-[#1b1b1c] transition-transform transform-gpu duration-500 will-change-auto" :class="{'max-lg:-translate-x-full': useSidebar().minify}">
+        <nav class="w-[280px] flex flex-col max-lg:h-dvh max-lg:overflow-x-hidden max-lg:pb-80 max-lg:overflow-y-auto lg:min-h-full transition-[width] z-10" :class="{'lg:!w-[55px]': useSidebar().minify}">
+            <div class="lg:hidden flex justify-between p-2">
                 <SidebarButtonShow />
+                <ButtonDarkModeToggle />
             </div>
             <header class="h-24 flex flex-col p-2 justify-center">
                 <slot name="header" />
@@ -15,9 +16,10 @@
             </footer>
         </nav>
     </aside>
-    <div @click.exact="useSidebar().minifyToggle()" v-if="!useSidebar().minify" class="lg:hidden bg-neutral-200/30 dark:bg-neutral-900/30 backdrop-blur fixed top-0 left-0 size-full"/>
+    <div @click.exact="useSidebar().minifyToggle()" v-if="!useSidebar().minify" class="lg:hidden bg-neutral-200/30 dark:bg-neutral-900/30 backdrop-blur fixed top-0 left-0 z-[9999] size-full"/>
 </template>
 <script setup>
 import { useSidebar } from "~/stores/useSidebar.js";
 import SidebarButtonShow from "~/components/UI/Layout/Admin/Sidebar/Button/SidebarButtonShow.vue";
+import ButtonDarkModeToggle from "~/components/UI/Button/ButtonDarkModeToggle.vue";
 </script>

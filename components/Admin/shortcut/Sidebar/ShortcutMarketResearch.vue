@@ -24,7 +24,7 @@
                     </div>
                 </SwiperSlide>
             </Swiper>
-            <div class="max-md:hidden mt-1 flex justify-end text-neutral-400">
+            <div class="max-md:hidden lg:group-hover/aside:visible lg:invisible mt-1 px-4 flex justify-end text-neutral-500">
                 <button class="button-market-research-prev disabled:opacity-10 disabled:cursor-not-allowed hover:text-neutral-200">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
                         <g clip-path="url(#a)">
