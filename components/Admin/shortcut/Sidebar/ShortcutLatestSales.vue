@@ -78,8 +78,7 @@ const {data: orders, pending, execute, status} = await useAsyncData(
             sort: 'date_desc',
             limit: 10,
         }
-    }),
-    { immediate: true}
+    })
 )
 
 // if (orders.value?.results?.length) {

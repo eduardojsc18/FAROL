@@ -9,9 +9,8 @@ export const useMe = defineStore('me', {
         async get() {
             const {data: response} = await useAsyncData('ME',
                 () => helpers().customFetch(`/users/me`),
-                {immediate: true}
             );
-            this.me = response
+            this.me = response.value
         }
     },
 })
