@@ -73,9 +73,8 @@ const { customFetch } = helpers()
 
 const {data: orders, pending, execute, status} = await useAsyncData(
     `SHORTCUT-LATEST-SALES`,
-    () => customFetch(`/orders/search`, {
+    () => customFetch(`/orders/search?seller=${me.id}`, {
         params: {
-            seller: me.id,
             sort: 'date_desc',
             limit: 10,
         }
