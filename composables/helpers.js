@@ -47,20 +47,19 @@ export default function () {
             }
             return obj
         },
-        async customFetch(request, options) {
+        async customFetch(request, options, headers) {
             const config = useRuntimeConfig()
             const baseURL = config.public.apiBase
 
             const access_token = await $fetch(`/api/access-token`)
 
-            return await $fetch(request, {
+            return await $fetch(request,  {
                 ...options,
-                baseURL,
-                headers: {
-                    'Authorization': `Bearer ${access_token}`,
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
+                params: {
+                    access_token: access_token,
+                    ...options?.params
                 },
+                baseURL,
             },)
         },
     }
