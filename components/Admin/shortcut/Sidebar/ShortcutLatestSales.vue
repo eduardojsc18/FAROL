@@ -1,31 +1,33 @@
 <template>
-    <div class="space-y-3 group/shortcut">
-        <div class="pl-4 pr-2 flex justify-between items-center">
-            <div>
+    <div class="space-y-3 group/shortcut min-h-[240px]">
+        <div class="pl-4 pr-2 flex justify-between items-center " >
+            <div class="transition-all origin-top-left" :class="{'lg:[writing-mode:vertical-rl] lg:leading-none': useSidebar().minify}">
                 <p class="text-sm font-semibold text-neutral-800 dark:text-neutral-200 whitespace-nowrap">Ultimas vendas</p>
                 <p class="text-[10px] text-neutral-400 whitespace-nowrap">Atualizado em DD/MM/YYYY HH:MM:SS</p>
             </div>
-            <button @click="execute" data-tooltip="Clique para atualizar" class="transition-none btn-header-style lg:invisible lg:group-hover/aside:visible text-neutral-400 hover:text-neutral-200">
+            <button v-if="!useSidebar().minify" @click="execute" data-tooltip="Clique para atualizar" class="transition-none btn-header-style lg:invisible lg:group-hover/aside:visible text-neutral-400 hover:text-neutral-200">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3 h-3" :class="{'animate-spin': status === 'pending'}">
                     <path fill-rule="evenodd" d="M15.312 11.424a5.5 5.5 0 0 1-9.201 2.466l-.312-.311h2.433a.75.75 0 0 0 0-1.5H3.989a.75.75 0 0 0-.75.75v4.242a.75.75 0 0 0 1.5 0v-2.43l.31.31a7 7 0 0 0 11.712-3.138.75.75 0 0 0-1.449-.39Zm1.23-3.723a.75.75 0 0 0 .219-.53V2.929a.75.75 0 0 0-1.5 0V5.36l-.31-.31A7 7 0 0 0 3.239 8.188a.75.75 0 1 0 1.448.389A5.5 5.5 0 0 1 13.89 6.11l.311.31h-2.432a.75.75 0 0 0 0 1.5h4.243a.75.75 0 0 0 .53-.219Z" clip-rule="evenodd" />
                 </svg>
             </button>
         </div>
-        <div>
+        <div v-show="!useSidebar().minify" class="max-md:!block">
             <Swiper :navigation="{nextEl: '.button-latest-sales-next', prevEl: '.button-latest-sales-prev'}" :modules="[SwiperNavigation]" :slides-per-view="2.2" space-between="5" :effect="'creative'" class="pb-3 !pl-4 relative h-40">
                 <SwiperSlide v-for="(order, index) in orders?.results" :key="order.id" class="!flex">
-                    <a :href="`https://www.mercadolivre.com.br/vendas/${order.id}/`" target="_blank" class="rounded-lg group relative bg-neutral-600 shadow-md w-28 !flex flex-col p-2">
-                        <div class="!flex-grow">
-                            <ul class="text-xs">
-                                <li v-for="order_item in order.order_items">
-                                    {{ order_item.item.title }}
-                                    - {{ order_item.quantity }} unid
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="absolute w-full left-0 bottom-0 p-1">
-                            <div class="flex justify-start flex-wrap gap-2">
-                                <div class="p-1 rounded-lg bg-neutral-400/50 backdrop-blur group-hover:shadow-md group-hover:-translate-y-px transition-all text-[10px] leading-none" v-text="`R$ ${helpers().toBRL(order.total_amount)}`"/>
+                    <a
+                        :href="`https://www.mercadolivre.com.br/vendas/${order.id}/detalhe`"
+                        target="_blank"
+                        class="rounded-lg group relative bg-neutral-600 object-contain bg-center bg-cover shadow-md min-w-28 w-28 !flex flex-col p-2 after:rounded-b-[5px] after:absolute after:w-full after:bg-gradient-to-t after:via-neutral-500 after:from-neutral-800 after:h-1/2 after:left-0 after:bottom-0"
+                        :style="`background-image: url(${order.order_items[0].picture})`"
+                    >
+                        <div class="z-10 absolute w-full left-0 bottom-0 p-1 space-y-1 group-hover:shadow-md group-hover:-translate-y-px transition-all ">
+                            <div class="text-[10px] leading-tight line-clamp-2">
+                                {{ order.order_items[0].item.title }}
+                            </div>
+                            <div class="text-[9px] flex justify-start flex-wrap gap-1">
+                                <div class="px-1 py-0.5 rounded-lg bg-neutral-400/50 backdrop-blur leading-none" data-tooltip="Valor Total" v-text="`${helpers().toBRL(order.total_amount)}`"/>
+                                <div class="px-1 py-0.5 rounded-lg bg-neutral-400/50 backdrop-blur leading-none" data-tooltip="Valor Receber" v-text="`${helpers().toBRL(order.total_amount - order.order_items[0].sale_fee)}`"/>
+                                <div class="px-1 py-0.5 rounded-lg bg-neutral-400/50 backdrop-blur leading-none" data-tooltip="Quantidade" v-text="order.order_items[0].quantity"/>
                             </div>
                         </div>
                     </a>
@@ -66,41 +68,41 @@
 </template>
 <script setup>
 import {useMe} from "~/stores/useMe.js";
+import {useSidebar} from "~/stores/useSidebar.js";
 import helpers from "~/composables/helpers.js";
 
 const { me } = useMe()
 const { customFetch } = helpers()
 
-const {data: orders, pending, execute, status} = await useAsyncData(
-    `SHORTCUT-LATEST-SALES`,
-    () => customFetch(`/orders/search?seller=${me.id}`, {
-        params: {
-            sort: 'date_desc',
-            limit: 10,
-        }
-    })
-)
+const fetchOrders = async () => {
 
-// if (orders.value?.results?.length) {
-//     orders.value.results = orders.value.results.map((order) => {
-//         return {
-//             ...order,
-//             order_items: order.order_items.map((product) => {
-//                 const {data: detail} = helpers().customFetch(`items/${product.item.id}`);
-//                 console.log(detail)
-//                 return {
-//                     ...product,
-//                     picture: [...detail.pictures]
-//                 }
-//             })
-//         }
-//     })
-//     // for (const order of orders.value.results) {
-//     //     for (const product of order.order_items) {
-//     //         const products = await helpers().customFetch(`orders/${product.item.id}/product`);
-//     //     }
-//     // }
-// }
+    const {data: orders, pending, execute, status} = await useAsyncData(
+        `SHORTCUT-LATEST-SALES`,
+        () => customFetch(`/orders/search?`, {
+            query: {
+                seller: me.id,
+                sort: 'date_desc',
+                limit: 10,
+            }
+        })
+    )
+
+    if (orders.value?.results?.length) {
+        for (const order of orders.value.results) {
+            for (const item of order.order_items) {
+                const products = await customFetch(`items/${item.item.id}`);
+                item.picture = products.pictures[0].url
+            }
+        }
+    }
+
+    return { orders, pending, execute, status }
+
+}
+
+const { orders, pending, execute, status } = await fetchOrders()
+
+
 
 
 </script>

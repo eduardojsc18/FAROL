@@ -1,5 +1,5 @@
 <template>
-    <div id="application" class="min-h-screen has-[.animation-change-theme]:overflow-hidden bg-[radial-gradient(at_center,#fffdfd,#fffaf3)] dark:text-[#F4F4F4E6] dark:bg-[radial-gradient(at_center,#27272A,#171717)] transition-colors">
+    <div id="application" class="min-h-full has-[.animation-change-theme]:overflow-hidden bg-[radial-gradient(at_center,#fffdfd,#fffaf3)] dark:text-[#F4F4F4E6] dark:bg-[radial-gradient(at_center,#27272A,#171717)] transition-colors">
         <Header />
         <div class="flex">
             <SidebarContainer>
@@ -41,8 +41,8 @@
                     </svg>
                 </SidebarLinkItem>
             </SidebarContainer>
-            <div class="flex-grow min-h-dvh flex flex-col">
-                <main class="flex-1 p-4">
+            <div class="flex-grow min-h-screen flex flex-col">
+                <main class="flex-1 p-4 h-[30000px]">
                     <NuxtPage />
                 </main>
                 <footer>

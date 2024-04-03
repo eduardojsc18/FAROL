@@ -1,12 +1,12 @@
 <template>
-    <div class="space-y-3">
+    <div class="space-y-3 min-h-[280px]">
         <div class="pl-4 pr-2 flex justify-between items-center">
-            <div>
+            <div class="transition-all origin-top-left" :class="{'lg:[writing-mode:vertical-rl] lg:leading-none': useSidebar().minify}">
                 <p class="text-sm font-semibold text-neutral-800 dark:text-neutral-200 whitespace-nowrap">Pesquisas de Mercado</p>
                 <p class="text-[10px] text-neutral-400 whitespace-nowrap">Ultimas pesquisas feitas</p>
             </div>
         </div>
-        <div>
+        <div v-show="!useSidebar().minify" class="max-md:!block">
             <Swiper :navigation="{nextEl: '.button-market-research-next', prevEl: '.button-market-research-prev'}" :modules="[SwiperNavigation]" :slides-per-view="2.2" space-between="5" :effect="'creative'" class="pb-3 !pl-4 relative h-40">
                 <SwiperSlide v-for="i in 10" :key="i" class="rounded-lg group relative bg-neutral-600 shadow-md !w-full !max-w-28 !flex flex-col p-2">
                     <div class="!flex-grow grid grid-cols-2 gap-2">
@@ -47,14 +47,6 @@
     </div>
 </template>
 <script setup>
-const refresh = ref(false)
-
-function execFresh() {
-    refresh.value = true
-    setTimeout(() => refresh.value = false, 1000)
-}
+import { useSidebar } from "~/stores/useSidebar.js";
 
 </script>
-<style scoped>
-
-</style>

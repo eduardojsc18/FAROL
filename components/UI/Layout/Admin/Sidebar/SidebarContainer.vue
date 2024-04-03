@@ -1,6 +1,6 @@
 <template>
-    <aside class="self-stretch group/aside max-lg:fixed z-[99999] top-0 left-0 h-dvh lg:min-h-full max-lg:bg-[#fffbf6] dark:max-lg:bg-[#1b1b1c] transition-transform transform-gpu duration-500 will-change-auto" :class="{'max-lg:-translate-x-full': useSidebar().minify}">
-        <nav class="w-[280px] flex flex-col max-lg:h-dvh max-lg:overflow-x-hidden max-lg:pb-80 max-lg:overflow-y-auto lg:min-h-full transition-[width] z-10" :class="{'lg:!w-[55px]': useSidebar().minify}">
+    <aside class="self-stretch group/aside max-md:fixed lg:sticky lg:top-0 z-[99999] top-0 left-0 max-md:h-dvh lg:max-h-fit max-lg:bg-[#fffbf6] dark:max-lg:bg-[#1b1b1c] transition-transform transform-gpu duration-500 will-change-auto" :class="{'max-lg:-translate-x-full': useSidebar().minify}">
+        <nav class="w-[280px] flex flex-col max-md:h-dvh max-lg:overflow-x-hidden max-lg:pb-80 max-lg:overflow-y-auto lg:min-h-full transition-[width] z-10" :class="{'lg:!w-[55px]': useSidebar().minify}">
             <div class="lg:hidden flex justify-between p-2">
                 <SidebarButtonShow />
                 <ButtonDarkModeToggle />
@@ -11,7 +11,7 @@
             <main class="py-4 px-2 space-y-px">
                 <slot />
             </main>
-            <footer v-if="!useSidebar().minify" class="py-4 space-y-5">
+            <footer  class="py-4 space-y-5">
                 <slot name="footer" />
             </footer>
         </nav>
