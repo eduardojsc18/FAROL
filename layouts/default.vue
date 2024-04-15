@@ -54,15 +54,15 @@
     </div>
 </template>
 <script setup>
-import SidebarButtonShow from "~/components/UI/Layout/Admin/Sidebar/Button/SidebarButtonShow.vue";
-import NotificationButtonShow from "~/components/UI/Layout/Admin/Notification/Button/NotificationButtonShow.vue";
+
 import SidebarLinkItem from "~/components/UI/Layout/Admin/Sidebar/SidebarLinkItem.vue";
 import SidebarContainer from "~/components/UI/Layout/Admin/Sidebar/SidebarContainer.vue";
 import Header from "~/components/UI/Layout/Admin/Header/Header.vue";
 import Notification from "~/components/UI/Layout/Admin/Notification/Notification.vue";
 import MyAccount from "~/components/UI/Layout/Admin/Sidebar/MyAccount.vue";
-import ShortcutLatestSales from "~/components/Admin/shortcut/Sidebar/ShortcutLatestSales.vue";
+import ShortcutLatestSales from "~/components/Admin/shortcut/Sidebar/LatestSales/ShortcutLatestSales.vue";
 import ShortcutMarketResearch from "~/components/Admin/shortcut/Sidebar/ShortcutMarketResearch.vue";
+
 </script>
 <style scoped>
 

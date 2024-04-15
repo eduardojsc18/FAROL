@@ -1,5 +1,7 @@
+import {useCookie} from "#app";
+
 export default function () {
-    const config = useRuntimeConfig()
+    // const config = useRuntimeConfig()
     return {
         toBRL (value) {
             if (typeof value === "string") value = parseFloat(value)
@@ -48,19 +50,26 @@ export default function () {
             return obj
         },
         async customFetch(request, options, headers) {
+
             const config = useRuntimeConfig()
             const baseURL = config.public.apiBase
 
-            const access_token = await $fetch(`/api/access-token`)
+            const token = useCookie('token')
+            const access_token = ref(token.value ?? '')
 
-            return await $fetch(request,  {
+            if (!token.value) {
+                access_token.value = await $fetch(`/api/access-token`)
+            }
+
+            return await $fetch(request, {
                 ...options,
                 params: {
-                    access_token: access_token,
+                    access_token: access_token.value,
                     ...options?.params
                 },
                 baseURL,
-            },)
+            })
+
         },
     }
 

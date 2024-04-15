@@ -1,3 +1,5 @@
+
+
 export default defineEventHandler(async (event) => {
 
     const storage = useStorage('data')
@@ -5,6 +7,9 @@ export default defineEventHandler(async (event) => {
 
     // Verifica se o token já expirou, caso não, envia o access_token salvo no banco
     if ((new Date() - new Date(tokens?.updated_at)) / 1000 < tokens?.expires_in) {
+        setCookie(event,'token', tokens.access_token,{
+            maxAge: tokens.expires_in
+        })
         return tokens.access_token
     }
 
@@ -37,6 +42,10 @@ export default defineEventHandler(async (event) => {
     versionTokens.updated_at = new Date()
 
     await storage.setItem('tokens', versionTokens)
+
+    setCookie(event,'token', token.access_token,{
+        maxAge: token.expires_in,
+    })
 
     return token.access_token
 
