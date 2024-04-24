@@ -5,7 +5,9 @@
 </template>
 <script setup>
 //Props
-
+useHead({
+    title: 'Estoque'
+})
 //Emits
 
 //Variables

@@ -61,7 +61,8 @@ export default function () {
                 access_token.value = await $fetch(`/api/access-token`)
             }
 
-            return await $fetch(request, {
+            return $fetch(request, {
+                method: "GET",
                 ...options,
                 params: {
                     access_token: access_token.value,

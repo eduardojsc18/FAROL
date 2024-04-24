@@ -15,7 +15,10 @@ export default defineNuxtConfig({
                 {name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent'},
             ],
             link: [
-                {href: '/favicon-animated.gif', rel: 'icon', type: 'image/gif'},
+                {href: '/favicon/apple-touch-icon.png', rel: 'apple-touch-icon', sizes: '180x180'},
+                {href: '/favicon/favicon-32x32.png', rel: 'icon', type: 'image/png', sizes: '32x32'},
+                {href: '/favicon/favicon-16x16.png', rel: 'icon', type: 'image/png', sizes: '16x16'},
+                {href: '/favicon/site.webmanifest', rel: 'manifest'},
             ],
         },
         pageTransition: { name: 'page', mode: 'out-in' },

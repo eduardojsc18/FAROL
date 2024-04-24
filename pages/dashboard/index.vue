@@ -4,5 +4,7 @@
     </div>
 </template>
 <script setup>
-
+useHead({
+    title: 'Dashboard'
+})
 </script>
