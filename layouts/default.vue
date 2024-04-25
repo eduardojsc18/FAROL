@@ -42,7 +42,7 @@
                 </SidebarLinkItem>
             </SidebarContainer>
             <div class="flex-grow min-h-screen flex flex-col">
-                <main class="flex-1 p-4 h-[30000px]">
+                <main class="flex-1 p-3 h-[30000px]">
                     <NuxtPage />
                 </main>
                 <footer>

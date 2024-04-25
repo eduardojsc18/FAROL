@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="min-h-[200vh]">
         Dashboad
     </div>
 </template>

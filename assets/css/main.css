@@ -65,6 +65,6 @@ body:has(.animation-change-theme) {
         @apply dark:text-neutral-200 text-neutral-800
     }
     .item-active {
-        @apply bg-neutral-400/20 !important
+        @apply bg-neutral-400/20 dark:text-neutral-100 text-neutral-900 !important
     }
 }

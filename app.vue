@@ -1,4 +1,5 @@
 <template>
+    <NuxtLoadingIndicator />
     <div class="antialiased scroll-smooth">
         <NuxtLayout>
             <NuxtPage />

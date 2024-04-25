@@ -1,5 +1,5 @@
 <template>
-    <header class="max-md:sticky relative max-md:top-0 max-md:bg-[#fffbf6] dark:max-md:bg-[#18181920] max-md:backdrop-blur flex justify-between items-center py-2.5 gap-2 lg:gap-5 px-3">
+    <header class="max-md:sticky relative max-md:top-0 max-md:bg-[#fffbf6] dark:max-md:bg-[#18181920] max-md:backdrop-blur flex justify-between items-center py-2.5 gap-2 lg:gap-5 px-1 lg:px-3">
         <SidebarButtonShow />
         <InputSearchAll />
         <div class="flex items-center gap-px">
