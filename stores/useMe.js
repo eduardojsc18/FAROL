@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia'
-import helpers from "~/composables/helpers.js";
+import { useHelpers } from "~/composables/useHelpers.js";
 
 export const useMe = defineStore('me', {
     state: () => ({
@@ -7,8 +7,9 @@ export const useMe = defineStore('me', {
     }),
     actions: {
         async get() {
+            const { customFetch } = useHelpers()
             const {data: response} = await useAsyncData('ME',
-                () => helpers().customFetch(`/users/me`),
+                () => customFetch(`/users/me`),
             );
             this.me = response.value
         }

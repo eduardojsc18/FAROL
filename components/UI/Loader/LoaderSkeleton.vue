@@ -1,5 +1,5 @@
 <template>
-    <div class="animate-pulse bg-primary-100 overflow-hidden rounded-full relative loader-skeleton" v-bind="{...$attrs}" >
+    <div class="animate-pulse !bg-neutral-500 overflow-hidden rounded-full relative loader-skeleton" v-bind="{...$attrs}" >
         <slot />
     </div>
 </template>

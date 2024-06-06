@@ -8,7 +8,7 @@
 </template>
 <script setup>
 const config = useRuntimeConfig()
-await useHead( {
+useHead( {
     titleTemplate: ( titleChunk ) => {
         return titleChunk ? `${titleChunk} - ${config.public.appName}` : `${config.public.appName}`
     }

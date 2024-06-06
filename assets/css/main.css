@@ -8,23 +8,27 @@ body:has(.animation-change-theme) {
     overflow: hidden;
 }
 
+body {
+    @apply h-full bg-[radial-gradient(at_top,#fffdfd,#fffaf3)] dark:text-[#F4F4F4E6] dark:bg-[radial-gradient(at_top,#27272A,#171717)] transition-colors
+}
+
 *{
     @apply scrollbar max-md:scrollbar-w-1 max-md:scrollbar-h-1 scrollbar-w-2 scrollbar-h-2 scrollbar-thumb-rounded-full scrollbar-thumb-neutral-400 scrollbar-track-neutral-100 dark:scrollbar-thumb-neutral-600 dark:scrollbar-track-neutral-900 !important
 }
 
 [data-tooltip] {
     @apply
-    relative z-[999999999] hover:z-[99999999999]
+    relative after:z-[99999999999999999999] before:z-[99999999999999999999] isolate
     after:content-[attr(data-tooltip)]
-    after:invisible after:scale-75 after:origin-bottom after:opacity-0 hover:after:visible hover:after:opacity-100 hover:after:scale-100 after:transition-all
-    after:absolute after:bg-black after:bottom-[calc(100%+4px)] after:left-1/2 after:-translate-x-1/2 after:-z-[1]
+    after:invisible after:scale-95 after:opacity-0 hover:after:visible hover:after:opacity-100 hover:after:scale-100 after:transition-all after:duration-100
+    after:absolute after:bg-black after:bottom-[calc(100%+4px)] after:left-1/2 after:-translate-x-1/2
     after:px-1.5 after:py-1 after:min-h-fit after:min-w-fit
     after:rounded-md
     after:drop-shadow before:drop-shadow
     after:text-center after:text-white after:whitespace-nowrap after:text-[10px]
-    before:invisible before:opacity-0 hover:before:visible hover:before:opacity-100 before:transition-all
+    before:invisible before:opacity-0 hover:before:visible hover:before:opacity-100 before:transition-all before:duration-100
     before:bg-black before:[clip-path:polygon(100%_0,0_0,50%_100%)]
-    before:absolute before:bottom-full before:left-1/2 before:-translate-x-1/2 before:z-0
+    before:absolute before:bottom-full before:left-1/2 before:-translate-x-1/2
     before:w-3 before:h-[4px]
 }
 
@@ -49,6 +53,18 @@ body:has(.animation-change-theme) {
     @apply
     after:top-1/2 after:-translate-y-1/2 after:right-auto after:translate-x-0 after:left-[calc(100%+7px)] after:origin-left
     before:top-1/2 before:-translate-y-1/2 before:bottom-auto before:translate-x-0 before:right-auto before:left-[calc(100%+3px)] before:[clip-path:polygon(100%_100%,100%_0,0_50%)] before:w-[4px] before:h-2.5 before:origin-left
+}
+
+[data-tooltip-position='top-right'] {
+    @apply
+    after:bottom-[calc(100%+4px)] after:right-0 after:-z-[1] after:left-auto after:translate-x-0
+    !important
+}
+
+[data-tooltip-position='top-left'] {
+    @apply
+    after:bottom-[calc(100%+4px)] after:right-auto after:-z-[1] after:left-0 after:translate-x-0
+    !important
 }
 
 @layer components {

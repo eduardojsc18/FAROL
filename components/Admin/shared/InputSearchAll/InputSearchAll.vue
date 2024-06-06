@@ -24,12 +24,12 @@
     </div>
 </template>
 <script setup>
-import helpers from "~/composables/helpers.js";
+import { useHelpers } from "~/composables/useHelpers.js";
 import moment from "moment";
 import Products from "~/components/Admin/shared/InputSearchAll/Sections/Products.vue";
 import {useLazyAsyncData} from "#app";
 
-const { customFetch, toBRL } = helpers()
+const { customFetch, toBRL } = useHelpers()
 
 const showDropDown = ref(false)
 const search = ref('')

@@ -3,46 +3,9 @@
         <div class="pl-4 pr-2 flex justify-between items-center " >
             <div class="transition-all origin-top-left" :class="{'lg:[writing-mode:vertical-rl] lg:leading-none': useSidebar().minify}">
                 <p class="text-sm font-semibold text-neutral-800 dark:text-neutral-200 whitespace-nowrap">Ultimas vendas</p>
-                <p class="text-[10px] text-neutral-400 whitespace-nowrap">Atualizado em {{ dateRefresh }}</p>
+<!--                <p class="text-[10px] text-neutral-400 whitespace-nowrap">Atualizado em {{ dateRefresh }}</p>-->
             </div>
-            <button v-if="!useSidebar().minify" @click="refresh" data-tooltip="Clique para atualizar" class="transition-none btn-header-style lg:invisible lg:group-hover/aside:visible !text-neutral-400">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3 h-3" :class="{'animate-spin': status === 'pending'}">
-                    <path fill-rule="evenodd" d="M15.312 11.424a5.5 5.5 0 0 1-9.201 2.466l-.312-.311h2.433a.75.75 0 0 0 0-1.5H3.989a.75.75 0 0 0-.75.75v4.242a.75.75 0 0 0 1.5 0v-2.43l.31.31a7 7 0 0 0 11.712-3.138.75.75 0 0 0-1.449-.39Zm1.23-3.723a.75.75 0 0 0 .219-.53V2.929a.75.75 0 0 0-1.5 0V5.36l-.31-.31A7 7 0 0 0 3.239 8.188a.75.75 0 1 0 1.448.389A5.5 5.5 0 0 1 13.89 6.11l.311.31h-2.432a.75.75 0 0 0 0 1.5h4.243a.75.75 0 0 0 .53-.219Z" clip-rule="evenodd" />
-                </svg>
-            </button>
-        </div>
-        <div v-show="!useSidebar().minify" class="max-md:!block min-w-[280px]">
-            <Swiper
-                :navigation="{nextEl: '.button-latest-sales-next', prevEl: '.button-latest-sales-prev'}"
-                :modules="[SwiperNavigation]"
-                grab-cursor
-                :slides-per-view="2.2"
-                space-between="5"
-                class="pb-3 !pl-4 !py-2 relative"
-            >
-                <SwiperSlide class="!flex " v-for="(order, index) in orders.results" :key="index" >
-                    <Suspense>
-                        <ShortcutLatesSalesItem :order="order" />
-                        <template #fallback>
-                            <ShortcutLatestSalesItemLoading />
-                        </template>
-                    </Suspense>
-                </SwiperSlide>
-                <SwiperSlide>
-                    <div class="rounded-lg relative text-lg flex justify-center text-center items-start flex-col text-neutral-400 item-active h-[164px] w-full max-w-28 p-2 font-medium !mr-0">
-                        <div class="leading-tight flex-1">
-                            Tudo certo por aqui!
-                        </div>
-                        <button @click="refresh" class="text-xs flex items-center mx-auto justify-center w-full leading-none gap-1 rounded-full border border-neutral-500 hover:bg-neutral-800 px-2 py-1.5">
-                            Atualizar
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3 h-3" :class="{'animate-spin': status === 'pending'}">
-                                <path fill-rule="evenodd" d="M15.312 11.424a5.5 5.5 0 0 1-9.201 2.466l-.312-.311h2.433a.75.75 0 0 0 0-1.5H3.989a.75.75 0 0 0-.75.75v4.242a.75.75 0 0 0 1.5 0v-2.43l.31.31a7 7 0 0 0 11.712-3.138.75.75 0 0 0-1.449-.39Zm1.23-3.723a.75.75 0 0 0 .219-.53V2.929a.75.75 0 0 0-1.5 0V5.36l-.31-.31A7 7 0 0 0 3.239 8.188a.75.75 0 1 0 1.448.389A5.5 5.5 0 0 1 13.89 6.11l.311.31h-2.432a.75.75 0 0 0 0 1.5h4.243a.75.75 0 0 0 .53-.219Z" clip-rule="evenodd" />
-                            </svg>
-                        </button>
-                    </div>
-                </SwiperSlide>
-            </Swiper>
-            <div class="mt-1 max-md:hidden lg:group-hover/aside:visible lg:invisible px-4 flex justify-end text-neutral-500">
+            <div v-if="!useSidebar().minify" class="mt-1 max-md:hidden lg:group-hover/aside:visible lg:invisible flex justify-end text-neutral-500">
                 <button class="button-latest-sales-prev disabled:opacity-10 disabled:cursor-not-allowed hover:text-neutral-400">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
                         <g clip-path="url(#a)">
@@ -62,37 +25,46 @@
                 </button>
             </div>
         </div>
+        <div v-show="!useSidebar().minify" class="max-md:!block min-w-[280px]">
+            <Swiper
+                :navigation="{nextEl: '.button-latest-sales-next', prevEl: '.button-latest-sales-prev'}"
+                :modules="[SwiperNavigation]"
+                grab-cursor
+                :slides-per-view="2.2"
+                space-between="5"
+                class="pb-3 !pl-4 !py-2 relative"
+            >
+                <SwiperSlide class="!flex group group-has-[.swiper-slide-active]:bg-neutral-300" v-for="(order, index) in orders.results" :key="index" >
+                    <Suspense>
+                        <ShortcutLatesSalesItem :order="order" />
+                        <template #fallback>
+                            <ShortcutLatestSalesItemLoading />
+                        </template>
+                    </Suspense>
+                </SwiperSlide>
+                <SwiperSlide>
+                    <div class="rounded-lg relative text-lg flex justify-center text-center items-start flex-col text-neutral-400 item-active h-[164px] w-full max-w-28 p-2 font-medium !mr-0">
+                        <div class="leading-tight flex-1">
+                            Tudo certo por aqui!
+                        </div>
+                        <div class="text-[10px] font-base w-full leading-tight text-neutral-400 gap-1">
+                            essas foram as ultimas 10 vendas
+                        </div>
+                    </div>
+                </SwiperSlide>
+            </Swiper>
+        </div>
     </div>
 </template>
 <script setup>
-import {useMe} from "~/stores/useMe.js";
 import {useSidebar} from "~/stores/useSidebar.js";
-import helpers from "~/composables/helpers.js";
+import {useGetOrders} from "~/stores/orders/useGetOrders.js";
+import ShortcutLatestSalesItemLoading from "~/components/Admin/shortcut/Sidebar/LatestSales/ShortcutLatestSalesItemLoading.vue";
 const ShortcutLatesSalesItem = defineAsyncComponent({
     loader: () => import("~/components/Admin/shortcut/Sidebar/LatestSales/ShortcutLatestSalesItem.vue"),
     timeout: 5000,
     delay: 5000,
 });
-import ShortcutLatestSalesItemLoading from "~/components/Admin/shortcut/Sidebar/LatestSales/ShortcutLatestSalesItemLoading.vue";
-import moment from "moment";
 
-const { me } = useMe()
-const { customFetch } = helpers()
-const dateRefresh = ref(moment(new Date()).format('DD/MM/YYYY hh:mm:ss'))
-
-const {data: orders, pending, status, refresh} = await useAsyncData(
-    `SHORTCUT-LATEST-SALES`,
-    () => customFetch(`/orders/search?`, {
-        query: {
-            seller: me.id,
-            sort: 'date_desc',
-            limit: 10,
-        },
-    }, { immediate: true })
-)
-
-watch(status, () => {
-    dateRefresh.value = moment(new Date()).format('DD/MM/YYYY hh:mm:ss')
-})
-
+const orders = await useGetOrders().getOrders()
 </script>

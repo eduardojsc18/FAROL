@@ -14,7 +14,7 @@
         "@nuxtjs/google-fonts": "^3.1.1",
         "@pinia-plugin-persistedstate/nuxt": "^1.2.0",
         "autoprefixer": "^10.4.16",
-        "nuxt": "^3.10.3",
+        "nuxt": "^3.11.2",
         "nuxt-lodash": "^2.5.3",
         "postcss": "^8.4.32",
         "tailwind-scrollbar": "^3.1.0",

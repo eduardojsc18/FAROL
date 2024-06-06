@@ -1,5 +1,5 @@
 <template>
-    <div id="application" class="min-h-full has-[.animation-change-theme]:overflow-hidden bg-[radial-gradient(at_center,#fffdfd,#fffaf3)] dark:text-[#F4F4F4E6] dark:bg-[radial-gradient(at_center,#27272A,#171717)] transition-colors">
+    <div id="application" class="min-h-screen">
         <Header />
         <div class="flex">
             <SidebarContainer>
@@ -8,7 +8,7 @@
                 </template>
                 <template #footer>
                     <ShortcutLatestSales />
-                    <ShortcutMarketResearch />
+<!--                    <ShortcutMarketResearch />-->
                 </template>
                 <SidebarLinkItem to="dashboard" label="Dashboard">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
@@ -41,8 +41,8 @@
                     </svg>
                 </SidebarLinkItem>
             </SidebarContainer>
-            <div class="flex-grow min-h-screen flex flex-col">
-                <main class="flex-1 p-3 h-[30000px]">
+            <div class="flex-grow min-h-screen flex flex-col p-3">
+                <main class="flex-1 mt-4 container mx-auto">
                     <NuxtPage />
                 </main>
                 <footer>
