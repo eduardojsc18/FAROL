@@ -41,8 +41,8 @@
                     </svg>
                 </SidebarLinkItem>
             </SidebarContainer>
-            <div class="flex-grow min-h-screen flex flex-col p-3">
-                <main class="flex-1 mt-4 container mx-auto">
+            <div class="w-full min-h-screen flex flex-col px-5 pt-7">
+                <main class="flex-1 lg:container lg:mx-auto">
                     <NuxtPage />
                 </main>
                 <footer>

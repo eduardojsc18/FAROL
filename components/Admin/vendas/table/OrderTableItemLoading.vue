@@ -1,21 +1,30 @@
 <template>
-    <tr>
-        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium dark:text-primary-200 sm:pl-0">
-            <div class="flex gap-2 items-center">
-                <LoaderSkeleton class="aspect-square min-w-28 rounded-lg object-center object-cover w-28 h-28" />
-                <LoaderSkeleton class="w-full h-4 rounded-full" />
+    <tr class="*:px-3 *:py-4">
+        <td class="text-sm font-medium dark:text-primary-200">
+            <div class="flex gap-3 items-center">
+                <LoaderSkeleton class="rounded-lg flex-shrink-0 aspect-square size-16" />
+                <div class="space-y-1 flex-grow">
+                    <LoaderSkeleton class="w-full h-4 rounded-full" />
+                    <LoaderSkeleton class="w-1/3 h-4 rounded-full" />
+                </div>
             </div>
         </td>
-        <td class="whitespace-nowrap px-3 py-4 text-sm text-center dark:text-gray-300">
-            <LoaderSkeleton class="w-14 h-4 rounded-full" />
+        <td class="">
+            <div class="flex justify-center">
+                <LoaderSkeleton class="w-14 h-4 rounded-full" />
+            </div>
         </td>
-        <td class="whitespace-nowrap px-3 py-4 text-sm text-center dark:text-gray-300">
-            <LoaderSkeleton class="w-12 h-4 rounded-full" />
+        <td class="">
+            <div class="flex justify-center">
+                <LoaderSkeleton class="w-12 h-4 rounded-full" />
+            </div>
         </td>
-        <td class="whitespace-nowrap px-3 py-4 text-sm dark:text-gray-300">
-            <LoaderSkeleton class="w-10 h-4 rounded-full" />
+        <td class="">
+            <div class="flex justify-center">
+                <LoaderSkeleton class="w-10 h-4 rounded-full" />
+            </div>
         </td>
-        <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-center text-sm font-medium sm:pr-0">
+        <td class="">
             <div class="flex justify-center">
                 <LoaderSkeleton class="size-8 rounded-full" />
             </div>

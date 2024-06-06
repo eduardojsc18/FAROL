@@ -9,7 +9,7 @@ body:has(.animation-change-theme) {
 }
 
 body {
-    @apply h-full bg-[radial-gradient(at_top,#fffdfd,#fffaf3)] dark:text-[#F4F4F4E6] dark:bg-[radial-gradient(at_top,#27272A,#171717)] transition-colors
+    @apply bg-[radial-gradient(at_top,#fffdfd,#fffaf3)] dark:text-[#F4F4F4E6] dark:bg-[radial-gradient(at_top,#27272A,#171717)] transition-colors overflow-x-hidden
 }
 
 *{

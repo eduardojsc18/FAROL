@@ -1,7 +1,10 @@
 <template>
-    <div class="flex flex-col gap-5">
-        <HeaderPage title="Vendas" description="Lista das ultimas vendas realizadas" />
-        <section>
+    <div class="space-y-5">
+        <HeaderPage
+            title="Vendas"
+            :description="`Lista das ultimas ${orders.paging.limit} vendas  realizadas`"
+        />
+        <div>
             <OrderTable>
                 <Suspense>
                     <OrderTableItem v-for="(order, index) in orders.results" :key="index" :order="order" />
@@ -10,15 +13,18 @@
                     </template>
                 </Suspense>
             </OrderTable>
-        </section>
+        </div>
     </div>
 </template>
 <script setup>
 import {useGetOrders} from "~/stores/orders/useGetOrders.js";
-import ShortcutLatestSalesItem from "~/components/Admin/shortcut/Sidebar/LatestSales/ShortcutLatestSalesItem.vue";
 import HeaderPage from "~/components/UI/Layout/Admin/Header/HeaderPage.vue";
 import OrderTable from "~/components/Admin/vendas/table/OrderTable.vue";
-import OrderTableItem from "~/components/Admin/vendas/table/OrderTableItem.vue";
+const OrderTableItem  = defineAsyncComponent({
+    loader: () => import("~/components/Admin/vendas/table/OrderTableItem.vue"),
+    timeout: 1000,
+    delay: 1000,
+})
 import OrderTableItemLoading from "~/components/Admin/vendas/table/OrderTableItemLoading.vue";
 
 const orders = await useGetOrders().getOrders({limit: 50})
