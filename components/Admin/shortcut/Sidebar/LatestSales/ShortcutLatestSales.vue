@@ -1,7 +1,7 @@
 <template>
     <div class="space-y-3 group/shortcut min-h-[240px] relative">
         <div class="pl-4 pr-2 flex justify-between items-center " >
-            <div class="transition-all origin-top-left" :class="{'lg:[writing-mode:vertical-rl] lg:leading-none': useSidebar().minify}">
+            <div class="transition-all origin-top-left" :class="{'md:[writing-mode:vertical-rl] md:leading-none': useSidebar().minify}">
                 <p class="text-sm font-semibold text-neutral-800 dark:text-neutral-200 whitespace-nowrap">Ultimas vendas</p>
 <!--                <p class="text-[10px] text-neutral-400 whitespace-nowrap">Atualizado em {{ dateRefresh }}</p>-->
             </div>
@@ -31,7 +31,7 @@
                 :modules="[SwiperNavigation]"
                 grab-cursor
                 :slides-per-view="2.2"
-                space-between="5"
+                space-between="15"
                 class="pb-3 !pl-4 !py-2 relative"
             >
                 <SwiperSlide class="!flex group group-has-[.swiper-slide-active]:bg-neutral-300" v-for="(order, index) in orders.results" :key="index" >

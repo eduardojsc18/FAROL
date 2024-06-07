@@ -1,7 +1,7 @@
 <template>
-    <div id="application" class="min-h-screen">
+    <div id="application">
         <Header />
-        <div class="flex">
+        <div class="flex relative">
             <SidebarContainer>
                 <template #header>
                     <MyAccount />
@@ -41,20 +41,16 @@
                     </svg>
                 </SidebarLinkItem>
             </SidebarContainer>
-            <div class="w-full min-h-screen flex flex-col px-5 pt-7">
-                <main class="flex-1 lg:container lg:mx-auto">
+            <div class="mx-auto w-full lg:container lg:mx-auto min-h-screen px-5 pt-7">
+                <main>
                     <NuxtPage />
                 </main>
-                <footer>
-
-                </footer>
             </div>
             <Notification />
         </div>
     </div>
 </template>
 <script setup>
-
 import SidebarLinkItem from "~/components/UI/Layout/Admin/Sidebar/SidebarLinkItem.vue";
 import SidebarContainer from "~/components/UI/Layout/Admin/Sidebar/SidebarContainer.vue";
 import Header from "~/components/UI/Layout/Admin/Header/Header.vue";

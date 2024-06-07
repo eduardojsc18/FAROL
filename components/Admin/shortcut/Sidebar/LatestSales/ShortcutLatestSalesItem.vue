@@ -2,13 +2,13 @@
     <a
         :href="`https://www.mercadolivre.com.br/vendas/${props.order.id}/detalhe`"
         target="_blank"
-        class="rounded-lg group relative min-w-28 w-28 !flex hover:bg-neutral-400/10 flex-col"
+        class="rounded-lg group relative w-full !flex hover:bg-neutral-400/10 flex-col"
         :class="{'!bg-red-500/10 line-through': props.order.status === 'cancelled'}"
     >
-        <img :src="details?.product?.pictures[0].url" alt="" class="aspect-square min-w-28 rounded-lg object-center object-cover w-28 h-28">
-        <div class="p-1">
-            <div class="text-[11px] leading-tight line-clamp-2" v-text="props.order.order_items[0].item.title" />
-            <div class="text-[9px] mt-1 flex justify-start items-center flex-wrap gap-1">
+        <img :src="details?.product?.pictures[0].url" alt="" class="aspect-square w-full rounded-lg object-center object-cover">
+        <div class="p-1 text-neutral-200">
+            <div class="text-sm font-medium leading-tight line-clamp-2" v-text="props.order.order_items[0].item.title" />
+            <div class="text-xs mt-1 flex justify-start items-center flex-wrap gap-1">
                 <div v-if="props.order.status === 'cancelled'" class="relative self-center">
                     <div class="absolute size-full animate-ping bg-red-800 rounded-full"/>
                     <div data-tooltip="Cancelado" class="size-3 rounded-full bg-red-500"/>

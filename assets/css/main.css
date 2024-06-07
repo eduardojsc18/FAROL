@@ -9,7 +9,7 @@ body:has(.animation-change-theme) {
 }
 
 body {
-    @apply bg-[radial-gradient(at_top,#fffdfd,#fffaf3)] dark:text-[#F4F4F4E6] dark:bg-[radial-gradient(at_top,#27272A,#171717)] transition-colors overflow-x-hidden
+    @apply bg-[#fffaf3] dark:text-[#F4F4F4E6] dark:bg-neutral-800 transition-colors
 }
 
 *{
@@ -69,7 +69,7 @@ body {
 
 @layer components {
     .btn-header-style {
-        @apply rounded-full p-3 text-color-default focus-default grid place-items-center relative hover-default size-9 aspect-square lg:size-7 *:absolute *:size-5 *:z-10 active:scale-95 transition-all
+        @apply rounded-full p-3 text-color-default focus-default grid place-items-center relative hover-default aspect-square size-7 *:absolute *:size-5 *:z-10 active:scale-95 transition-all
     }
     .hover-default {
         @apply hover:bg-neutral-500/10
