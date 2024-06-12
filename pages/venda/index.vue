@@ -20,11 +20,7 @@
 import {useGetOrders} from "~/stores/orders/useGetOrders.js";
 import HeaderPage from "~/components/UI/Layout/Admin/Header/HeaderPage.vue";
 import OrderTable from "~/components/Admin/vendas/table/OrderTable.vue";
-const OrderTableItem  = defineAsyncComponent({
-    loader: () => import("~/components/Admin/vendas/table/OrderTableItem.vue"),
-    timeout: 1000,
-    delay: 1000,
-})
+const OrderTableItem  = defineAsyncComponent(() => import("~/components/Admin/vendas/table/OrderTableItem.vue"))
 import OrderTableItemLoading from "~/components/Admin/vendas/table/OrderTableItemLoading.vue";
 
 const orders = await useGetOrders().getOrders({limit: 50})

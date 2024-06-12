@@ -5,8 +5,8 @@
         class="rounded-lg group relative w-full !flex hover:bg-neutral-400/10 flex-col"
         :class="{'!bg-red-500/10 line-through': props.order.status === 'cancelled'}"
     >
-        <img :src="details?.product?.pictures[0].url" alt="" class="aspect-square w-full rounded-lg object-center object-cover">
-        <div class="p-1 text-neutral-200">
+        <img :src="details?.product?.pictures[0].url" alt="" class="aspect-square w-full rounded-md object-center shadow-md object-cover">
+        <div class="p-1 dark:text-neutral-200">
             <div class="text-sm font-medium leading-tight line-clamp-2" v-text="props.order.order_items[0].item.title" />
             <div class="text-xs mt-1 flex justify-start items-center flex-wrap gap-1">
                 <div v-if="props.order.status === 'cancelled'" class="relative self-center">
@@ -68,5 +68,5 @@ const props = defineProps({
 
 const {toBRL} = useHelpers()
 
-const details = await useGetOrders().getDetail(props.order.order_items[0].item.id, props.order.shipping.id)
+const details = await useGetOrders().getDetail(props.order.id, props.order.order_items[0].item.id, props.order.shipping.id)
 </script>

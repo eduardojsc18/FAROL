@@ -41,12 +41,12 @@
                     </svg>
                 </SidebarLinkItem>
             </SidebarContainer>
-            <div class="mx-auto w-full lg:container lg:mx-auto min-h-screen px-5 pt-7">
-                <main>
+            <section class="flex flex-col min-h-screen w-full overflow-x-hidden xl:container xl:mx-auto px-5 pt-7 ">
+                <main class="z-0 w-full grow space-y-5 pb-20">
                     <NuxtPage />
                 </main>
-            </div>
-            <Notification />
+                <Notification />
+            </section>
         </div>
     </div>
 </template>
@@ -58,6 +58,7 @@ import Notification from "~/components/UI/Layout/Admin/Notification/Notification
 import MyAccount from "~/components/UI/Layout/Admin/Sidebar/MyAccount.vue";
 import ShortcutLatestSales from "~/components/Admin/shortcut/Sidebar/LatestSales/ShortcutLatestSales.vue";
 import ShortcutMarketResearch from "~/components/Admin/shortcut/Sidebar/ShortcutMarketResearch.vue";
+import { useSidebar } from "~/stores/useSidebar.js";
 
 </script>
 <style scoped>

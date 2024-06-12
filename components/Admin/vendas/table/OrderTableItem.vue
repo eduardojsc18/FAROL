@@ -37,8 +37,10 @@ const props = defineProps({
     order: {type: Object},
 })
 
+
+
 const {toBRL} = useHelpers()
-const details = await useGetOrders().getDetail(props.order.order_items[0].item.id, props.order.shipping.id)
+const details = await useGetOrders().getDetail(props.order.id, props.order.order_items[0].item.id, props.order.shipping.id)
 
 </script>
 <style scoped>

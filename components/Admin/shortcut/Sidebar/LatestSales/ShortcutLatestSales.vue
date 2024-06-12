@@ -1,5 +1,5 @@
 <template>
-    <div class="space-y-3 group/shortcut min-h-[240px] relative">
+    <div class="space-y-3 group/shortcut min-h-[240px] overflow-x-hidden relative">
         <div class="pl-4 pr-2 flex justify-between items-center " >
             <div class="transition-all origin-top-left" :class="{'md:[writing-mode:vertical-rl] md:leading-none': useSidebar().minify}">
                 <p class="text-sm font-semibold text-neutral-800 dark:text-neutral-200 whitespace-nowrap">Ultimas vendas</p>
@@ -25,14 +25,21 @@
                 </button>
             </div>
         </div>
-        <div v-show="!useSidebar().minify" class="max-md:!block min-w-[280px]">
+        <div
+            v-show="!useSidebar().minify"
+            class="
+                max-md:!block min-w-[280px] relative
+                after:z-10 after:absolute after:top-0 after:w-5 after:h-full after:bg-gradient-to-l after:from-transparent after:to-orange-50 dark:after:to-neutral-800
+                before:z-10 before:absolute before:top-0 before:right-0 before:w-5 before:h-full before:bg-gradient-to-l before:to-transparent before:from-orange-50 dark:before:from-neutral-800
+            "
+        >
             <Swiper
                 :navigation="{nextEl: '.button-latest-sales-next', prevEl: '.button-latest-sales-prev'}"
                 :modules="[SwiperNavigation]"
                 grab-cursor
                 :slides-per-view="2.2"
-                space-between="15"
-                class="pb-3 !pl-4 !py-2 relative"
+                space-between="10"
+                class="pb-3 !pl-4 !py-2 relative !flex"
             >
                 <SwiperSlide class="!flex group group-has-[.swiper-slide-active]:bg-neutral-300" v-for="(order, index) in orders.results" :key="index" >
                     <Suspense>
@@ -42,9 +49,9 @@
                         </template>
                     </Suspense>
                 </SwiperSlide>
-                <SwiperSlide>
-                    <div class="rounded-lg relative text-lg flex justify-center text-center items-start flex-col text-neutral-400 item-active h-[164px] w-full max-w-28 p-2 font-medium !mr-0">
-                        <div class="leading-tight flex-1">
+                <SwiperSlide >
+                    <div class="rounded-lg relative text-lg text-center flex flex-col justify-between text-neutral-400 item-active !h-[177px] p-2 font-medium">
+                        <div class="leading-tight">
                             Tudo certo por aqui!
                         </div>
                         <div class="text-[10px] font-base w-full leading-tight text-neutral-400 gap-1">
@@ -52,6 +59,7 @@
                         </div>
                     </div>
                 </SwiperSlide>
+                <SwiperSlide />
             </Swiper>
         </div>
     </div>
@@ -60,11 +68,7 @@
 import {useSidebar} from "~/stores/useSidebar.js";
 import {useGetOrders} from "~/stores/orders/useGetOrders.js";
 import ShortcutLatestSalesItemLoading from "~/components/Admin/shortcut/Sidebar/LatestSales/ShortcutLatestSalesItemLoading.vue";
-const ShortcutLatesSalesItem = defineAsyncComponent({
-    loader: () => import("~/components/Admin/shortcut/Sidebar/LatestSales/ShortcutLatestSalesItem.vue"),
-    timeout: 5000,
-    delay: 5000,
-});
+const ShortcutLatesSalesItem = defineAsyncComponent(() => import("~/components/Admin/shortcut/Sidebar/LatestSales/ShortcutLatestSalesItem.vue"));
 
 const orders = await useGetOrders().getOrders()
 </script>

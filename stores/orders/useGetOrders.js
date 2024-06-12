@@ -25,10 +25,10 @@ export const useGetOrders = defineStore('useGetOrders', {
             )
             return data.value
         },
-        async getDetail(itemID, shippingID) {
+        async getDetail(orderID, itemID, shippingID) {
             const { customFetch } = useHelpers()
             const { data} = await useAsyncData(
-                `orders-item-detail-${itemID}`,
+                `order-${orderID}-item-${itemID}-detail`,
                 async () => {
                     const [product, delivery] = await Promise.all([
                         customFetch(`items/${itemID}`),

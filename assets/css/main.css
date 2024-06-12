@@ -9,7 +9,7 @@ body:has(.animation-change-theme) {
 }
 
 body {
-    @apply bg-[#fffaf3] dark:text-[#F4F4F4E6] dark:bg-neutral-800 transition-colors
+    @apply bg-orange-50 dark:text-[#F4F4F4E6] dark:bg-neutral-800 transition-colors
 }
 
 *{
