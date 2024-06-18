@@ -22,7 +22,12 @@
                 </div>
                 <div class="flex-1" />
                 <div >
-                    <svg v-if="details.delivery.tracking_method === 'PAC' || details.delivery.tracking_method === 'Sedex'" class="size-3" width="281" height="205" viewBox="0 0 281 205" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <div v-if="details.delivery.logistic_type === 'fulfillment'" data-tooltip="Full" data-tooltip-position="top-right">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-3 text-green-600">
+                            <path fill-rule="evenodd" d="M9.58 1.077a.75.75 0 0 1 .405.82L9.165 6h4.085a.75.75 0 0 1 .567 1.241l-6.5 7.5a.75.75 0 0 1-1.302-.638L6.835 10H2.75a.75.75 0 0 1-.567-1.241l6.5-7.5a.75.75 0 0 1 .897-.182Z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <svg v-else-if="details.delivery.tracking_method === 'PAC' || details.delivery.tracking_method === 'Sedex'" class="size-3" width="281" height="205" viewBox="0 0 281 205" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M71.2 204.8H62.2C55 204.8 48.5 201.4 44.2 196L1.6 141.3C0.7 140 0 138.4 0 136.6C0 134.8 0.7 133.2 1.6 131.9L44.5 77C48.8 71.6 55.1 68.2 62.5 68.2H157.3L103.4 135.8L64 185.5L71.2 204.8Z" fill="url(#paint0_linear_2_18)"/>
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M104 136.5L103.6 135.8L64 185.5C62.4 187.5 61.1 190.2 61.1 194.7C61.1 199.2 65.4 204.8 73.9 204.8H157.2L104 136.5Z" fill="url(#paint1_linear_2_18)"/>
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M216.3 19.3L209.1 0H218.1C225.3 0 231.8 3.4 236.1 8.8L279 63.6C279.9 64.9 280.6 66.5 280.6 68.3C280.6 70.1 279.9 71.7 279 73L235.9 127.8C231.6 133.2 225.3 136.6 217.9 136.6H123.1L177 68.9L216.3 19.3Z" fill="url(#paint2_linear_2_18)"/>

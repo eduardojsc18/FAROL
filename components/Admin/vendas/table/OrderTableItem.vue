@@ -1,10 +1,20 @@
 <template>
     <tr class="*:px-3 *:py-4">
         <td class="text-base dark:text-primary-200">
-            <div class="flex items-center gap-3">
-                <img :src="details?.product?.pictures[0].url" alt="" class="aspect-square rounded-lg object-center object-cover size-16">
-                <span>{{ props.order.order_items[0].item.title }}</span>
-            </div>
+            <a :href="`https://www.mercadolivre.com.br/vendas/${props.order.id}/detalhe`" target="_blank">
+                <div class="flex items-center gap-3 group hover:bg-neutral-700 -m-2 p-2 rounded-xl">
+                    <img :src="details?.product?.pictures[0].url" alt="" class="aspect-square rounded-lg object-center object-cover size-16">
+                    <p>
+                        {{ props.order.order_items[0].item.title }}
+                        <span class="invisible group-hover:visible inline-block translate-y-0.5 text-neutral-400 leading-none" data-tooltip="Abrir no ML">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
+                                <path d="M6.22 8.72a.75.75 0 0 0 1.06 1.06l5.22-5.22v1.69a.75.75 0 0 0 1.5 0v-3.5a.75.75 0 0 0-.75-.75h-3.5a.75.75 0 0 0 0 1.5h1.69L6.22 8.72Z" />
+                                <path d="M3.5 6.75c0-.69.56-1.25 1.25-1.25H7A.75.75 0 0 0 7 4H4.75A2.75 2.75 0 0 0 2 6.75v4.5A2.75 2.75 0 0 0 4.75 14h4.5A2.75 2.75 0 0 0 12 11.25V9a.75.75 0 0 0-1.5 0v2.25c0 .69-.56 1.25-1.25 1.25h-4.5c-.69 0-1.25-.56-1.25-1.25v-4.5Z" />
+                            </svg>
+                        </span>
+                    </p>
+                </div>
+            </a>
         </td>
         <td class="whitespace-nowrap text-sm text-center dark:text-gray-300">
             <div data-tooltip="Valor Total" v-text="`R$ ${toBRL(props.order.total_amount)}`"/>
@@ -23,7 +33,13 @@
         </td>
         <td class="text-sm text-center font-medium sm:pr-0">
             <div class="flex justify-center">
-                <img v-if="details.delivery.tracking_method === 'PAC' || details.delivery.tracking_method === 'Sedex'" class="size-9" src="~/assets/img/correios_icon.svg" alt="Correios"/>
+                <div v-if="details.delivery.logistic_type === 'fulfillment'">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-9 text-green-600">
+                        <path fill-rule="evenodd" d="M14.615 1.595a.75.75 0 0 1 .359.852L12.982 9.75h7.268a.75.75 0 0 1 .548 1.262l-10.5 11.25a.75.75 0 0 1-1.272-.71l1.992-7.302H3.75a.75.75 0 0 1-.548-1.262l10.5-11.25a.75.75 0 0 1 .913-.143Z" clip-rule="evenodd" />
+                    </svg>
+
+                </div>
+                <img v-else-if="details.delivery.tracking_method === 'PAC' || details.delivery.tracking_method === 'Sedex'" class="size-9" src="~/assets/img/correios_icon.svg" alt="Correios"/>
                 <span v-else class="font-bold italic text-green-600" v-text="'FLEX'" />
             </div>
         </td>
@@ -36,8 +52,6 @@ import {useHelpers} from "~/composables/useHelpers.js";
 const props = defineProps({
     order: {type: Object},
 })
-
-
 
 const {toBRL} = useHelpers()
 const details = await useGetOrders().getDetail(props.order.id, props.order.order_items[0].item.id, props.order.shipping.id)
