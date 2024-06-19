@@ -1,10 +1,10 @@
 <template>
     <div
-        class="md:table-row max-sm:pb-3 md:*:my-2 max-sm:grid grid-cols-4 *:flex *:items-center *:justify-center max-sm:*:flex-col max-sm:*:justify-between *:px-3 *:py-4 *:align-middle md:*:table-cell dark:first:*:text-neutral-100 dark:*:text-neutral-300 first:*:text-base *:text-sm first:*:text-left *:text-center"
+        class="md:table-row max-sm:pb-5 max-sm:pt-2 max-sm:first:!pt-0 max-sm:grid grid-cols-4 md:!border-y-4 border-transparent *:flex *:items-center *:justify-center max-sm:*:flex-col max-sm:*:justify-between *:px-3 *:py-4 *:align-middle md:*:table-cell dark:first:*:text-neutral-100 dark:*:text-neutral-300 first:*:text-base *:text-sm first:*:text-left *:text-center"
         :class="{'*:!bg-red-500/10 line-through': props.order.status === 'cancelled'}"
     >
-        <div class="max-sm:mt-3 max-sm:col-span-full md:rounded-l-2xl max-sm:rounded-t-2xl !block">
-            <div class="flex items-center gap-2 mb-3">
+        <div class="max-sm:mt-3 max-sm:col-span-full md:rounded-l-2xl max-sm:rounded-t-2xl">
+            <div class="w-full flex items-center justify-start gap-2 mb-3">
                 <div v-if="props.order.status === 'cancelled'" class="relative self-center flex justify-center items-center gap-1 rounded-full border text-red-500 bg-white  border-red-500 p-1">
                     <div class="relative">
                         <div class="z-0 absolute size-full animate-ping bg-red-800 rounded-full"/>

@@ -12,7 +12,7 @@
                             <div class="table-cell max-sm:hidden rounded-r-xl text-center text-sm">Transporte</div>
                         </div>
                     </div>
-                    <div class="md:table-row-group divide-y-2 divide-orange-500/10">
+                    <div class="md:table-row-group max-sm:!divide-y-4 divide-orange-500/20">
                     <slot  />
                     </div>
                 </div>
