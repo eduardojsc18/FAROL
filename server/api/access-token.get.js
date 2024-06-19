@@ -45,6 +45,7 @@ export default defineEventHandler(async (event) => {
 
     setCookie(event,'token', token.access_token,{
         maxAge: token.expires_in,
+        secure: true,
     })
 
     return token.access_token

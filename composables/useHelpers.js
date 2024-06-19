@@ -68,6 +68,12 @@ export function useHelpers() {
                 ...options?.params
             },
             baseURL,
+            onResponseError(context) {
+                if ( context.response.status === 400 || context.response.status === 401) {
+                    token.value = ''
+                    customFetch(request, options, headers)
+                }
+            }
         })
 
     }
