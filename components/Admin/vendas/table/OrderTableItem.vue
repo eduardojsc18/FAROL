@@ -1,6 +1,7 @@
 <template>
-    <tr class="*:px-3 *:py-4">
-        <td class="text-base dark:text-primary-200">
+    <div class="md:table-row max-sm:pb-3 max-sm:grid grid-cols-4 *:px-3 *:py-4 *:align-middle md:*:table-cell dark:first:*:text-primary-200 dark:*:text-gray-300 first:*:text-base *:text-sm first:*:text-left *:text-center">
+        <div class="max-sm:col-span-full">
+            <div class="mb-1 inline-block text-xs w-16 text-center" :data-tooltip="`comprado em ${moment(order.date_created).format('DD/MM/YYYY HH:mm:ss')}`" data-tooltip-position="top-left">{{ date_humanized }}</div>
             <a :href="`https://www.mercadolivre.com.br/vendas/${props.order.id}/detalhe`" target="_blank">
                 <div class="flex items-center gap-3 group hover:bg-neutral-700 -m-2 p-2 rounded-xl">
                     <img :src="details?.product?.pictures[0].url" alt="" class="aspect-square rounded-lg object-center object-cover size-16">
@@ -15,43 +16,47 @@
                     </p>
                 </div>
             </a>
-        </td>
-        <td class="whitespace-nowrap text-sm text-center dark:text-gray-300">
+        </div>
+        <div class="max-sm:rounded-l-2xl max-sm:bg-neutral-600/50 flex items-center justify-center">
             <div data-tooltip="Valor Total" v-text="`R$ ${toBRL(props.order.total_amount)}`"/>
-        </td>
-        <td class="whitespace-nowrap text-sm text-center dark:text-gray-300">
+        </div>
+        <div class="max-sm:bg-neutral-600/50 flex items-center justify-center">
             <div data-tooltip="Quantidade" v-text="props.order.order_items[0].quantity"/>
-        </td>
-        <td class="whitespace-nowrap text-sm dark:text-gray-300">
-            <div class="flex justify-center">
+        </div>
+        <div class="max-sm:bg-neutral-600/50 flex items-center justify-center">
+            <div class="flex items-center justify-center">
                 <div v-if="details?.product?.catalog_listing" data-tooltip="Catálogo" class="inline-block">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="flex-shrink-0 size-5">
                         <path d="M2 4.5A2.5 2.5 0 0 1 4.5 2h11a2.5 2.5 0 0 1 0 5h-11A2.5 2.5 0 0 1 2 4.5ZM2.75 9.083a.75.75 0 0 0 0 1.5h14.5a.75.75 0 0 0 0-1.5H2.75ZM2.75 12.663a.75.75 0 0 0 0 1.5h14.5a.75.75 0 0 0 0-1.5H2.75ZM2.75 16.25a.75.75 0 0 0 0 1.5h14.5a.75.75 0 1 0 0-1.5H2.75Z" />
                     </svg>
                 </div>
             </div>
-        </td>
-        <td class="text-sm text-center font-medium sm:pr-0">
-            <div class="flex justify-center">
+        </div>
+        <div class="max-sm:rounded-r-2xl max-sm:bg-neutral-600/50">
+            <div class="flex items-center justify-center">
                 <div v-if="details.delivery.logistic_type === 'fulfillment'">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-9 text-green-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-8 text-green-600">
                         <path fill-rule="evenodd" d="M14.615 1.595a.75.75 0 0 1 .359.852L12.982 9.75h7.268a.75.75 0 0 1 .548 1.262l-10.5 11.25a.75.75 0 0 1-1.272-.71l1.992-7.302H3.75a.75.75 0 0 1-.548-1.262l10.5-11.25a.75.75 0 0 1 .913-.143Z" clip-rule="evenodd" />
                     </svg>
-
                 </div>
                 <img v-else-if="details.delivery.tracking_method === 'PAC' || details.delivery.tracking_method === 'Sedex'" class="size-9" src="~/assets/img/correios_icon.svg" alt="Correios"/>
                 <span v-else class="font-bold italic text-green-600" v-text="'FLEX'" />
             </div>
-        </td>
-    </tr>
+        </div>
+    </div>
 </template>
 <script setup>
 import {useGetOrders} from "~/stores/orders/useGetOrders.js";
 import {useHelpers} from "~/composables/useHelpers.js";
+import moment from "moment";
+import 'moment/locale/pt-br.js'
 
 const props = defineProps({
     order: {type: Object},
 })
+
+const duration = moment.duration(moment().diff(moment(props.order.date_created)))
+const date_humanized = ref(duration.humanize());
 
 const {toBRL} = useHelpers()
 const details = await useGetOrders().getDetail(props.order.id, props.order.order_items[0].item.id, props.order.shipping.id)
