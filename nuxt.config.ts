@@ -37,8 +37,14 @@ export default defineNuxtConfig({
         '@vueuse/nuxt',
         'nuxt-lodash',
         'nuxt-swiper',
+        'dayjs-nuxt',
         // '@nuxtjs/google-fonts',
     ],
+    dayjs: {
+        locales: ['pt-br'],
+        plugins: ['relativeTime', 'utc', 'timezone', 'advancedFormat'],
+        defaultLocale: 'pt-br',
+    },
     build: {
         transpile: ['pinia-plugin-persistedstate'],
     },

@@ -1,7 +1,10 @@
 <template>
-    <div class="md:table-row max-sm:pb-3 max-sm:grid grid-cols-4 *:px-3 *:py-4 *:align-middle md:*:table-cell dark:first:*:text-primary-200 dark:*:text-gray-300 first:*:text-base *:text-sm first:*:text-left *:text-center">
-        <div class="max-sm:col-span-full">
-            <div class="mb-1 inline-block text-xs w-16 text-center" :data-tooltip="`comprado em ${moment(order.date_created).format('DD/MM/YYYY HH:mm:ss')}`" data-tooltip-position="top-left">{{ date_humanized }}</div>
+    <div class="md:table-row max-sm:pb-3 max-sm:grid grid-cols-4 *:flex *:items-center *:justify-center max-sm:*:flex-col max-sm:*:justify-between *:px-3 *:py-4 *:align-middle md:*:table-cell dark:first:*:text-neutral-100 dark:*:text-neutral-300 first:*:text-base *:text-sm first:*:text-left *:text-center">
+        <div class="max-sm:col-span-full !block">
+            <div class="mb-3 inline-block text-xs text-center whitespace-nowrap">
+                <b>há {{ dayjs().from(dayjs(props.order.date_created), true) }}</b> -
+                <small><i>{{ dayjs(order.date_created).format('DD/MM/YYYY HH:mm:ss') }}</i></small>
+            </div>
             <a :href="`https://www.mercadolivre.com.br/vendas/${props.order.id}/detalhe`" target="_blank">
                 <div class="flex items-center gap-3 group hover:bg-neutral-700 -m-2 p-2 rounded-xl">
                     <img :src="details?.product?.pictures[0].url" alt="" class="aspect-square rounded-lg object-center object-cover size-16">
@@ -17,30 +20,55 @@
                 </div>
             </a>
         </div>
-        <div class="max-sm:rounded-l-2xl max-sm:bg-neutral-600/50 flex items-center justify-center">
-            <div data-tooltip="Valor Total" v-text="`R$ ${toBRL(props.order.total_amount)}`"/>
+        <div class="max-sm:rounded-l-xl max-sm:py-2 max-sm:ml-1 max-sm:bg-neutral-700/50 gap-1">
+            <span class="md:hidden text-[10px]">
+                Valor Total
+            </span>
+            <div data-tooltip="Valor Total" class="font-bold" v-text="`R$ ${toBRL(props.order.total_amount)}`"/>
         </div>
-        <div class="max-sm:bg-neutral-600/50 flex items-center justify-center">
-            <div data-tooltip="Quantidade" v-text="props.order.order_items[0].quantity"/>
+        <div class="max-sm:bg-neutral-700/50 max-sm:py-2 gap-1">
+            <span class="md:hidden text-[10px]">
+                Quantidade
+            </span>
+            <div data-tooltip="Quantidade" class="font-bold" v-text="props.order.order_items[0].quantity"/>
         </div>
-        <div class="max-sm:bg-neutral-600/50 flex items-center justify-center">
-            <div class="flex items-center justify-center">
-                <div v-if="details?.product?.catalog_listing" data-tooltip="Catálogo" class="inline-block">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="flex-shrink-0 size-5">
-                        <path d="M2 4.5A2.5 2.5 0 0 1 4.5 2h11a2.5 2.5 0 0 1 0 5h-11A2.5 2.5 0 0 1 2 4.5ZM2.75 9.083a.75.75 0 0 0 0 1.5h14.5a.75.75 0 0 0 0-1.5H2.75ZM2.75 12.663a.75.75 0 0 0 0 1.5h14.5a.75.75 0 0 0 0-1.5H2.75ZM2.75 16.25a.75.75 0 0 0 0 1.5h14.5a.75.75 0 1 0 0-1.5H2.75Z" />
-                    </svg>
+        <div class="max-sm:bg-neutral-700/50 max-sm:py-2">
+            <div class="flex justify-center h-full">
+                <div class="flex flex-col gap-1 justify-between">
+                    <span class="md:hidden text-[10px]">
+                        Tipo de anuncio
+                    </span>
+                    <div class="flex justify-center">
+                        <div v-if="details?.product?.catalog_listing" data-tooltip="Catálogo" class="bg-blue-800 text-white p-1 rounded-md text-xs flex items-center justify-center gap-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="flex-shrink-0 size-3.5">
+                                <path d="M2 4.5A2.5 2.5 0 0 1 4.5 2h11a2.5 2.5 0 0 1 0 5h-11A2.5 2.5 0 0 1 2 4.5ZM2.75 9.083a.75.75 0 0 0 0 1.5h14.5a.75.75 0 0 0 0-1.5H2.75ZM2.75 12.663a.75.75 0 0 0 0 1.5h14.5a.75.75 0 0 0 0-1.5H2.75ZM2.75 16.25a.75.75 0 0 0 0 1.5h14.5a.75.75 0 1 0 0-1.5H2.75Z" />
+                            </svg>
+                            CATÁLOGO
+                        </div>
+                        <div v-else class="rounded-md p-1 text-xs text-neutral-400 italic">
+                            <span class="h-3.5"/>
+                            comum
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="max-sm:rounded-r-2xl max-sm:bg-neutral-600/50">
-            <div class="flex items-center justify-center">
-                <div v-if="details.delivery.logistic_type === 'fulfillment'">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-8 text-green-600">
-                        <path fill-rule="evenodd" d="M14.615 1.595a.75.75 0 0 1 .359.852L12.982 9.75h7.268a.75.75 0 0 1 .548 1.262l-10.5 11.25a.75.75 0 0 1-1.272-.71l1.992-7.302H3.75a.75.75 0 0 1-.548-1.262l10.5-11.25a.75.75 0 0 1 .913-.143Z" clip-rule="evenodd" />
-                    </svg>
+        <div class="max-sm:rounded-r-xl max-sm:py-2 max-sm:mr-1 max-sm:bg-neutral-700/50">
+            <div class="flex justify-center">
+                <div class="text-base flex flex-col gap-1 justify-between">
+                    <span class="md:hidden text-[10px]">
+                        Transporte
+                    </span>
+                    <div class="flex justify-center">
+                        <div v-if="details.delivery.logistic_type === 'fulfillment'" class="flex items-center gap-1 font-bold text-green-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="12" viewBox="0 0 40 12">
+                                <g fill="#00A650" fill-rule="evenodd"><path fill-rule="nonzero" d="M13.597 9h-1.892l1.617-7.337h5.379l-.363 1.65h-3.487l-.242 1.144h3.399l-.363 1.65h-3.41L13.597 9zm9.35.132c-2.255 0-3.366-1.078-3.366-2.618 0-.121.033-.374.055-.484l.968-4.367h1.925l-.957 4.323a1.62 1.62 0 0 0-.033.308c.011.605.473 1.188 1.408 1.188 1.012 0 1.529-.638 1.716-1.496l.957-4.323h1.914l-.957 4.356c-.396 1.782-1.364 3.113-3.63 3.113zM32.924 9h-4.84l1.617-7.337h1.892L30.35 7.35h2.937L32.924 9zm6.655 0h-4.84l1.617-7.337h1.892L37.005 7.35h2.937L39.579 9z"></path><path d="M2.455 0L0 6.857h4.09L2.456 12 9 4.286H4.91L7.363 0z"></path></g>
+                            </svg>
+                        </div>
+                        <img v-else-if="details.delivery.tracking_method === 'PAC' || details.delivery.tracking_method === 'Sedex'" class="size-7" src="~/assets/img/correios_icon.svg" alt="Correios"/>
+                        <span v-else class="font-bold italic text-green-700 leading-tight" v-text="'FLEX'"/>
+                    </div>
                 </div>
-                <img v-else-if="details.delivery.tracking_method === 'PAC' || details.delivery.tracking_method === 'Sedex'" class="size-9" src="~/assets/img/correios_icon.svg" alt="Correios"/>
-                <span v-else class="font-bold italic text-green-600" v-text="'FLEX'" />
             </div>
         </div>
     </div>
@@ -48,19 +76,16 @@
 <script setup>
 import {useGetOrders} from "~/stores/orders/useGetOrders.js";
 import {useHelpers} from "~/composables/useHelpers.js";
-import moment from "moment";
-import 'moment/locale/pt-br.js'
+import { useDayjs } from '#dayjs'
+
+const {toBRL} = useHelpers()
+const dayjs = useDayjs()
 
 const props = defineProps({
     order: {type: Object},
 })
 
-const duration = moment.duration(moment().diff(moment(props.order.date_created)))
-const date_humanized = ref(duration.humanize());
-
-const {toBRL} = useHelpers()
 const details = await useGetOrders().getDetail(props.order.id, props.order.order_items[0].item.id, props.order.shipping.id)
-
 </script>
 <style scoped>
 

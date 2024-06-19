@@ -10,10 +10,11 @@ export const useGetOrders = defineStore('useGetOrders', {
     }),
     actions: {
         async getOrders(query) {
+            const id = useId()
             const { customFetch } = useHelpers()
             const { me } = useMe()
             const { data } = await useAsyncData(
-                `orders`,
+                `orders-${id}`,
                 () => customFetch(`/orders/search?`, {
                     query: {
                         seller: me.id,
