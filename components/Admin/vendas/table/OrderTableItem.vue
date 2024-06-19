@@ -1,26 +1,43 @@
 <template>
-    <div class="md:table-row max-sm:pb-3 max-sm:grid grid-cols-4 *:flex *:items-center *:justify-center max-sm:*:flex-col max-sm:*:justify-between *:px-3 *:py-4 *:align-middle md:*:table-cell dark:first:*:text-neutral-100 dark:*:text-neutral-300 first:*:text-base *:text-sm first:*:text-left *:text-center">
-        <div class="max-sm:col-span-full !block">
-            <div class="mb-3 inline-block text-xs text-center whitespace-nowrap">
-                <b>há {{ dayjs().from(dayjs(props.order.date_created), true) }}</b> -
-                <small><i>{{ dayjs(order.date_created).format('DD/MM/YYYY HH:mm:ss') }}</i></small>
+    <div
+        class="md:table-row max-sm:pb-3 md:*:my-2 max-sm:grid grid-cols-4 *:flex *:items-center *:justify-center max-sm:*:flex-col max-sm:*:justify-between *:px-3 *:py-4 *:align-middle md:*:table-cell dark:first:*:text-neutral-100 dark:*:text-neutral-300 first:*:text-base *:text-sm first:*:text-left *:text-center"
+        :class="{'*:!bg-red-500/10 line-through': props.order.status === 'cancelled'}"
+    >
+        <div class="max-sm:mt-3 max-sm:col-span-full md:rounded-l-2xl max-sm:rounded-t-2xl !block">
+            <div class="flex items-center gap-2 mb-3">
+                <div v-if="props.order.status === 'cancelled'" class="relative self-center flex justify-center items-center gap-1 rounded-full border text-red-500 bg-white  border-red-500 p-1">
+                    <div class="relative">
+                        <div class="z-0 absolute size-full animate-ping bg-red-800 rounded-full"/>
+                        <div data-tooltip="Cancelado" class="size-2 rounded-full bg-red-500"/>
+                    </div>
+                    <div class="z-10 relative text-[10px] leading-none font-medium !no-underline">cancelado</div>
+                </div>
+                <div class=" inline-block text-xs text-center whitespace-nowrap">
+                    <b>há {{ dayjs().from(dayjs(props.order.date_created), true) }}</b> -
+                    <small><i>{{ dayjs(order.date_created).format('DD/MM/YYYY HH:mm:ss') }}</i></small>
+                </div>
             </div>
             <a :href="`https://www.mercadolivre.com.br/vendas/${props.order.id}/detalhe`" target="_blank">
                 <div class="flex items-center gap-3 group hover:bg-neutral-700 -m-2 p-2 rounded-xl">
                     <img :src="details?.product?.pictures[0].url" alt="" class="aspect-square rounded-lg object-center object-cover size-16">
-                    <p>
-                        {{ props.order.order_items[0].item.title }}
-                        <span class="invisible group-hover:visible inline-block translate-y-0.5 text-neutral-400 leading-none" data-tooltip="Abrir no ML">
+                    <div>
+                        <p>
+                            {{ props.order.order_items[0].item.title }}
+                            <span class="invisible group-hover:visible inline-block translate-y-0.5 text-neutral-400 leading-none" data-tooltip="Abrir no ML">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
                                 <path d="M6.22 8.72a.75.75 0 0 0 1.06 1.06l5.22-5.22v1.69a.75.75 0 0 0 1.5 0v-3.5a.75.75 0 0 0-.75-.75h-3.5a.75.75 0 0 0 0 1.5h1.69L6.22 8.72Z" />
                                 <path d="M3.5 6.75c0-.69.56-1.25 1.25-1.25H7A.75.75 0 0 0 7 4H4.75A2.75 2.75 0 0 0 2 6.75v4.5A2.75 2.75 0 0 0 4.75 14h4.5A2.75 2.75 0 0 0 12 11.25V9a.75.75 0 0 0-1.5 0v2.25c0 .69-.56 1.25-1.25 1.25h-4.5c-.69 0-1.25-.56-1.25-1.25v-4.5Z" />
                             </svg>
                         </span>
-                    </p>
+                        </p>
+                        <div v-if="props.order.order_items[0].item.variation_attributes.length" class="flex flex-wrap items-center gap-1 -ml-1.5">
+                            <div v-for="variation in props.order.order_items[0].item.variation_attributes" v-text="`${variation.name}: ${variation.value_name}`" class="rounded-full bg-neutral-800 px-1.5 py-1 text-[10px] leading-none"/>
+                        </div>
+                    </div>
                 </div>
             </a>
         </div>
-        <div class="max-sm:rounded-l-xl max-sm:py-2 max-sm:ml-1 max-sm:bg-neutral-700/50 gap-1">
+        <div :class="{'max-sm:rounded-l-xl max-sm:ml-1': props.order.status !== 'cancelled', 'max-sm:rounded-bl-2xl': props.order.status === 'cancelled'}" class="max-sm:py-2 max-sm:bg-neutral-700/50 gap-1">
             <span class="md:hidden text-[10px]">
                 Valor Total
             </span>
@@ -53,7 +70,7 @@
                 </div>
             </div>
         </div>
-        <div class="max-sm:rounded-r-xl max-sm:py-2 max-sm:mr-1 max-sm:bg-neutral-700/50">
+        <div :class="{'max-sm:rounded-r-xl max-sm:mr-1 rounded-r-2xl': props.order.status !== 'cancelled', 'max-sm:rounded-br-2xl md:rounded-r-2xl': props.order.status === 'cancelled'}" class=" max-sm:py-2  max-sm:bg-neutral-700/50">
             <div class="flex justify-center">
                 <div class="text-base flex flex-col gap-1 justify-between">
                     <span class="md:hidden text-[10px]">

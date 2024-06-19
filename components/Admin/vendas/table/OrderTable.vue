@@ -2,7 +2,7 @@
     <div class="flow-root">
         <div class="-mx-4 -my-2 overflow-x-auto overflow-y-visible relative">
             <div class="inline-block min-w-full py-2 align-middle px-1">
-                <div class="md:table min-w-full relative">
+                <div class="md:table border-collapse min-w-full relative">
                     <div class="md:table-header-group">
                         <div class="md:table-row *:px-3 *:py-3.5 dark:text-primary-50 *:bg-orange-700 font-semibold">
                             <div class="md:table-cell rounded-l-xl max-sm:rounded-r-xl w-full md:w-[500px] md:min-w-[500px] text-left text-sm">Produto</div>
@@ -12,7 +12,7 @@
                             <div class="table-cell max-sm:hidden rounded-r-xl text-center text-sm">Transporte</div>
                         </div>
                     </div>
-                    <div class="md:table-row-group divide-y max-sm:divide-y-4 divide-orange-500/10">
+                    <div class="md:table-row-group divide-y-2 divide-orange-500/10">
                     <slot  />
                     </div>
                 </div>

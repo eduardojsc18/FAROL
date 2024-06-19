@@ -1,6 +1,6 @@
 <template>
     <header class="z-[9999] max-md:sticky relative max-md:top-0 max-md:bg-[#fffbf6] dark:bg-neutral-800 flex justify-between items-center py-2.5 gap-5 px-3">
-        <SidebarButtonShow />
+        <SidebarButtonShow class="md:invisible" />
         <InputSearchAll />
         <div class="flex items-center gap-px">
             <ButtonDarkModeToggle />

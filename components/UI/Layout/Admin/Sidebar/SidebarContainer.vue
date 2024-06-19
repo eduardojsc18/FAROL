@@ -1,9 +1,9 @@
 <template>
-    <aside class="min-w-fit max-w-screen flex-shrink-0 self-stretch group/aside max-md:fixed md:sticky md:top-0 z-[99999] top-0 left-0 h-dvh max-md:bg-orange-50 dark:max-md:bg-neutral-800 lg:overflow-y-auto lg:hover:overflow-visible scrollbar !scrollbar-w-0.5 scrollbar-thumb-neutral-100 scrollbar-track-transparent dark:!scrollbar-thumb-neutral-800 transition-transform transform-gpu duration-1000 will-change-auto" :class="{'max-md:-translate-x-full': useSidebar().minify}">
+    <aside class="min-w-fit max-w-screen flex-shrink-0 self-stretch group/aside max-md:fixed md:sticky md:top-2 z-[99999] top-0 left-0 h-dvh bg-orange-100 dark:bg-neutral-900 md:rounded-2xl md:ml-2 md:-mt-[43px] lg:overflow-y-auto lg:hover:overflow-visible scrollbar !scrollbar-w-0.5 scrollbar-thumb-neutral-100 scrollbar-track-transparent dark:!scrollbar-thumb-neutral-800 transition-transform transform-gpu duration-1000 will-change-auto" :class="{'max-md:-translate-x-full': useSidebar().minify}">
         <nav class="w-[80vw] sm:w-[280px] flex flex-col min-h-full overflow-visible max-md:pb-10 max-md:overflow-y-auto transition-[width] duration-500 z-10" :class="{'md:!w-[55px]': useSidebar().minify}">
-            <div class="md:hidden flex justify-between p-2">
+            <div class="flex justify-between p-3">
                 <SidebarButtonShow />
-                <ButtonDarkModeToggle />
+                <ButtonDarkModeToggle class="md:hidden" />
             </div>
             <header class="h-24 flex flex-col p-2 justify-center">
                 <slot name="header" />

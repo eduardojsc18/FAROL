@@ -29,8 +29,8 @@
             v-show="!useSidebar().minify"
             class="
                 max-md:!block min-w-[280px] relative
-                after:z-10 after:absolute after:top-0 after:w-5 after:h-full after:bg-gradient-to-l after:from-transparent after:to-orange-50 dark:after:to-neutral-800
-                before:z-10 before:absolute before:top-0 before:right-0 before:w-5 before:h-full before:bg-gradient-to-l before:to-transparent before:from-orange-50 dark:before:from-neutral-800
+                after:z-10 after:absolute after:top-0 after:w-5 after:h-full after:bg-gradient-to-l after:from-transparent after:to-orange-100 dark:after:to-neutral-900
+                before:z-10 before:absolute before:top-0 before:right-0 before:w-5 before:h-full before:bg-gradient-to-l before:to-transparent before:from-orange-100 dark:before:from-neutral-900
             "
         >
             <Swiper
