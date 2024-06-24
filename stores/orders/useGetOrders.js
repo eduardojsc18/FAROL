@@ -39,6 +39,6 @@ export const useGetOrders = defineStore('useGetOrders', {
                 }
             )
             return data.value
-        }
+        },
     },
 })

@@ -24,4 +24,38 @@ const OrderTableItem  = defineAsyncComponent(() => import("~/components/Admin/ve
 import OrderTableItemLoading from "~/components/Admin/vendas/table/OrderTableItemLoading.vue";
 
 const orders = await useGetOrders().getOrders({limit: 50})
+
+
+// function intersectionPagination() {
+//     const observer = new IntersectionObserver(entries => entries.forEach(entry => entry.isIntersecting && this.loadMoreProducts(), {
+//         rootMargin: "-400px 0px 0px 0px"
+//     }));
+//     observer.observe(this.$refs.loadMoreIntersect)
+// }
+//
+// ,
+//
+// function loadMoreProducts() {
+//     if (this.products.next_page_url === null) {
+//         this.loading = false
+//         return
+//     }
+//     if (this.loading) {
+//         return
+//     }
+//     this.$inertia.post(this.products.path + (this.search ? `?search=${this.search}` : ''), {page: (this.products.current_page + 1)}, {
+//         preserveState: true,
+//         preserveScroll: true,
+//         only: ['products'],
+//         onBefore: () => {
+//             this.loading = true
+//         },
+//         onSuccess: () => {
+//             this.loading = false
+//             this.productList.data = [...this.productList.data, ...this.products.data]
+//         }
+//     })
+// }
+//
+// ,
 </script>

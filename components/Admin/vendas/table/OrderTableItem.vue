@@ -1,6 +1,6 @@
 <template>
     <div
-        class="md:table-row max-sm:pb-5 max-sm:pt-2 max-sm:first:!pt-0 max-sm:grid grid-cols-4 md:*:even:bg-neutral-900 *:flex *:items-center *:justify-center max-sm:*:flex-col max-sm:*:justify-between *:px-3 *:py-4 *:align-middle md:*:table-cell dark:first:*:text-neutral-100 dark:*:text-neutral-300 first:*:text-base *:text-sm first:*:text-left *:text-center"
+        class="md:table-row max-sm:pb-5 max-sm:pt-2 max-sm:first:!pt-0 max-sm:grid grid-cols-4 md:*:even:bg-neutral-900 *:flex *:items-center *:justify-center max-sm:*:flex-col max-sm:*:justify-between *:p-3 *:align-middle md:*:table-cell dark:first:*:text-neutral-100 dark:*:text-neutral-300 first:*:text-base *:text-sm first:*:text-left *:text-center"
         :class="{'*:!bg-red-500/10 line-through': props.order.status === 'cancelled'}"
     >
         <div class="max-sm:mt-3 max-sm:col-span-full md:rounded-l-2xl max-sm:rounded-t-2xl">
@@ -12,7 +12,7 @@
                     </div>
                     <div class="z-10 relative text-[10px] leading-none font-medium !no-underline">cancelado</div>
                 </div>
-                <div class=" inline-block text-xs text-center whitespace-nowrap">
+                <div class="inline-block text-xs text-center whitespace-nowrap leading-tight">
                     <b>há {{ dayjs().from(dayjs(props.order.date_created), true) }}</b> -
                     <small><i>{{ dayjs(order.date_created).format('DD/MM/YYYY HH:mm:ss') }}</i></small>
                 </div>
@@ -41,7 +41,7 @@
             <span class="md:hidden text-[10px]">
                 Total
             </span>
-            <div data-tooltip="Valor Total" class="font-bold" v-text="`R$ ${toBRL(props.order.total_amount)}`"/>
+            <div data-tooltip="Valor Total" class="font-bold whitespace-nowrap" v-text="`R$ ${toBRL(props.order.total_amount)}`"/>
         </div>
         <div class="max-sm:bg-neutral-700/50 max-sm:py-2 gap-1">
             <span class="md:hidden text-[10px]">
@@ -70,7 +70,7 @@
                 </div>
             </div>
         </div>
-        <div :class="{'max-sm:rounded-r-xl max-sm:mr-1 rounded-r-2xl': props.order.status !== 'cancelled', 'max-sm:rounded-br-2xl md:rounded-r-2xl': props.order.status === 'cancelled'}" class=" max-sm:py-2  max-sm:bg-neutral-700/50">
+        <div :class="{'max-sm:rounded-r-xl max-sm:mr-1 rounded-r-2xl': props.order.status !== 'cancelled', 'max-sm:rounded-br-2xl md:rounded-r-2xl': props.order.status === 'cancelled'}" class=" max-sm:py-2 max-sm:bg-neutral-700/50">
             <div class="flex justify-center">
                 <div class="text-base flex flex-col h-full gap-1 justify-between">
                     <span class="md:hidden text-[10px]">

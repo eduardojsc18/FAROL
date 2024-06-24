@@ -42,7 +42,7 @@
                 </SidebarLinkItem>
             </SidebarContainer>
             <section class="flex flex-col min-h-screen w-full overflow-x-hidden xl:container xl:mx-auto px-5 pt-7 ">
-                <main class="z-0 w-full grow space-y-5 pb-20">
+                <main class="z-0 w-full grow space-y-5 mb-10">
                     <NuxtPage />
                 </main>
                 <Notification />
