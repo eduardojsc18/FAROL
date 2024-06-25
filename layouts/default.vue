@@ -1,14 +1,13 @@
 <template>
     <div id="application">
-        <Header />
-        <div class="flex relative">
+        <div class="flex relative trans">
             <SidebarContainer>
                 <template #header>
                     <MyAccount />
                 </template>
                 <template #footer>
                     <ShortcutLatestSales />
-<!--                    <ShortcutMarketResearch />-->
+                    <!--                    <ShortcutMarketResearch />-->
                 </template>
                 <SidebarLinkItem to="dashboard" label="Dashboard">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
@@ -41,8 +40,9 @@
                     </svg>
                 </SidebarLinkItem>
             </SidebarContainer>
-            <section class="flex flex-col min-h-screen w-full overflow-x-hidden xl:container xl:mx-auto px-5 pt-7 ">
-                <main class="z-0 w-full grow space-y-5 mb-10">
+            <section class="flex flex-col min-h-screen w-full overflow-x-hidden ">
+                <Header />
+                <main class="z-0 w-full grow space-y-5 mb-10 px-5 pt-7 xl:container xl:mx-auto ">
                     <NuxtPage />
                 </main>
                 <Notification />

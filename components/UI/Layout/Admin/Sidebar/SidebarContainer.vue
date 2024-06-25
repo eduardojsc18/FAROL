@@ -1,7 +1,7 @@
 <template>
-    <aside class="max-w-screen h-screen flex-shrink-0 self-stretch group/aside max-md:fixed md:sticky top-0 left-0 md:top-[50px] z-[99999] md:pl-2 md:py-2 transition-transform transform-gpu duration-1000 will-change-auto" :class="{'max-md:-translate-x-full': useSidebar().minify}">
-        <nav class="w-[80vw] sm:w-[280px] flex flex-col min-h-full overflow-visible md:-mt-[50px] max-md:pb-10 max-md:overflow-y-auto bg-orange-100 dark:bg-neutral-900 md:rounded-2xl transition-[width] duration-500 z-10" :class="{'md:!w-[55px]': useSidebar().minify}">
-            <div class="flex justify-between p-3">
+    <aside class="max-w-screen h-screen flex-shrink-0 self-stretch group/aside max-md:fixed md:sticky top-0 left-0 md:top-0 z-[9999999] md:pl-2 md:py-2 transition-transform transform-gpu duration-1000 will-change-transform" :class="{'max-md:-translate-x-full': useSidebar().minify}">
+        <nav class="w-[60vw] sm:w-[280px] flex flex-col min-h-full overflow-visible max-md:overflow-y-auto bg-orange-100 dark:bg-neutral-900 shadow-md md:rounded-2xl transition-[width] will-change-[width] duration-500 z-10" :class="{'md:!w-[55px]': useSidebar().minify}">
+            <div class="flex justify-between p-3 px-[13px]">
                 <SidebarButtonShow />
                 <ButtonDarkModeToggle class="md:hidden" />
             </div>
@@ -20,7 +20,7 @@
         enter-active-class="transition ease-out duration-500" enter-from-class="opacity-0" enter-to-class="opacity-100"
         leave-active-class="transition ease-out duration-500" leave-from-class="opacity-100" leave-to-class="opacity-0"
     >
-        <div @click.exact="useSidebar().minifyToggle()" v-if="!useSidebar().minify" class="md:hidden bg-neutral-900/90 fixed top-0 left-0 z-[9999] size-full"/>
+        <div @click.exact="useSidebar().minifyToggle()" v-show="!useSidebar().minify" class="md:hidden bg-neutral-900/90 fixed top-0 left-0 z-[99999] size-full"/>
     </Transition>
 </template>
 <script setup>

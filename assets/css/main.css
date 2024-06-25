@@ -69,7 +69,7 @@ body {
 
 @layer components {
     .btn-header-style {
-        @apply rounded-full p-3 text-color-default focus-default grid place-items-center relative hover-default aspect-square size-7 *:absolute *:size-5 *:z-10 active:scale-95 transition-all
+        @apply rounded-full p-3 flex-shrink-0 aspect-square text-color-default focus-default grid place-items-center relative hover-default aspect-square size-7 *:absolute *:size-5 *:z-10 active:scale-95 transition-all
     }
     .hover-default {
         @apply hover:bg-neutral-500/10
