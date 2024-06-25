@@ -77,6 +77,9 @@ body {
     .focus-default {
         @apply ring-[1px] ring-transparent focus:bg-neutral-500/10 focus:ring-orange-500 outline-0
     }
+    .focus-within-default {
+        @apply ring-[1px] ring-neutral-500/60 focus-within:ring-orange-500 focus-within:bg-neutral-500/20
+    }
     .text-color-default {
         @apply dark:text-neutral-200 text-neutral-800
     }

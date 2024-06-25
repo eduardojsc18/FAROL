@@ -62,6 +62,8 @@ export default defineNuxtConfig({
         apiClientSecret: process.env.NUXT_API_CLIENT_SECRET,
         apiRedirectUri: process.env.NUXT_API_REDIRECT_URI,
         apiToken: process.env.NUXT_API_TOKEN,
+        login: process.env.NUXT_LOGIN_ACCOUNT,
+        password: process.env.NUXT_PASSWORD_ACCOUNT,
         public: {
             appName: process.env.NUXT_PUBLIC_APP_NAME || 'CONSULTA DE PRODUTOS',
             apiBase: process.env.NUXT_PUBLIC_API_BASE,
