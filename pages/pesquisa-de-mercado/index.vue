@@ -4,8 +4,8 @@
             title="Pesquisa de Mercado"
             description="Busque por produtos e classifique-os da melhor forma"
         />
-        <section class="flex overflow-x-auto gap-2 pb-5 [&:not(:has(.ghost))]:snap-x [&:not(:has(.ghost))]:snap-mandatory ">
-            <div v-for="(item, index) in items" :key="item.id" class="snap-start min-w-[300px] max-w-[300px] p-2 bg-neutral-900 rounded-2xl">
+        <section class="flex justify-start overflow-x-auto gap-2 pb-5 [&:not(:has(.ghost))]:snap-x [&:not(:has(.ghost))]:snap-mandatory -mx-5 px-5 min-h-screen">
+            <div v-for="(item, index) in items" :key="item.id" class="snap-center min-w-[300px] max-w-[300px] p-2 bg-neutral-900 rounded-2xl">
                 <div class="p-3">
                     {{ item.title }}
                 </div>

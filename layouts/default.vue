@@ -42,7 +42,7 @@
             </SidebarContainer>
             <section class="flex flex-col min-h-screen w-full overflow-x-hidden ">
                 <Header />
-                <main class="z-0 w-full grow space-y-5 mb-10 px-5 pt-7 xl:container xl:mx-auto ">
+                <main class="z-0 w-full grow space-y-5 mb-10 px-5 pt-7 ">
                     <NuxtPage />
                 </main>
                 <Notification />

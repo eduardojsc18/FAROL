@@ -1,5 +1,5 @@
 <template>
-    <section class="">
+    <section class="xl:container xl:mx-auto">
         <h1 class="font-semibold tracking-wide">{{ props.title }}</h1>
         <p v-if="props.description" class="text-xs text-neutral-400">{{ props.description }}</p>
     </section>

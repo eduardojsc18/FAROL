@@ -1,5 +1,5 @@
 <template>
-    <div :class="{'!overflow-hidden': animation}" v-bind="useSidebar().minify ? {'data-tooltip': `${tooltip ?? label}`} : {}" data-tooltip-position="right">
+    <div :class="{'!overflow-hidden': animation}" v-bind="useSidebar().minify ? {'data-tooltip': `${tooltip ?? label}`} : {}" @click="closeSidebar" data-tooltip-position="right">
         <NuxtLink :to="props.to" class="flex items-center gap-2 group text-color-default focus-default hover-default p-1.5 pl-2 rounded-md text-sm *:has-[svg]:flex-shrink-0 overflow-hidden" active-class="item-active">
             <slot />
             <span class="whitespace-nowrap flex-1" v-text="props.label"/>
@@ -34,6 +34,11 @@ watch(minify, (newValue) => {
 //Computed
 
 //Methods
+function closeSidebar() {
+    if (window.innerWidth < 1024) {
+        useSidebar().minifyToggle()
+    }
+}
 
 </script>
 <style scoped>
