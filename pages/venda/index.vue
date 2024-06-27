@@ -4,7 +4,7 @@
             title="Vendas"
             :description="`Lista das ultimas ${orders.paging.limit} vendas  realizadas`"
         />
-        <div>
+        <div class="xl:container xl:mx-auto">
             <OrderTable>
                 <Suspense>
                     <OrderTableItem v-for="(order, index) in orders.results" :key="index" :order="order" />
