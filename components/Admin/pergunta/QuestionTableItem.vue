@@ -1,0 +1,64 @@
+<template>
+    <div
+        class="md:table-row max-sm:pb-5 max-sm:pt-2 max-sm:first:!pt-0 max-sm:grid grid-cols-2 md:*:even:bg-neutral-900 *:flex *:items-center *:justify-center max-sm:*:flex-col max-sm:*:justify-between *:p-3 *:align-middle md:*:table-cell dark:first:*:text-neutral-100 dark:*:text-neutral-300 first:*:text-base *:text-sm first:*:text-left *:text-center"
+    >
+        <div class="max-sm:mt-3 max-sm:col-span-full md:rounded-l-2xl max-sm:rounded-t-2xl">
+            <div class="w-full flex items-center justify-start gap-2 mb-3">
+                <div v-if="props.question.status === 'ANSWERED'" class="relative self-center flex justify-center items-center gap-1 rounded-full border text-green-500 border-green-500 p-1">
+                    <div class="relative">
+                        <div class="z-0 absolute size-full animate-ping bg-green-800 rounded-full"/>
+                        <div data-tooltip="Cancelado" class="size-2 rounded-full bg-green-500"/>
+                    </div>
+                    <div class="z-10 relative text-[10px] leading-none font-medium !no-underline">Respondido</div>
+                </div>
+                <div v-else class="relative self-center flex justify-center items-center gap-1 rounded-full border text-yellow-500 border-yellow-500 p-1">
+                    <div class="relative">
+                        <div class="z-0 absolute size-full animate-ping bg-yellow-800 rounded-full"/>
+                        <div data-tooltip="Cancelado" class="size-2 rounded-full bg-yellow-500"/>
+                    </div>
+                    <div class="z-10 relative text-[10px] leading-none font-medium !no-underline">Aguardando</div>
+                </div>
+                <div class="text-xs whitespace-nowrap leading-tight">
+                    <b>há {{ dayjs().from(dayjs(props.question.date_created), true) }}</b> -
+                    <small><i>{{ dayjs(props.question.date_created).format('DD/MM/YYYY HH:mm:ss') }}</i></small>
+                </div>
+            </div>
+            <p class="bg-white/10 rounded-r-lg w-full rounded-t-lg relative after:absolute after:-left-2 after:border-white/10 after:bottom-0 after:border-4 after:border-t-transparent after:border-l-transparent after:left-0 p-2 leading-none">
+                {{ props.question.text }}
+            </p>
+            <p class="text-gray-500 italic text-xs mt-1 px-2 w-full">
+                R: {{ props.question.answer.text }}
+            </p>
+        </div>
+        <div class="max-sm:rounded-l-xl max-sm:ml-1 max-sm:py-2 max-sm:pb-5 max-sm:bg-neutral-700/50 gap-1">
+             <span class="md:hidden text-[10px]">
+                Produto
+            </span>
+            <a :href="`${details?.product?.permalink}`" target="_blank" class="flex justify-center">
+                <div class="flex items-center gap-3 group hover:bg-neutral-700 -m-2 p-2 rounded-xl">
+                    <img :src="details?.product?.pictures[0].url" alt="" class="aspect-square rounded-lg object-center object-cover size-10">
+                </div>
+            </a>
+        </div>
+        <div class="max-sm:rounded-r-xl max-sm:mr-1 rounded-r-2xl max-sm:pb-5 max-sm:py-2 max-sm:bg-neutral-700/50 !text-[10px]">
+            <span class="md:hidden text-[10px]">
+                Usuário
+            </span>
+            {{ user.nickname }}
+        </div>
+    </div>
+</template>
+<script setup>
+import {useDayjs} from "#dayjs";
+import {useGetOrders} from "~/stores/orders/useGetOrders.js";
+const dayjs = useDayjs()
+
+const props = defineProps({
+    question: {type: Object},
+})
+
+const details = await useGetOrders().getDetail(null, props.question.item_id, null)
+
+const { customFetch } = useHelpers()
+const user = await customFetch(`users/${props.question.from.id}`)
+</script>

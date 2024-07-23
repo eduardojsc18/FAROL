@@ -32,8 +32,8 @@ export const useGetOrders = defineStore('useGetOrders', {
                 `order-${orderID}-item-${itemID}-detail`,
                 async () => {
                     const [product, delivery] = await Promise.all([
-                        customFetch(`items/${itemID}`),
-                        customFetch(`shipments/${shippingID}`)
+                        itemID ? customFetch(`items/${itemID}`) : false,
+                        shippingID ? customFetch(`shipments/${shippingID}`) : false,
                     ])
                     return { product, delivery }
                 }

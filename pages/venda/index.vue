@@ -6,12 +6,7 @@
         />
         <div class="xl:container xl:mx-auto">
             <OrderTable>
-                <Suspense>
-                    <OrderTableItem v-for="(order, index) in orders.results" :key="index" :order="order" />
-                    <template #fallback>
-                        <OrderTableItemLoading v-for="i in 10" :key="i"/>
-                    </template>
-                </Suspense>
+                <OrderTableItem v-for="(order, index) in orders.results" :key="index" :order="order" />
             </OrderTable>
         </div>
     </div>
