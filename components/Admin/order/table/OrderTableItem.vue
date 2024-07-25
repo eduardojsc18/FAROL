@@ -19,7 +19,10 @@
             </div>
             <a :href="`https://www.mercadolivre.com.br/vendas/${props.order.id}/detalhe`" target="_blank">
                 <div class="flex items-center gap-3 group hover:bg-neutral-700 -m-2 p-2 rounded-xl">
-                    <img :src="details?.product?.pictures[0].url" alt="" class="aspect-square rounded-lg object-center object-cover size-16">
+                    <img v-if="!details.product.variations.length" :src="details?.product?.pictures[0].url" alt="" class="aspect-square rounded-lg object-center object-cover size-16">
+                    <template v-for="variation in details.product.variations">
+                        <img v-if="variation?.id === props.order.order_items[0].item.variation_id" :src="`http://http2.mlstatic.com/D_${variation.picture_ids[0]}-O.jpg`" alt="" class="aspect-square rounded-lg object-center object-cover size-16">
+                    </template>
                     <div>
                         <p>
                             {{ props.order.order_items[0].item.title }}
@@ -37,7 +40,7 @@
                 </div>
             </a>
         </div>
-        <div class="max-sm:py-2 max-sm:ml-1 max-sm:rounded-tl-xl max-sm:bg-neutral-700/50 gap-1">
+        <div :class="{'max-sm:rounded-tl-none': props.order.status === 'cancelled'}" class="max-sm:py-2 max-sm:rounded-tl-xl max-sm:bg-neutral-700/50 gap-1">
             <span class="md:hidden text-[10px]">
                 Total
             </span>
@@ -49,7 +52,7 @@
             </span>
             <div data-tooltip="Quantidade" class="font-bold" v-text="props.order.order_items[0].quantity"/>
         </div>
-        <div class="max-sm:order-last max-sm:col-span-full flex flex-col max-sm:bg-neutral-700/50 max-sm:py-2 max-sm:mx-1 max-sm:rounded-b-xl">
+        <div class="max-sm:order-last max-sm:col-span-full flex flex-col max-sm:bg-neutral-700/50 max-sm:py-2 max-sm:rounded-b-xl">
             <span class="md:hidden text-[10px]">
                 Receber
             </span>
@@ -93,7 +96,7 @@
                 </div>
             </div>
         </div>
-        <div class="max-sm:py-2 max-sm:mr-1 max-sm:rounded-tr-xl max-sm:bg-neutral-700/50 gap-1">
+        <div :class="{'max-sm:rounded-tr-none': props.order.status === 'cancelled'}" class="max-sm:py-2 rounded-r-xl max-sm:bg-neutral-700/50 gap-1">
             <div class="flex justify-center">
                 <div class="text-base flex flex-col h-full gap-1 justify-between">
                     <span class="md:hidden text-[10px]">
@@ -126,7 +129,7 @@ const props = defineProps({
 })
 
 function getTime(date) {
-    setInterval(() => getTime(date), 1000)
+    // setInterval(() => getTime(date), 1000)
     return dayjs().from(dayjs(date), true)
 }
 

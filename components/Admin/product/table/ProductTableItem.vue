@@ -47,26 +47,38 @@
                 </div>
             </a>
         </div>
-        <div class="max-sm:rounded-l-xl max-sm:ml-1 max-sm:py-2 max-sm:bg-neutral-700/50 gap-1">
+        <div :class="{'max-sm:rounded-tl-xl': item.available_quantity, '!rounded-none !-ml-0': !item.available_quantity}" class="max-sm:py-2 max-sm:bg-neutral-700/50 gap-1">
             <span class="md:hidden text-[10px]">
                 Total
             </span>
             <div data-tooltip="Valor Total" class="font-bold whitespace-nowrap" v-text="`R$ ${toBRL(item.price)}`"/>
         </div>
-        <div class="max-sm:bg-neutral-700/50 max-sm:py-2 gap-1">
+        <div class="max-sm:bg-neutral-700/50 max-sm:rounded-b-xl max-sm:order-last max-sm:col-span-full max-sm:py-2 gap-1">
             <span class="md:hidden text-[10px]">
                 Quantidade
             </span>
-            <div v-for="variation in item.variations" class="leading-tight flex justify-center items-center gap-1" :class="{'text-red-500': !variation.available_quantity}">
-                <div v-if="!variation.available_quantity" data-tooltip="Sem estoque" class="relative translate-y-px">
-                    <div class="z-0 absolute size-full animate-ping bg-red-800 rounded-full"/>
-                    <div data-tooltip="Cancelado" class="size-2 rounded-full bg-red-500"/>
-                </div>
-                <p>
-                    <small>{{ variation.attribute_combinations[0].value_name }}: </small> <strong>{{ variation.available_quantity }}</strong>
-                </p>
-            </div>
-            <p><small>Total: </small><strong class="font-bold" v-text="item.available_quantity"/></p>
+            <table class="text-[11px] leading-tight mx-auto divide-y">
+                <tr v-for="variation in item.variations" :class="{'text-red-500': !variation.available_quantity}">
+                    <td class="flex items-center justify-end text-right gap-1">
+                        <div v-if="!variation.available_quantity" data-tooltip="Sem estoque" class="relative translate-y-px">
+                            <div class="z-0 absolute size-full animate-ping bg-red-800 rounded-full"/>
+                            <div data-tooltip="Cancelado" class="size-2 rounded-full bg-red-500"/>
+                        </div>
+                        {{ variation.attribute_combinations[0].value_name }}:
+                    </td>
+                    <td class="px-2">
+                        <strong>{{ variation.available_quantity }}</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-right">
+                        <small>Total:</small>
+                    </td>
+                    <td class="px-2">
+                        <strong class="font-bold" v-text="item.available_quantity"/>
+                    </td>
+                </tr>
+            </table>
         </div>
         <div class="max-sm:bg-neutral-700/50 max-sm:py-2">
             <span class="md:hidden text-[10px]">
@@ -76,7 +88,7 @@
                 {{ item.sold_quantity }}
             </div>
         </div>
-        <div class="max-sm:bg-neutral-700/50 max-sm:py-2">
+        <div  class="max-sm:py-2 max-sm:bg-neutral-700/50">
             <div class="flex justify-center h-full">
                 <div class="flex flex-col gap-1 justify-between">
                     <span class="md:hidden text-[10px]">
@@ -97,22 +109,26 @@
                 </div>
             </div>
         </div>
-        <div class="max-sm:rounded-r-xl max-sm:mr-1 rounded-r-2xl max-sm:py-2 max-sm:bg-neutral-700/50">
+        <div :class="{'!rounded-t-none rounded-br-xl !-mr-0': !item.available_quantity}" class="max-sm:rounded-tr-xl max-sm:rounded-br-none rounded-r-2xl max-sm:py-2 max-sm:bg-neutral-700/50 ">
             <div class="flex justify-center">
-<!--                <div class="text-base flex flex-col h-full gap-1 justify-between">-->
-<!--                    <span class="md:hidden text-[10px]">-->
-<!--                        Transporte-->
-<!--                    </span>-->
-<!--                    <div class="flex justify-center min-h-5">-->
-<!--                        <div v-if="details.delivery.logistic_type === 'fulfillment'" class="flex items-center gap-1 font-bold text-green-600">-->
-<!--                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="12" viewBox="0 0 40 12">-->
-<!--                                <g fill="#00A650" fill-rule="evenodd"><path fill-rule="nonzero" d="M13.597 9h-1.892l1.617-7.337h5.379l-.363 1.65h-3.487l-.242 1.144h3.399l-.363 1.65h-3.41L13.597 9zm9.35.132c-2.255 0-3.366-1.078-3.366-2.618 0-.121.033-.374.055-.484l.968-4.367h1.925l-.957 4.323a1.62 1.62 0 0 0-.033.308c.011.605.473 1.188 1.408 1.188 1.012 0 1.529-.638 1.716-1.496l.957-4.323h1.914l-.957 4.356c-.396 1.782-1.364 3.113-3.63 3.113zM32.924 9h-4.84l1.617-7.337h1.892L30.35 7.35h2.937L32.924 9zm6.655 0h-4.84l1.617-7.337h1.892L37.005 7.35h2.937L39.579 9z"></path><path d="M2.455 0L0 6.857h4.09L2.456 12 9 4.286H4.91L7.363 0z"></path></g>-->
-<!--                            </svg>-->
-<!--                        </div>-->
-<!--                        <img v-else-if="details.delivery.tracking_method === 'PAC' || details.delivery.tracking_method === 'Sedex'" class="size-7" src="~/assets/img/correios_icon.svg" alt="Correios"/>-->
-<!--                        <span v-else class="font-bold italic text-green-700 leading-tight" v-text="'FLEX'"/>-->
-<!--                    </div>-->
-<!--                </div>-->
+                <div class="text-base flex flex-col h-full gap-1 justify-between">
+                    <span class="md:hidden text-[10px]">
+                        Transporte
+                    </span>
+                    <div class="flex justify-center min-h-5">
+                        <div v-if="item.shipping_logistic_type === 'fulfillment'" class="flex items-center gap-1 font-bold text-green-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="12" viewBox="0 0 40 12">
+                                <g fill="#00A650" fill-rule="evenodd"><path fill-rule="nonzero" d="M13.597 9h-1.892l1.617-7.337h5.379l-.363 1.65h-3.487l-.242 1.144h3.399l-.363 1.65h-3.41L13.597 9zm9.35.132c-2.255 0-3.366-1.078-3.366-2.618 0-.121.033-.374.055-.484l.968-4.367h1.925l-.957 4.323a1.62 1.62 0 0 0-.033.308c.011.605.473 1.188 1.408 1.188 1.012 0 1.529-.638 1.716-1.496l.957-4.323h1.914l-.957 4.356c-.396 1.782-1.364 3.113-3.63 3.113zM32.924 9h-4.84l1.617-7.337h1.892L30.35 7.35h2.937L32.924 9zm6.655 0h-4.84l1.617-7.337h1.892L37.005 7.35h2.937L39.579 9z"></path><path d="M2.455 0L0 6.857h4.09L2.456 12 9 4.286H4.91L7.363 0z"></path></g>
+                            </svg>
+                        </div>
+                        <template v-else>
+                            <div class="flex justify-center items-center gap-2">
+                                <img class="size-7" src="~/assets/img/correios_icon.svg" alt="Correios"/>
+                                <span class="font-bold italic text-green-700 leading-tight" v-text="'FLEX'"/>
+                            </div>
+                        </template>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -131,7 +147,6 @@ const props = defineProps({
 })
 
 function getTime(date) {
-    setInterval(() => getTime(date), 1000)
     return dayjs().from(dayjs(date), true)
 }
 

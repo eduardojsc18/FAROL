@@ -5,7 +5,17 @@
         class="rounded-lg group relative w-full !flex hover:bg-neutral-400/10 flex-col"
         :class="{'!bg-red-500/10 line-through': props.order.status === 'cancelled'}"
     >
-        <img :src="details?.product?.pictures[0].url" alt="" class="aspect-square w-full rounded-md object-center shadow-md object-cover">
+        <template v-if="!details.product.variations.length">
+            <img :src="details?.product?.pictures[0].url" alt="" class="aspect-square w-full rounded-md object-center shadow-md object-cover">
+        </template>
+        <template v-for="variation in details.product.variations">
+            <img
+                v-if="variation?.id === props.order.order_items[0].item.variation_id"
+                :src="`http://http2.mlstatic.com/D_${variation.picture_ids[0]}-O.jpg`"
+                alt=""
+                class="aspect-square w-full rounded-md object-center shadow-md object-cover"
+            >
+        </template>
         <div class="p-1 dark:text-neutral-200">
             <div class="text-sm font-medium leading-tight line-clamp-2" v-text="props.order.order_items[0].item.title" />
             <div class="text-xs mt-1 flex justify-start items-center flex-wrap gap-1">
