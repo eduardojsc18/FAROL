@@ -26,7 +26,7 @@
     </div>
 </template>
 <script setup>
-import QuestionTableLoading from "~/components/Admin/pergunta/QuestionTableLoading.vue";
+import QuestionTableLoading from "~/components/Admin/question/QuestionTableLoading.vue";
 </script>
 <style scoped>
 

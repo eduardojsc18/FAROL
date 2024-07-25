@@ -13,7 +13,7 @@
                     <div class="z-10 relative text-[10px] leading-none font-medium !no-underline">cancelado</div>
                 </div>
                 <div class="inline-block text-xs text-center whitespace-nowrap leading-tight">
-                    <b>há {{ dayjs().from(dayjs(props.order.date_created), true) }}</b> -
+                    <b>Vendido há {{ getTime(props.order.date_created) }}</b> -
                     <small><i>{{ dayjs(order.date_created).format('DD/MM/YYYY HH:mm:ss') }}</i></small>
                 </div>
             </div>
@@ -37,7 +37,7 @@
                 </div>
             </a>
         </div>
-        <div :class="{'max-sm:rounded-l-xl max-sm:ml-1': props.order.status !== 'cancelled', 'max-sm:rounded-bl-2xl': props.order.status === 'cancelled'}" class="max-sm:py-2 max-sm:bg-neutral-700/50 gap-1">
+        <div class="max-sm:py-2 max-sm:ml-1 max-sm:rounded-tl-xl max-sm:bg-neutral-700/50 gap-1">
             <span class="md:hidden text-[10px]">
                 Total
             </span>
@@ -48,6 +48,29 @@
                 Quantidade
             </span>
             <div data-tooltip="Quantidade" class="font-bold" v-text="props.order.order_items[0].quantity"/>
+        </div>
+        <div class="max-sm:order-last max-sm:col-span-full flex flex-col max-sm:bg-neutral-700/50 max-sm:py-2 max-sm:mx-1 max-sm:rounded-b-xl">
+            <span class="md:hidden text-[10px]">
+                Receber
+            </span>
+            <table class="text-[11px] leading-tight mx-auto divide-y">
+<!--                <tr>-->
+<!--                    <td class="text-right"><small>Taxa/Unid.: </small></td>-->
+<!--                    <td class="px-2"><b>R$ {{ toBRL(props.order.order_items[0].sale_fee) }}</b></td>-->
+<!--                </tr>-->
+                <tr>
+                    <td class="text-right"><small>Taxas: </small></td>
+                    <td class="px-2"><b>- R$ {{ toBRL(props.order.order_items[0].sale_fee * props.order.order_items[0].quantity) }}</b></td>
+                </tr>
+                <tr v-if="details.product.shipping.free_shipping">
+                    <td class="text-right"><small>Transp.: </small></td>
+                    <td class="px-2"><b>- R$ {{ toBRL(details.delivery.shipping_option.list_cost - details.delivery.shipping_option.cost) }}</b></td>
+                </tr>
+                <tr>
+                    <td class="text-right"><small>Receber: </small></td>
+                    <td class="px-2"><b>= R$ {{ toBRL(props.order.total_amount - (details.product.shipping.free_shipping ? details.delivery.shipping_option.list_cost - details.delivery.shipping_option.cost : 0) - (props.order.order_items[0].sale_fee * props.order.order_items[0].quantity)) }}</b></td>
+                </tr>
+            </table>
         </div>
         <div class="max-sm:bg-neutral-700/50 max-sm:py-2">
             <div class="flex justify-center h-full">
@@ -70,7 +93,7 @@
                 </div>
             </div>
         </div>
-        <div :class="{'max-sm:rounded-r-xl max-sm:mr-1 rounded-r-2xl': props.order.status !== 'cancelled', 'max-sm:rounded-br-2xl md:rounded-r-2xl': props.order.status === 'cancelled'}" class=" max-sm:py-2 max-sm:bg-neutral-700/50">
+        <div class="max-sm:py-2 max-sm:mr-1 max-sm:rounded-tr-xl max-sm:bg-neutral-700/50 gap-1">
             <div class="flex justify-center">
                 <div class="text-base flex flex-col h-full gap-1 justify-between">
                     <span class="md:hidden text-[10px]">
@@ -102,8 +125,10 @@ const props = defineProps({
     order: {type: Object},
 })
 
+function getTime(date) {
+    setInterval(() => getTime(date), 1000)
+    return dayjs().from(dayjs(date), true)
+}
+
 const details = await useGetOrders().getDetail(props.order.id, props.order.order_items[0].item.id, props.order.shipping.id)
 </script>
-<style scoped>
-
-</style>

@@ -1,11 +1,32 @@
 <template>
     <div
         class="md:table-row max-sm:pb-5 max-sm:pt-2 max-sm:first:!pt-0 max-sm:grid grid-cols-4 md:*:even:bg-neutral-900 *:flex *:items-center *:justify-center max-sm:*:flex-col max-sm:*:justify-between *:p-3 *:align-middle md:*:table-cell dark:first:*:text-neutral-100 dark:*:text-neutral-300 first:*:text-base *:text-sm first:*:text-left *:text-center"
+        :class="{'*:!bg-red-500/10': !item.available_quantity, 'line-through': item.status !== 'active'}"
     >
         <div class="max-sm:mt-3 max-sm:col-span-full md:rounded-l-2xl max-sm:rounded-t-2xl">
             <div class="w-full flex items-center justify-start gap-2 mb-3">
+                <div v-if="item.status !== 'active'" class="relative self-center flex justify-center items-center gap-1 rounded-full border text-white bg-red-500 border-red-500 p-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-3 -ml-0.5 -my-3">
+                        <path fill-rule="evenodd" d="M3.05 3.05a7 7 0 1 1 9.9 9.9 7 7 0 0 1-9.9-9.9Zm1.627.566 7.707 7.707a5.501 5.501 0 0 0-7.707-7.707Zm6.646 8.768L3.616 4.677a5.501 5.501 0 0 0 7.707 7.707Z" clip-rule="evenodd" />
+                    </svg>
+                    <div class="z-10 relative text-[10px] leading-none font-medium">inativo</div>
+                </div>
+                <div v-if="item.available_quantity === 1" class="relative self-center flex justify-center items-center gap-1 rounded-full border text-yellow-500 bg-white border-yellow-500 p-1">
+                    <div class="relative">
+                        <div class="z-0 absolute size-full animate-ping bg-yellow-800 rounded-full"/>
+                        <div class="size-2 rounded-full bg-yellow-500"/>
+                    </div>
+                    <div class="z-10 relative text-[10px] leading-none font-medium !no-underline">ficando sem estoque</div>
+                </div>
+                <div v-if="!item.available_quantity" class="relative self-center flex justify-center items-center gap-1 rounded-full border text-red-500 bg-white border-red-500 p-1">
+                    <div class="relative">
+                        <div class="z-0 absolute size-full animate-ping bg-red-800 rounded-full"/>
+                        <div data-tooltip="Cancelado" class="size-2 rounded-full bg-red-500"/>
+                    </div>
+                    <div class="z-10 relative text-[10px] leading-none font-medium !no-underline">sem estoque</div>
+                </div>
                 <div class="inline-block text-xs text-center whitespace-nowrap leading-tight">
-                    <b>há {{ dayjs().from(dayjs(item.date_created), true) }}</b> -
+                    <b>Criado há {{ getTime(item.date_created) }}</b> -
                     <small><i>{{ dayjs(item.date_created).format('DD/MM/YYYY HH:mm:ss') }}</i></small>
                 </div>
             </div>
@@ -36,7 +57,24 @@
             <span class="md:hidden text-[10px]">
                 Quantidade
             </span>
-            <div data-tooltip="Quantidade" class="font-bold" v-text="item.available_quantity"/>
+            <div v-for="variation in item.variations" class="leading-tight flex justify-center items-center gap-1" :class="{'text-red-500': !variation.available_quantity}">
+                <div v-if="!variation.available_quantity" data-tooltip="Sem estoque" class="relative translate-y-px">
+                    <div class="z-0 absolute size-full animate-ping bg-red-800 rounded-full"/>
+                    <div data-tooltip="Cancelado" class="size-2 rounded-full bg-red-500"/>
+                </div>
+                <p>
+                    <small>{{ variation.attribute_combinations[0].value_name }}: </small> <strong>{{ variation.available_quantity }}</strong>
+                </p>
+            </div>
+            <p><small>Total: </small><strong class="font-bold" v-text="item.available_quantity"/></p>
+        </div>
+        <div class="max-sm:bg-neutral-700/50 max-sm:py-2">
+            <span class="md:hidden text-[10px]">
+                Vendas
+            </span>
+            <div class="font-bold whitespace-nowrap">
+                {{ item.sold_quantity }}
+            </div>
         </div>
         <div class="max-sm:bg-neutral-700/50 max-sm:py-2">
             <div class="flex justify-center h-full">
@@ -91,6 +129,11 @@ const dayjs = useDayjs()
 const props = defineProps({
     product: {type: String},
 })
+
+function getTime(date) {
+    setInterval(() => getTime(date), 1000)
+    return dayjs().from(dayjs(date), true)
+}
 
 const {data: item} = await useAsyncData(
     `item-${props.product}`,

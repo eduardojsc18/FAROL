@@ -8,6 +8,7 @@
                             <div class="md:table-cell rounded-l-xl max-sm:rounded-r-xl w-full md:w-[500px] md:min-w-[500px] text-left text-sm">Produto</div>
                             <div class="table-cell max-sm:hidden text-center text-sm">Valor</div>
                             <div class="table-cell max-sm:hidden text-center text-sm">Estoque</div>
+                            <div class="table-cell max-sm:hidden text-center text-sm">Vendas</div>
                             <div class="table-cell max-sm:hidden text-center text-sm">Tipo</div>
                             <div class="table-cell max-sm:hidden rounded-r-xl text-center text-sm">Transporte</div>
                         </div>
@@ -26,7 +27,7 @@
     </div>
 </template>
 <script setup>
-import OrderTableItemLoading from "~/components/Admin/vendas/table/OrderTableItemLoading.vue";
+import OrderTableItemLoading from "~/components/Admin/order/table/OrderTableItemLoading.vue";
 
 const fixed = ref()
 

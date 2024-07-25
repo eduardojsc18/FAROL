@@ -15,8 +15,8 @@
 import HeaderPage from "~/components/UI/Layout/Admin/Header/HeaderPage.vue";
 import {useHelpers} from "~/composables/useHelpers.js";
 import {useMe} from "~/stores/useMe.js";
-import ProductTable from "~/components/Admin/produto/table/ProductTable.vue";
-import ProductTableItem from "~/components/Admin/produto/table/ProductTableItem.vue";
+import ProductTable from "~/components/Admin/product/table/ProductTable.vue";
+import ProductTableItem from "~/components/Admin/product/table/ProductTableItem.vue";
 
 const { customFetch } = useHelpers()
 const { me } = useMe()

@@ -14,8 +14,8 @@ import {useHelpers} from "~/composables/useHelpers.js";
 import {useMe} from "~/stores/useMe.js";
 import HeaderPage from "~/components/UI/Layout/Admin/Header/HeaderPage.vue";
 import {useDayjs} from "#dayjs";
-import QuestionTable from "~/components/Admin/pergunta/QuestionTable.vue";
-import QuestionTableItem from "~/components/Admin/pergunta/QuestionTableItem.vue";
+import QuestionTable from "~/components/Admin/question/QuestionTable.vue";
+import QuestionTableItem from "~/components/Admin/question/QuestionTableItem.vue";
 
 const dayjs = useDayjs()
 const { customFetch } = useHelpers()
