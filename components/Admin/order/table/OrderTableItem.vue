@@ -19,10 +19,7 @@
             </div>
             <a :href="`https://www.mercadolivre.com.br/vendas/${props.order.id}/detalhe`" target="_blank">
                 <div class="flex items-center gap-3 group hover:bg-neutral-700 -m-2 p-2 rounded-xl">
-                    <img v-if="!details.product.variations.length" :src="details?.product?.pictures[0].url" alt="" class="aspect-square rounded-lg object-center object-cover size-16">
-                    <template v-for="variation in details.product.variations">
-                        <img v-if="variation?.id === props.order.order_items[0].item.variation_id" :src="`http://http2.mlstatic.com/D_${variation.picture_ids[0]}-O.jpg`" alt="" class="aspect-square rounded-lg object-center object-cover size-16">
-                    </template>
+                    <ProductImageWithOrderVariation class="size-16" :product="details.product" :order="props.order" />
                     <div>
                         <p>
                             {{ props.order.order_items[0].item.title }}
@@ -120,6 +117,8 @@
 import {useGetOrders} from "~/stores/orders/useGetOrders.js";
 import {useHelpers} from "~/composables/useHelpers.js";
 import { useDayjs } from '#dayjs'
+import imageDefault from "assets/img/default-image.png";
+import ProductImageWithOrderVariation from "~/components/Admin/product/ProductImageWithOrderVariation.vue";
 
 const {toBRL} = useHelpers()
 const dayjs = useDayjs()

@@ -2,20 +2,10 @@
     <a
         :href="`https://www.mercadolivre.com.br/vendas/${props.order.id}/detalhe`"
         target="_blank"
-        class="rounded-lg group relative w-full !flex hover:bg-neutral-400/10 flex-col"
+        class="rounded-lg group relative w-full flex hover:bg-neutral-400/10 flex-col"
         :class="{'!bg-red-500/10 line-through': props.order.status === 'cancelled'}"
     >
-        <template v-if="!details.product.variations.length">
-            <img :src="details?.product?.pictures[0].url" alt="" class="aspect-square w-full rounded-md object-center shadow-md object-cover">
-        </template>
-        <template v-for="variation in details.product.variations">
-            <img
-                v-if="variation?.id === props.order.order_items[0].item.variation_id"
-                :src="`http://http2.mlstatic.com/D_${variation.picture_ids[0]}-O.jpg`"
-                alt=""
-                class="aspect-square w-full rounded-md object-center shadow-md object-cover"
-            >
-        </template>
+        <ProductImageWithOrderVariation class="w-full aspect-square" :product="details.product" :order="props.order" />
         <div class="p-1 dark:text-neutral-200">
             <div class="text-sm font-medium leading-tight line-clamp-2" v-text="props.order.order_items[0].item.title" />
             <div class="text-xs mt-1 flex justify-start items-center flex-wrap gap-1">
@@ -76,6 +66,8 @@
 <script setup>
 import {useGetOrders} from "~/stores/orders/useGetOrders.js";
 import {useHelpers} from "~/composables/useHelpers.js";
+import imageDefault from "~/assets/img/default-image.png";
+import ProductImageWithOrderVariation from "~/components/Admin/product/ProductImageWithOrderVariation.vue";
 
 const props = defineProps({
     order: {type: Object},

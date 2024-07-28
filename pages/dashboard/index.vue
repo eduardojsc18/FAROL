@@ -1,11 +1,14 @@
 <template>
-    <div class="space-y-5">
+    <div class="space-y-10">
         <HeaderPage
             title="Dashboard"
             :description="`Utilidade rápidas do sistema`"
-        />
-
-        <section class="p-4 -ml-4 shadow-xl rounded-2xl">
+        >
+            <template #icon>
+                <IconDashboard />
+            </template>
+        </HeaderPage>
+        <section class="!mt-10">
             <div class="inline-block">
                 <p class="font-bold text-orange-600 flex items-center justify-center gap-1 leading-tight">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="size-4">
@@ -67,11 +70,11 @@
 
             </div>
         </section>
-
     </div>
 </template>
 <script setup>
 import HeaderPage from "~/components/UI/Layout/Admin/Header/HeaderPage.vue";
+import IconDashboard from "~/components/Admin/shared/icons/IconDashboard.vue";
 
 useHead({
     title: 'Dashboard'

@@ -1,9 +1,13 @@
 <template>
-    <div class="space-y-5">
+    <div class="space-y-10">
         <HeaderPage
             title="Perguntas"
             :description="`Ultimas perguntas  realizadas`"
-        />
+        >
+            <template #icon>
+                <IconQuestion />
+            </template>
+        </HeaderPage>
         <QuestionTable>
             <QuestionTableItem v-for="(question, index) in questions.questions" :key="index" :question="question"/>
         </QuestionTable>
@@ -16,6 +20,7 @@ import HeaderPage from "~/components/UI/Layout/Admin/Header/HeaderPage.vue";
 import {useDayjs} from "#dayjs";
 import QuestionTable from "~/components/Admin/question/QuestionTable.vue";
 import QuestionTableItem from "~/components/Admin/question/QuestionTableItem.vue";
+import IconQuestion from "~/components/Admin/shared/icons/IconQuestion.vue";
 
 const dayjs = useDayjs()
 const { customFetch } = useHelpers()

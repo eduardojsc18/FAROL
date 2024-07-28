@@ -1,9 +1,13 @@
 <template>
-    <div class="space-y-5">
+    <div class="space-y-10">
         <HeaderPage
             title="Pesquisa de Mercado"
             description="Busque por produtos e classifique-os da melhor forma"
-        />
+        >
+            <template #icon>
+                <IconMarketResearch />
+            </template>
+        </HeaderPage>
         <section class="flex justify-start overflow-x-auto gap-2 pb-5 [&:not(:has(.ghost))]:snap-x [&:not(:has(.ghost))]:snap-mandatory -mx-5 px-5 min-h-screen">
             <div v-for="(item, index) in items" :key="item.id" class="snap-center min-w-[300px] max-w-[300px] p-2 bg-neutral-900 rounded-2xl">
                 <div class="p-3">
@@ -33,6 +37,7 @@
 <script setup>
 import HeaderPage from "~/components/UI/Layout/Admin/Header/HeaderPage.vue";
 import Draggable from "vuedraggable";
+import IconMarketResearch from "~/components/Admin/shared/icons/IconMarketResearch.vue";
 
 const items = ref([
     {id: 1, title: 'Produtos', products: [{id: 1111, name: 'Fone de Ouvido'}, {id: 2222, name: 'Carregador'}, {id: 3333, name: 'Carrinho de BEBE'}]},

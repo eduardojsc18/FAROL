@@ -1,14 +1,16 @@
 <template>
-    <div class="space-y-5">
+    <div class="space-y-10">
         <HeaderPage
             title="Vendas"
             :description="`Lista das ultimas ${orders.paging.limit} vendas  realizadas`"
-        />
-        <div class="xl:container xl:mx-auto">
-            <OrderTable>
-                <OrderTableItem v-for="(order, index) in orders.results" :key="index" :order="order" />
-            </OrderTable>
-        </div>
+        >
+            <template #icon>
+                <IconOrder />
+            </template>
+        </HeaderPage>
+        <OrderTable>
+            <OrderTableItem v-for="(order, index) in orders.results" :key="index" :order="order" />
+        </OrderTable>
     </div>
 </template>
 <script setup>
@@ -17,6 +19,7 @@ import HeaderPage from "~/components/UI/Layout/Admin/Header/HeaderPage.vue";
 import OrderTable from "~/components/Admin/order/table/OrderTable.vue";
 const OrderTableItem  = defineAsyncComponent(() => import("~/components/Admin/order/table/OrderTableItem.vue"))
 import OrderTableItemLoading from "~/components/Admin/order/table/OrderTableItemLoading.vue";
+import IconOrder from "~/components/Admin/shared/icons/IconOrder.vue";
 
 const orders = await useGetOrders().getOrders({limit: 50})
 
