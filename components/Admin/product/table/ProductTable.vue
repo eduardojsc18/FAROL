@@ -18,7 +18,7 @@
                         <Suspense>
                             <slot />
                             <template #fallback>
-                                <OrderTableItemLoading v-for="i in 10" :key="i" />
+                                <ProductTableLoader v-for="i in 10" :key="i" />
                             </template>
                         </Suspense>
                     </div>
@@ -29,6 +29,7 @@
 </template>
 <script setup>
 import OrderTableItemLoading from "~/components/Admin/order/table/OrderTableItemLoading.vue";
+import ProductTableLoader from "~/components/Admin/product/table/ProductTableLoader.vue";
 
 const fixed = ref()
 

@@ -29,11 +29,6 @@
                 <LoaderSkeleton class="w-10 h-4 rounded-full" />
             </div>
         </div>
-        <div class="md:table-cell align-middle">
-            <div class="flex justify-center">
-                <LoaderSkeleton class="w-10 h-4 rounded-full" />
-            </div>
-        </div>
         <div class="md:table-cell max-sm:col-span-full align-middle">
             <div class="w-full">
                 <LoaderSkeleton class="w-full h-8 rounded-full" />
