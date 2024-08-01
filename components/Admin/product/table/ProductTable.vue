@@ -7,8 +7,9 @@
                         <div class="md:table-row *:px-3 *:py-3.5 dark:text-primary-50 *:bg-orange-700 font-semibold">
                             <div class="md:table-cell rounded-l-xl max-sm:rounded-r-xl w-full md:w-[500px] md:min-w-[500px] text-left text-sm">Produto</div>
                             <div class="table-cell max-sm:hidden text-center text-sm">Valor</div>
-                            <div class="table-cell max-sm:hidden text-center text-sm">Estoque</div>
                             <div class="table-cell max-sm:hidden text-center text-sm">Vendas</div>
+                            <div class="table-cell max-sm:hidden text-center text-sm">Visitas</div>
+                            <div class="table-cell max-sm:hidden text-center text-sm">Estoque</div>
                             <div class="table-cell max-sm:hidden text-center text-sm">Tipo</div>
                             <div class="table-cell max-sm:hidden rounded-r-xl text-center text-sm">Transporte</div>
                         </div>

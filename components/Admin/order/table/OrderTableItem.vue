@@ -37,7 +37,7 @@
                 </div>
             </a>
         </div>
-        <div :class="{'max-sm:rounded-tl-none': props.order.status === 'cancelled'}" class="max-sm:py-2 max-sm:rounded-tl-xl max-sm:bg-neutral-700/50 gap-1">
+        <div :class="{'max-sm:!rounded-none': props.order.status === 'cancelled'}" class="max-sm:py-2 max-sm:rounded-tl-xl max-sm:bg-neutral-700/50 gap-1">
             <span class="md:hidden text-[10px]">
                 Total
             </span>
@@ -93,7 +93,7 @@
                 </div>
             </div>
         </div>
-        <div :class="{'max-sm:rounded-tr-none': props.order.status === 'cancelled'}" class="max-sm:py-2 rounded-r-xl max-sm:bg-neutral-700/50 gap-1">
+        <div :class="{'max-sm:rounded-tr-none': props.order.status === 'cancelled'}" class="max-sm:py-2 rounded-r-xl max-sm:rounded-b-none max-sm:bg-neutral-700/50 gap-1">
             <div class="flex justify-center">
                 <div class="text-base flex flex-col h-full gap-1 justify-between">
                     <span class="md:hidden text-[10px]">
