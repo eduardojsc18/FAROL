@@ -45,6 +45,7 @@ const sellers = ref([
     { perma_link: 'https://lista.mercadolivre.com.br/_CustId_830116693', name: 'EERR_IMPORTS' },
     { perma_link: 'https://lista.mercadolivre.com.br/_CustId_667423573', name: 'ZEBRA ECOMMERCE' },
     { perma_link: 'https://lista.mercadolivre.com.br/_CustId_678787874', name: 'ORUS TECNOLOGY' },
+    { perma_link: 'https://lista.mercadolivre.com.br/_CustId_614218051', name: 'AEY COMMERCE' },
 ])
 
 </script>
