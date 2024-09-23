@@ -70,7 +70,7 @@ export default defineNuxtConfig({
       apiClientId: process.env.NUXT_API_CLIENT_ID,
       apiClientSecret: process.env.NUXT_API_CLIENT_SECRET,
       apiRedirectUri: process.env.NUXT_API_REDIRECT_URI,
-      apiToken: process.env.NUXT_API_TOKEN,
+      apiCode: process.env.NUXT_API_CODE,
       login: process.env.NUXT_LOGIN_ACCOUNT,
       password: process.env.NUXT_PASSWORD_ACCOUNT,
       public: {

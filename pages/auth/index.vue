@@ -99,8 +99,6 @@ async function execLogin() {
 
 
     if (!Object.keys(error.value).length) {
-        const cookie = useCookie('auth', { secure: true, maxAge: 30 * 24 * 60 * 60 * 1000 })
-        cookie.value = data.value
         navigateTo('dashboard')
     }
 

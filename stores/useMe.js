@@ -9,7 +9,7 @@ export const useMe = defineStore('me', {
         async get() {
             const { customFetch } = useHelpers()
             const {data: response} = await useAsyncData('ME',
-                () => customFetch(`/users/me`),
+                () => $fetch('/api/meli/user/me'),
             );
             this.me = response.value
         }
