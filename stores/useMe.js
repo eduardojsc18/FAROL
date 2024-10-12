@@ -7,7 +7,6 @@ export const useMe = defineStore('me', {
     }),
     actions: {
         async get() {
-            const { customFetch } = useHelpers()
             const {data: response} = await useAsyncData('ME',
                 () => $fetch('/api/meli/user/me'),
             );

@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
 
     throw createError({
         statusCode: 500,
-        statusMessage: 'Não autorizado',
+        message: 'Não autorizado',
         data: {
             login: body.login !== config.login ? 'Usuário não encontrado' : '',
             password: body.login === config.login && body.password !== config.password ? 'Senha incorreta' : '',

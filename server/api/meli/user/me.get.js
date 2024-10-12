@@ -1,5 +1,3 @@
-export default defineEventHandler((event) => {
-    return {
-        hello: 'stock.get.js'
-    }
+export default defineEventHandler(async (event) => {
+    return 'hi'
 })

@@ -85,7 +85,7 @@ async function execLogin() {
 
     let body = {...form.value}
 
-    const {data, pending} = await useFetch('/api/auth', {
+    const data = await $fetch('/api/auth', {
         method: "POST",
         body: body,
         onResponseError(context) {
@@ -95,7 +95,6 @@ async function execLogin() {
             error.value = {}
         },
     })
-    loading.value = pending.value
 
 
     if (!Object.keys(error.value).length) {
