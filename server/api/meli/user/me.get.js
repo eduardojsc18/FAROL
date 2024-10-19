@@ -1,3 +1,4 @@
 export default defineEventHandler(async (event) => {
-    return 'hi'
+    const { meliFetch } = await useMeli()
+    return await meliFetch('/users/me')
 })

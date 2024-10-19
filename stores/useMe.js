@@ -7,7 +7,7 @@ export const useMe = defineStore('me', {
     }),
     actions: {
         async get() {
-            const {data: response} = await useAsyncData('ME',
+            const {data: response} = await useAsyncData('me',
                 () => $fetch('/api/meli/user/me'),
             );
             this.me = response.value

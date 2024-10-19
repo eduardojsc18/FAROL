@@ -4,7 +4,7 @@
 # https://developers.mercadolivre.com.br/devcenter/
 #
 # 2 - PEGAR O TOKEN PARA AUTENTICAÇÃO
-# https://auth.mercadolivre.com.br/authorization?response_type=code&client_id=8732120065434732
+# https://auth.mercadolivre.com.br/authorization?response_type=code&client_id=CLIENT_ID
 #
 # 3 - AUTENTICAR TOKEN
 # https://api.mercadolibre.com/oauth/token
