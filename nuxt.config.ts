@@ -2,6 +2,7 @@
 import {defineNuxtConfig} from 'nuxt/config'
 
 export default defineNuxtConfig({
+
     app: {
         head: {
             htmlAttrs: {lang: 'pt-br'},
@@ -26,6 +27,7 @@ export default defineNuxtConfig({
     },
 
     devtools: {enabled: true},
+
     css: ['~/assets/css/main.css'],
 
     postcss: {
@@ -63,10 +65,6 @@ export default defineNuxtConfig({
 
     ssr: false,
 
-    routeRules: {
-        '/': {redirect: {to: '/dashboard'}},
-    },
-
     runtimeConfig: {
         apiClientId: process.env.NUXT_API_CLIENT_ID,
         apiClientSecret: process.env.NUXT_API_CLIENT_SECRET,
@@ -81,4 +79,5 @@ export default defineNuxtConfig({
     },
 
     compatibilityDate: '2024-07-22',
+
 })
