@@ -35,7 +35,7 @@
     </div>
 </template>
 <script setup>
-import HeaderPage from "~/components/UI/Layout/Admin/Header/HeaderPage.vue";
+import HeaderPage from "~/components/ui/Layout/Admin/Header/HeaderPage.vue";
 import Draggable from "vuedraggable";
 import IconMarketResearch from "~/components/Admin/shared/icons/IconMarketResearch.vue";
 

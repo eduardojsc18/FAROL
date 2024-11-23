@@ -15,7 +15,7 @@
 </template>
 <script setup>
 import {useGetOrders} from "~/stores/orders/useGetOrders.js";
-import HeaderPage from "~/components/UI/Layout/Admin/Header/HeaderPage.vue";
+import HeaderPage from "~/components/ui/Layout/Admin/Header/HeaderPage.vue";
 import OrderTable from "~/components/Admin/order/table/OrderTable.vue";
 const OrderTableItem  = defineAsyncComponent(() => import("~/components/Admin/order/table/OrderTableItem.vue"))
 import OrderTableItemLoading from "~/components/Admin/order/table/OrderTableItemLoading.vue";

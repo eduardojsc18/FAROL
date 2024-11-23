@@ -34,7 +34,7 @@
 </template>
 <script setup>
 //Props
-import HeaderPage from "~/components/UI/Layout/Admin/Header/HeaderPage.vue";
+import HeaderPage from "~/components/ui/Layout/Admin/Header/HeaderPage.vue";
 import IconSeller from "~/components/Admin/shared/icons/IconSeller.vue";
 
 useHead({

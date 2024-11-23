@@ -14,7 +14,7 @@
     </div>
 </template>
 <script setup>
-import HeaderPage from "~/components/UI/Layout/Admin/Header/HeaderPage.vue";
+import HeaderPage from "~/components/ui/Layout/Admin/Header/HeaderPage.vue";
 import {useHelpers} from "~/composables/useHelpers.js";
 import {useMe} from "~/stores/useMe.js";
 import ProductTable from "~/components/Admin/product/table/ProductTable.vue";

@@ -16,7 +16,7 @@
 <script setup>
 import {useHelpers} from "~/composables/useHelpers.js";
 import {useMe} from "~/stores/useMe.js";
-import HeaderPage from "~/components/UI/Layout/Admin/Header/HeaderPage.vue";
+import HeaderPage from "~/components/ui/Layout/Admin/Header/HeaderPage.vue";
 import {useDayjs} from "#dayjs";
 import QuestionTable from "~/components/Admin/question/QuestionTable.vue";
 import QuestionTableItem from "~/components/Admin/question/QuestionTableItem.vue";

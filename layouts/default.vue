@@ -46,11 +46,11 @@
     </div>
 </template>
 <script setup>
-import SidebarLinkItem from "~/components/UI/Layout/Admin/Sidebar/SidebarLinkItem.vue";
-import SidebarContainer from "~/components/UI/Layout/Admin/Sidebar/SidebarContainer.vue";
-import Header from "~/components/UI/Layout/Admin/Header/Header.vue";
-import Notification from "~/components/UI/Layout/Admin/Notification/Notification.vue";
-import MyAccount from "~/components/UI/Layout/Admin/Sidebar/MyAccount.vue";
+import SidebarLinkItem from "~/components/ui/Layout/Admin/Sidebar/SidebarLinkItem.vue";
+import SidebarContainer from "~/components/ui/Layout/Admin/Sidebar/SidebarContainer.vue";
+import Header from "~/components/ui/Layout/Admin/Header/Header.vue";
+import Notification from "~/components/ui/Layout/Admin/Notification/Notification.vue";
+import MyAccount from "~/components/ui/Layout/Admin/Sidebar/MyAccount.vue";
 import ShortcutLatestSales from "~/components/Admin/shortcut/Sidebar/LatestSales/ShortcutLatestSales.vue";
 import ShortcutMarketResearch from "~/components/Admin/shortcut/Sidebar/ShortcutMarketResearch.vue";
 import { useSidebar } from "~/stores/useSidebar.js";

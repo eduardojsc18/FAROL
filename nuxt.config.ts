@@ -43,8 +43,10 @@ export default defineNuxtConfig({
         '@vueuse/nuxt',
         'nuxt-lodash',
         'nuxt-swiper',
-        'dayjs-nuxt',
         // '@nuxtjs/google-fonts',
+        'dayjs-nuxt',
+        '@nuxtjs/tailwindcss',
+        'shadcn-nuxt',
     ],
 
     dayjs: {
@@ -53,13 +55,25 @@ export default defineNuxtConfig({
         defaultLocale: 'pt-br',
     },
 
+    shadcn: {
+        /**
+         * Prefix for all the imported component
+         */
+        prefix: 'shadcn',
+        /**
+         * Directory that the component lives in.
+         * @default "./components/ui"
+         */
+        componentDir: './components/ui'
+    },
+
     build: {
         transpile: ['pinia-plugin-persistedstate'],
     },
 
     nitro: {
         storage: {
-            data: { driver: 'vercelKV' },
+            data: {driver: 'vercelKV'},
         }
     },
 
