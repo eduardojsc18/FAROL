@@ -26,7 +26,7 @@
 <script setup>
 import { useHelpers } from "~/composables/useHelpers.js";
 import moment from "moment";
-import Products from "~/components/Admin/shared/InputSearchAll/Sections/Products.vue";
+import Products from "~/components/shared/InputSearchAll/Sections/Products.vue";
 import {useLazyAsyncData} from "#app";
 
 const { customFetch, toBRL } = useHelpers()

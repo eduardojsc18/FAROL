@@ -12,9 +12,11 @@ body {
     @apply bg-orange-50 dark:text-[#F4F4F4E6] dark:bg-neutral-800 transition-colors
 }
 
-*{
-    @apply scrollbar max-md:scrollbar-w-1 max-md:scrollbar-h-1 scrollbar-w-2 scrollbar-h-2 scrollbar-thumb-rounded-full scrollbar-thumb-neutral-400 scrollbar-track-neutral-100 dark:scrollbar-thumb-neutral-600 dark:scrollbar-track-neutral-900 !important
-}
+/*@layer base {*/
+/*    * {*/
+/*        @apply scrollbar max-md:scrollbar-w-1 max-md:scrollbar-h-1 scrollbar-w-2 scrollbar-h-2 scrollbar-thumb-rounded-full scrollbar-thumb-neutral-400 scrollbar-track-neutral-100 dark:scrollbar-thumb-neutral-600 dark:scrollbar-track-neutral-900 !important*/
+/*    }*/
+/*}*/
 
 [data-tooltip] {
     @apply
@@ -69,7 +71,7 @@ body {
 
 @layer components {
     .btn-header-style {
-        @apply rounded-full p-3 flex-shrink-0 aspect-square text-color-default focus-default grid place-items-center relative hover-default aspect-square size-7 *:absolute *:size-5 *:z-10 active:scale-95 transition-all
+        @apply rounded-full p-3 flex-shrink-0 aspect-square text-color-default focus-default grid place-items-center relative hover-default size-7 *:absolute *:size-5 *:z-10 active:scale-95 transition-all
     }
     .hover-default {
         @apply hover:bg-neutral-500/10

@@ -9,5 +9,5 @@
     </div>
 </template>
 <script setup>
-import LoaderSkeleton from "~/components/ui/Loader/LoaderSkeleton.vue";
+import LoaderSkeleton from "~/components/ui-custom/Loader/LoaderSkeleton.vue";
 </script>

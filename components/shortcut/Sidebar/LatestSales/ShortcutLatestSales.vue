@@ -67,8 +67,8 @@
 <script setup>
 import {useSidebar} from "~/stores/useSidebar.js";
 import {useGetOrders} from "~/stores/orders/useGetOrders.js";
-import ShortcutLatestSalesItemLoading from "~/components/Admin/shortcut/Sidebar/LatestSales/ShortcutLatestSalesItemLoading.vue";
-const ShortcutLatesSalesItem = defineAsyncComponent(() => import("~/components/Admin/shortcut/Sidebar/LatestSales/ShortcutLatestSalesItem.vue"));
+import ShortcutLatestSalesItemLoading from "~/components/shortcut/Sidebar/LatestSales/ShortcutLatestSalesItemLoading.vue";
+const ShortcutLatesSalesItem = defineAsyncComponent(() => import("~/components/shortcut/Sidebar/LatestSales/ShortcutLatestSalesItem.vue"));
 
 const orders = await useGetOrders().getOrders()
 </script>

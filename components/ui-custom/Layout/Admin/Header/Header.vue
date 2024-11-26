@@ -9,10 +9,10 @@
     </header>
 </template>
 <script setup>
-import SidebarButtonShow from "~/components/ui/Layout/Admin/Sidebar/Button/SidebarButtonShow.vue";
-import NotificationButtonShow from "~/components/ui/Layout/Admin/Notification/Button/NotificationButtonShow.vue";
-import InputSearchAll from "~/components/Admin/shared/InputSearchAll/InputSearchAll.vue";
-import ButtonDarkModeToggle from "~/components/ui/Button/ButtonDarkModeToggle.vue";
+import SidebarButtonShow from "~/components/ui-custom/Layout/Admin/Sidebar/Button/SidebarButtonShow.vue";
+import NotificationButtonShow from "~/components/ui-custom/Layout/Admin/Notification/Button/NotificationButtonShow.vue";
+import InputSearchAll from "~/components/shared/InputSearchAll/InputSearchAll.vue";
+import ButtonDarkModeToggle from "~/components/ui-custom/Button/ButtonDarkModeToggle.vue";
 
 //Props
 

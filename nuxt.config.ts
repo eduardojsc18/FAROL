@@ -13,6 +13,7 @@ export default defineNuxtConfig({
                 {name: 'format-detection', content: 'telephone=no'},
                 {name: 'theme-color', media: '(prefers-color-scheme: light)', content: '#262626'},
                 {name: 'theme-color', media: '(prefers-color-scheme: dark)', content: '#262626'},
+                {name: 'mobile-web-app-capable', content: 'yes'},
                 {name: 'apple-mobile-web-app-capable', content: 'yes'},
                 {name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent'},
             ],
@@ -28,14 +29,14 @@ export default defineNuxtConfig({
 
     devtools: {enabled: true},
 
-    css: ['~/assets/css/main.css'],
-
-    postcss: {
-        plugins: {
-            tailwindcss: {},
-            autoprefixer: {},
-        },
-    },
+    // css: ['~/assets/css/main.css'],
+    //
+    // postcss: {
+    //     plugins: {
+    //         tailwindcss: {},
+    //         autoprefixer: {},
+    //     },
+    // },
 
     modules: [
         '@pinia/nuxt',
@@ -43,7 +44,7 @@ export default defineNuxtConfig({
         '@vueuse/nuxt',
         'nuxt-lodash',
         'nuxt-swiper',
-        // '@nuxtjs/google-fonts',
+        '@nuxtjs/google-fonts',
         'dayjs-nuxt',
         '@nuxtjs/tailwindcss',
         'shadcn-nuxt',
@@ -56,14 +57,7 @@ export default defineNuxtConfig({
     },
 
     shadcn: {
-        /**
-         * Prefix for all the imported component
-         */
         prefix: 'shadcn',
-        /**
-         * Directory that the component lives in.
-         * @default "./components/ui"
-         */
         componentDir: './components/ui'
     },
 
@@ -71,11 +65,11 @@ export default defineNuxtConfig({
         transpile: ['pinia-plugin-persistedstate'],
     },
 
-    nitro: {
-        storage: {
-            data: {driver: 'vercelKV'},
-        }
-    },
+    // nitro: {
+    //     storage: {
+    //         data: {driver: 'vercelKV'},
+    //     }
+    // },
 
     ssr: false,
 

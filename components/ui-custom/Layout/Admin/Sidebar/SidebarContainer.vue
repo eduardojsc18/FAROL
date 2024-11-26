@@ -30,6 +30,6 @@
 </template>
 <script setup>
 import { useSidebar } from "~/stores/useSidebar.js";
-import SidebarButtonShow from "~/components/ui/Layout/Admin/Sidebar/Button/SidebarButtonShow.vue";
-import ButtonDarkModeToggle from "~/components/ui/Button/ButtonDarkModeToggle.vue";
+import SidebarButtonShow from "~/components/ui-custom/Layout/Admin/Sidebar/Button/SidebarButtonShow.vue";
+import ButtonDarkModeToggle from "~/components/ui-custom/Button/ButtonDarkModeToggle.vue";
 </script>
