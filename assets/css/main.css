@@ -9,14 +9,8 @@ body:has(.animation-change-theme) {
 }
 
 body {
-    @apply bg-orange-50 dark:text-[#F4F4F4E6] dark:bg-neutral-800 transition-colors
+    @apply bg-zinc-50  dark:bg-zinc-950 transition-colors font-["Raleway"]
 }
-
-/*@layer base {*/
-/*    * {*/
-/*        @apply scrollbar max-md:scrollbar-w-1 max-md:scrollbar-h-1 scrollbar-w-2 scrollbar-h-2 scrollbar-thumb-rounded-full scrollbar-thumb-neutral-400 scrollbar-track-neutral-100 dark:scrollbar-thumb-neutral-600 dark:scrollbar-track-neutral-900 !important*/
-/*    }*/
-/*}*/
 
 [data-tooltip] {
     @apply
@@ -69,23 +63,68 @@ body {
     !important
 }
 
-@layer components {
-    .btn-header-style {
-        @apply rounded-full p-3 flex-shrink-0 aspect-square text-color-default focus-default grid place-items-center relative hover-default size-7 *:absolute *:size-5 *:z-10 active:scale-95 transition-all
+@layer base {
+    :root {
+        --background: 0 0% 100%;
+        --foreground: 0 0% 3.9%;
+
+        --muted: 0 0% 96.1%;
+        --muted-foreground: 0 0% 45.1%;
+
+        --popover: 0 0% 100%;
+        --popover-foreground: 0 0% 3.9%;
+
+        --card: 0 0% 100%;
+        --card-foreground: 0 0% 3.9%;
+
+        --border: 0 0% 89.8%;
+        --input: 0 0% 89.8%;
+
+        --primary: 0 0% 9%;
+        --primary-foreground: 0 0% 98%;
+
+        --secondary: 0 0% 96.1%;
+        --secondary-foreground: 0 0% 9%;
+
+        --accent: 0 0% 96.1%;
+        --accent-foreground: 0 0% 9%;
+
+        --destructive: 0 84.2% 60.2%;
+        --destructive-foreground: 0 0% 98%;
+
+        --ring: 0 0% 3.9%;
+
+        --radius: 0.5rem;
     }
-    .hover-default {
-        @apply hover:bg-neutral-500/10
-    }
-    .focus-default {
-        @apply ring-[1px] ring-transparent focus:bg-neutral-500/10 focus:ring-orange-500 outline-0
-    }
-    .focus-within-default {
-        @apply ring-[1px] ring-neutral-500/60 focus-within:ring-orange-500 focus-within:bg-neutral-500/20
-    }
-    .text-color-default {
-        @apply dark:text-neutral-200 text-neutral-800
-    }
-    .item-active {
-        @apply bg-neutral-400/20 dark:text-neutral-100 text-neutral-900 !important
+
+    .dark {
+        --background: 0 0% 3.9%;
+        --foreground: 0 0% 98%;
+
+        --muted: 0 0% 14.9%;
+        --muted-foreground: 0 0% 63.9%;
+
+        --popover: 0 0% 3.9%;
+        --popover-foreground: 0 0% 98%;
+
+        --card: 0 0% 3.9%;
+        --card-foreground: 0 0% 98%;
+
+        --border: 0 0% 14.9%;
+        --input: 0 0% 14.9%;
+
+        --primary: 0 0% 98%;
+        --primary-foreground: 0 0% 9%;
+
+        --secondary: 0 0% 14.9%;
+        --secondary-foreground: 0 0% 98%;
+
+        --accent: 0 0% 14.9%;
+        --accent-foreground: 0 0% 98%;
+
+        --destructive: 0 62.8% 30.6%;
+        --destructive-foreground: 0 0% 98%;
+
+        --ring: 0 0% 83.1%;
     }
 }

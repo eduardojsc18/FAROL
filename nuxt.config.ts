@@ -3,6 +3,8 @@ import {defineNuxtConfig} from 'nuxt/config'
 
 export default defineNuxtConfig({
 
+    compatibilityDate: '2024-07-22',
+
     app: {
         head: {
             htmlAttrs: {lang: 'pt-br'},
@@ -29,16 +31,10 @@ export default defineNuxtConfig({
 
     devtools: {enabled: true},
 
-    // css: ['~/assets/css/main.css'],
-    //
-    // postcss: {
-    //     plugins: {
-    //         tailwindcss: {},
-    //         autoprefixer: {},
-    //     },
-    // },
-
     modules: [
+        '@nuxtjs/tailwindcss',
+        '@nuxtjs/color-mode',
+        'shadcn-nuxt',
         '@pinia/nuxt',
         '@pinia-plugin-persistedstate/nuxt',
         '@vueuse/nuxt',
@@ -46,9 +42,22 @@ export default defineNuxtConfig({
         'nuxt-swiper',
         '@nuxtjs/google-fonts',
         'dayjs-nuxt',
-        '@nuxtjs/tailwindcss',
-        'shadcn-nuxt',
+        'nuxt-lucide-icons'
     ],
+
+    googleFonts: {
+        base64: true,
+        fontsDir: 'assets/fonts',
+        overwriting: true,
+        families: {
+            Inter: [300, 400, 500, 600, 700, 800, 900],
+            Raleway: [300, 400, 500, 600, 700, 800, 900],
+        },
+    },
+
+    tailwindcss: {
+        cssPath: ['~/assets/css/main.css', {injectPosition: "first"}],
+    },
 
     dayjs: {
         locales: ['pt-br'],
@@ -65,27 +74,13 @@ export default defineNuxtConfig({
         transpile: ['pinia-plugin-persistedstate'],
     },
 
-    // nitro: {
-    //     storage: {
-    //         data: {driver: 'vercelKV'},
-    //     }
-    // },
-
     ssr: false,
 
     runtimeConfig: {
-        apiClientId: process.env.NUXT_API_CLIENT_ID,
-        apiClientSecret: process.env.NUXT_API_CLIENT_SECRET,
-        apiRedirectUri: process.env.NUXT_API_REDIRECT_URI,
-        apiCode: process.env.NUXT_API_CODE,
-        login: process.env.NUXT_LOGIN_ACCOUNT,
-        password: process.env.NUXT_PASSWORD_ACCOUNT,
         public: {
             appName: process.env.NUXT_PUBLIC_APP_NAME || 'CONSULTA DE PRODUTOS',
             apiBase: process.env.NUXT_PUBLIC_API_BASE,
         }
     },
-
-    compatibilityDate: '2024-07-22',
 
 })
