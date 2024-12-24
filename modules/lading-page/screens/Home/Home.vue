@@ -1,13 +1,13 @@
 <template>
     <div>
         <header class="backdrop-blur border-b border-gray-200 dark:border-gray-800 -mb-px sticky top-0 z-50 lg:!border-transparent bg-gray-50 dark:bg-gray-950">
-            <div class="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl flex items-center justify-between gap-3 h-[65px]">
+            <nav class="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl flex items-center justify-between gap-3 h-[65px]">
                 <div class="lg:flex-1 flex items-center gap-1.5">
                     <Logo />
                 </div>
-                <ul class="items-center ring-1 ring-gray-200 dark:ring-gray-800 px-3 gap-x-0 rounded-full hidden lg:flex">
+                <ul class="items-center ring-1 ring-gray-200 whitespace-nowrap dark:ring-gray-800 px-3 gap-x-0 rounded-full hidden lg:flex">
                     <li class="relative">
-                        <a class="text-sm/6 flex items-center gap-1 py-2 px-4 font-medium transition-colors relative after:absolute after:-bottom-px after:inset-x-2 after:h-px after:rounded-full after:opacity-0 after:bg-gray-900 dark:after:bg-white after:transition-opacity text-gray-900 dark:text-white after:opacity-100" href="/#features">
+                        <a class="text-sm/6 flex items-center gap-1 py-2 px-4 font-medium transition-colors relative after:absolute after:-bottom-px after:inset-x-2 after:h-px after:rounded-full after:opacity-0 after:bg-orange-600 dark:after:bg-orange-600 after:transition-opacity text-orange-600  after:opacity-100" href="/#features">
                             Sobre a plataforma
                         </a>
                     </li>
@@ -26,18 +26,15 @@
                             Perguntas Frequentes
                         </a>
                     </li>
+                    <li class="border-l border-gray-200 dark:border-zinc-700 pl-1 -mr-2">
+                        <ButtonDarkModeToggle />
+                    </li>
                 </ul>
                 <div class="flex items-center justify-end lg:flex-1 gap-1.5">
-                    <Button variant="ghost" class="rounded-full" >
-                        Entrar
-                    </Button>
-                    <Button class="rounded-full">
-                        Cadastrar
-                        <LucideArrowRight class="size-4"/>
-                    </Button>
-<!--                    <ButtonDarkModeToggle />-->
+                    <ButtonLogin />
+                    <ButtonSignIn />
                 </div>
-            </div>
+            </nav>
         </header>
         <main class="min-h-svh">
             <div>
@@ -45,33 +42,22 @@
                     <div class="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl gap-16 sm:gap-y-24 flex flex-col">
                         <div class="text-center">
                             <h1 class="text-5xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-7xl">
-                                Construa seu pouso em segundos
+                                Analise o mercado
                             </h1>
                             <div class="mt-6 text-lg tracking-tight text-gray-600 dark:text-gray-300">
                                 É muito importante que o cliente acompanhe o treinamento do cliente, mas é isso que acontece ao mesmo tempo.
                             </div>
-                            <div class="mt-10 flex flex-wrap gap-x-6 gap-y-3 justify-center">
-                                <a
-                                        class="focus:outline-none focus-visible:outline-0 disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:cursor-not-allowed aria-disabled:opacity-75 flex-shrink-0 font-medium rounded-full text-base gap-x-2.5 px-3.5 py-2.5 shadow-sm text-white dark:text-gray-900 bg-gray-900 hover:bg-gray-800 disabled:bg-gray-900 aria-disabled:bg-gray-900 dark:bg-white dark:hover:bg-gray-100 dark:disabled:bg-white dark:aria-disabled:bg-white focus-visible:ring-inset focus-visible:ring-2 focus-visible:ring-primary-500 dark:focus-visible:ring-primary-400 inline-flex items-center"
-                                        href="/#features"
-                                >
-                                    <span class="">
-                                        Começar
-                                        <span class="iconify i-heroicons:arrow-right-20-solid flex-shrink-0 h-6 w-6" aria-hidden="true" style=""></span>
-                                    </span>
-                                </a>
-                                <a
-                                        class="focus:outline-none focus-visible:outline-0 disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:cursor-not-allowed aria-disabled:opacity-75 flex-shrink-0 font-medium rounded-full text-base gap-x-2.5 px-3.5 py-2.5 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 text-gray-700 dark:text-gray-200 bg-gray-50 hover:bg-gray-100 disabled:bg-gray-50 aria-disabled:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700/50 dark:disabled:bg-gray-800 dark:aria-disabled:bg-gray-800 focus-visible:ring-2 focus-visible:ring-primary-500 dark:focus-visible:ring-primary-400 inline-flex items-center"
-                                        href="https://github.com/nuxt-ui-pro/landing" rel="noopener noreferrer" target="_blank">
-                                    <span class="iconify i-simple-icons:github flex-shrink-0 h-6 w-6" aria-hidden="true" style="">
-                                    </span>
-                                    <span class="">Use este modelo</span>
-                                </a>
+                            <div class="mt-10 flex items-center flex-wrap gap-x-6 gap-y-3 justify-center">
+                                <ButtonLogin text="Entrar com sua conta" variant="outline" class="!text-xl !p-5"/>
+                                <div class="dark:text-neutral-50">
+                                    ou
+                                </div>
+                                <ButtonSignIn text="Cadastra-se aqui" class="!text-xl !p-5"/>
                             </div>
                         </div>
                         <div class="relative">
-                            <div class="bg-background border-gradient rounded-xl p-4">
-                                <div class="aspect-w-16 aspect-h-9 rounded-lg relative overflow-hidden border border-dashed border-gray-950/10 dark:border-white/10">
+                            <div class="bg-background dark:bg-background border-gradient rounded-xl p-4">
+                                <div class="aspect-video rounded-lg relative overflow-hidden border border-dashed border-gray-950/10 dark:border-white/10">
                                     <svg class="absolute inset-0 h-full w-full stroke-gray-950/10 dark:stroke-white/10" fill="none">
                                         <defs>
                                             <pattern id="pattern-5c1e4f0e-62d5-498b-8ff0-cf77bb448c8e" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse"
@@ -870,6 +856,7 @@
 </template>
 <script setup>
 import Logo from "~/components/Logo/Logo.vue";
-import {Button} from "~/components/ui/button";
 import ButtonDarkModeToggle from "~/components/ui-custom/Button/ButtonDarkModeToggle.vue";
+import ButtonLogin from "../../components/Home/Button/ButtonLogin.vue";
+import ButtonSignIn from "../../components/Home/Button/ButtonSignIn.vue";
 </script>

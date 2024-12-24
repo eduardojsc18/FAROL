@@ -32,18 +32,24 @@ export default defineNuxtConfig({
     devtools: {enabled: true},
 
     modules: [
-        '@nuxtjs/tailwindcss',
-        '@nuxtjs/color-mode',
-        'shadcn-nuxt',
-        '@pinia/nuxt',
-        '@pinia-plugin-persistedstate/nuxt',
-        '@vueuse/nuxt',
-        'nuxt-lodash',
-        'nuxt-swiper',
-        '@nuxtjs/google-fonts',
-        'dayjs-nuxt',
-        'nuxt-lucide-icons'
+      '@nuxtjs/tailwindcss',
+      '@pinia/nuxt',
+      '@pinia-plugin-persistedstate/nuxt',
+      '@vueuse/nuxt',
+      'nuxt-lodash',
+      'nuxt-swiper',
+      '@nuxtjs/google-fonts',
+      'dayjs-nuxt',
+      'nuxt-lucide-icons',
+      'shadcn-nuxt',
+      '@nuxtjs/color-mode',
     ],
+
+    colorMode: {
+        classSuffix: '',
+        preference: 'system',
+        fallback: 'dark',
+    },
 
     googleFonts: {
         base64: true,
@@ -74,11 +80,13 @@ export default defineNuxtConfig({
         transpile: ['pinia-plugin-persistedstate'],
     },
 
-    ssr: false,
+    routeRules: {
+        '/admin/**': { redirect: { to: '/dashboard'}, ssr: false },
+    },
 
     runtimeConfig: {
         public: {
-            appName: process.env.NUXT_PUBLIC_APP_NAME || 'CONSULTA DE PRODUTOS',
+            appName: process.env.NUXT_PUBLIC_APP_NAME || 'FAROL',
             apiBase: process.env.NUXT_PUBLIC_API_BASE,
         }
     },
