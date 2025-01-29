@@ -6,53 +6,37 @@
                     <Logo />
                 </div>
                 <ul class="items-center ring-1 ring-gray-200 whitespace-nowrap dark:ring-gray-800 px-3 gap-x-0 rounded-full hidden lg:flex">
-                    <li class="relative">
-                        <a class="text-sm/6 flex items-center gap-1 py-2 px-4 font-medium transition-colors relative after:absolute after:-bottom-px after:inset-x-2 after:h-px after:rounded-full after:opacity-0 after:bg-orange-600 dark:after:bg-orange-600 after:transition-opacity text-orange-600  after:opacity-100" href="/#features">
-                            Sobre a plataforma
-                        </a>
-                    </li>
-                    <li class="relative">
-                        <a class="text-sm/6 flex items-center gap-1 py-2 px-4 font-medium transition-colors relative after:absolute after:-bottom-px after:inset-x-2 after:h-px after:rounded-full after:opacity-0 after:bg-gray-900 dark:after:bg-white after:transition-opacity text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200" href="/#pricing">
-                            Preços
-                        </a>
-                    </li>
-                    <li class="relative">
-                        <a class="text-sm/6 flex items-center gap-1 py-2 px-4 font-medium transition-colors relative after:absolute after:-bottom-px after:inset-x-2 after:h-px after:rounded-full after:opacity-0 after:bg-gray-900 dark:after:bg-white after:transition-opacity text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200" href="/#testimonials">
-                            Avaliações
-                        </a>
-                    </li>
-                    <li class="relative">
-                        <a class="text-sm/6 flex items-center gap-1 py-2 px-4 font-medium transition-colors relative after:absolute after:-bottom-px after:inset-x-2 after:h-px after:rounded-full after:opacity-0 after:bg-gray-900 dark:after:bg-white after:transition-opacity text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200" href="/#faq">
-                            Perguntas Frequentes
-                        </a>
-                    </li>
-                    <li class="border-l border-gray-200 dark:border-zinc-700 pl-1 -mr-2">
-                        <ButtonDarkModeToggle />
-                    </li>
+                    <MenuItemHome href="#inicio" />
+                    <MenuItem text="Sobre a plataforma" href="#sobre-a-plataforma"/>
+                    <MenuItem text="Preços" href="#precos"/>
+                    <MenuItem text="Avaliações" href="#avaliacoes"/>
+                    <MenuItem text="Perguntas Frequentes" href="#perguntas"/>
                 </ul>
                 <div class="flex items-center justify-end lg:flex-1 gap-1.5">
-                    <ButtonLogin />
-                    <ButtonSignIn />
+                    <ButtonDarkModeToggle />
+<!--                    <ButtonLogin />-->
+                    <ButtonSignIn text="Entrar" />
                 </div>
             </nav>
         </header>
         <main class="min-h-svh">
             <div>
-                <section class="py-24 sm:py-32 md:py-40 relative">
+                <section id="inicio" class="py-24 sm:py-32 md:py-40 relative">
                     <div class="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl gap-16 sm:gap-y-24 flex flex-col">
                         <div class="text-center">
-                            <h1 class="text-5xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-7xl">
-                                Analise o mercado
+                            <h1 class="text-5xl font-semibold tracking-tight text-gray-900 dark:text-white sm:text-7xl">
+                                Acompanhe suas vendas do <b class="relative font-bold inline-flex after:absolute after:w-[105%] after:-z-10 mx-3 after:h-[105%] after:left-1/2 after:top-1/2 after:-translate-x-1/2 after:-translate-y-1/2 after:bg-[#ffe600] dark:after:bg-transparent text-[#2d3177] dark:text-[#ffe600]">Mercado Livre</b> com precisão
                             </h1>
                             <div class="mt-6 text-lg tracking-tight text-gray-600 dark:text-gray-300">
-                                É muito importante que o cliente acompanhe o treinamento do cliente, mas é isso que acontece ao mesmo tempo.
+                                Farol oferece uma plataforma intuitiva para monitorar e analisar suas vendas no <b class="text-[#2d3177] dark:text-[#ffe600]">Mercado Livre</b>,
+                                ajudando você a tomar decisões informadas e aumentar seus lucros. <u class="underline-offset-4 font-medium">De forma simplificada!</u>
                             </div>
                             <div class="mt-10 flex items-center flex-wrap gap-x-6 gap-y-3 justify-center">
-                                <ButtonLogin text="Entrar com sua conta" variant="outline" class="!text-xl !p-5"/>
-                                <div class="dark:text-neutral-50">
-                                    ou
-                                </div>
-                                <ButtonSignIn text="Cadastra-se aqui" class="!text-xl !p-5"/>
+<!--                                <ButtonLogin text="Entrar com sua conta" variant="outline" class="!text-xl !p-5"/>-->
+<!--                                <div class="dark:text-neutral-50">-->
+<!--                                    ou-->
+<!--                                </div>-->
+                                <ButtonSignIn text="Entrar em sua conta" class="!text-xl !py-5 !pl-5 !pr-3" class-icon="!size-6"/>
                             </div>
                         </div>
                         <div class="relative">
@@ -70,26 +54,26 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="text-center">
-                            <h2 class="text-lg font-semibold leading-8 text-gray-900 dark:text-white">
-                                Confiável pelos melhores do mundo
-                            </h2>
-                            <div class="mx-auto mt-10 flex flex-wrap items-center justify-between gap-8">
-                                <span class="iconify i-simple-icons:amazonaws w-12 h-12 lg:w-16 lg:h-16 flex-shrink-0 text-gray-900 dark:text-white" aria-hidden="true"></span>
-                                <span class="iconify i-simple-icons:heroku w-12 h-12 lg:w-16 lg:h-16 flex-shrink-0 text-gray-900 dark:text-white" aria-hidden="true"></span>
-                                <span class="iconify i-simple-icons:netlify w-12 h-12 lg:w-16 lg:h-16 flex-shrink-0 text-gray-900 dark:text-white" aria-hidden="true"></span>
-                                <span class="iconify i-simple-icons:vercel w-12 h-12 lg:w-16 lg:h-16 flex-shrink-0 text-gray-900 dark:text-white" aria-hidden="true"></span>
-                                <span class="iconify i-simple-icons:cloudflare w-12 h-12 lg:w-16 lg:h-16 flex-shrink-0 text-gray-900 dark:text-white" aria-hidden="true"></span>
-                            </div>
-                        </div>
+<!--                        <div class="text-center">-->
+<!--                            <h2 class="text-lg font-semibold leading-8 text-gray-900 dark:text-white">-->
+<!--                                Confiável pelos melhores do mundo-->
+<!--                            </h2>-->
+<!--                            <div class="mx-auto mt-10 flex flex-wrap items-center justify-between gap-8">-->
+<!--                                <span class="iconify i-simple-icons:amazonaws w-12 h-12 lg:w-16 lg:h-16 flex-shrink-0 text-gray-900 dark:text-white" aria-hidden="true"></span>-->
+<!--                                <span class="iconify i-simple-icons:heroku w-12 h-12 lg:w-16 lg:h-16 flex-shrink-0 text-gray-900 dark:text-white" aria-hidden="true"></span>-->
+<!--                                <span class="iconify i-simple-icons:netlify w-12 h-12 lg:w-16 lg:h-16 flex-shrink-0 text-gray-900 dark:text-white" aria-hidden="true"></span>-->
+<!--                                <span class="iconify i-simple-icons:vercel w-12 h-12 lg:w-16 lg:h-16 flex-shrink-0 text-gray-900 dark:text-white" aria-hidden="true"></span>-->
+<!--                                <span class="iconify i-simple-icons:cloudflare w-12 h-12 lg:w-16 lg:h-16 flex-shrink-0 text-gray-900 dark:text-white" aria-hidden="true"></span>-->
+<!--                            </div>-->
+<!--                        </div>-->
                     </div>
                 </section>
-                <section class="py-24 sm:py-32">
+                <section id="sobre-a-plataforma" class="py-24 sm:py-32">
                     <div class="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl gap-16 sm:gap-y-24 flex flex-col">
                         <div class="text-center flex flex-col items-center">
-                            <div class="mb-2 text-base/7 font-semibold text-primary">
-                                Características
-                            </div>
+<!--                            <div class="mb-2 text-base/7 font-semibold text-primary">-->
+<!--                                Características-->
+<!--                            </div>-->
                             <h2 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl lg:text-5xl">
                                 Por que escolher nosso serviço?
                             </h2>
@@ -97,7 +81,7 @@
                                 É importante cuidar do paciente, ser acompanhado pelo paciente, mas ao mesmo tempo ocorre muito trabalho e dor.
                             </div>
                         </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8 scroll-mt-[calc(var(--header-height)+140px+128px+96px)]" id="features">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8 scroll-mt-[calc(var(--header-height)+140px+128px+96px)]">
                             <div class="relative group isolate rounded-xl background-gradient ring-1 ring-gray-200 dark:ring-gray-800 flex-1 flex flex-col shadow">
                                 <div class="flex-1 flex flex-col overflow-hidden rounded-xl divide-y divide-gray-200 dark:divide-gray-800 bg-white dark:bg-gray-900 hover:bg-opacity-90 dark:hover:bg-opacity-90 transition-[background-opacity]">
                                     <div class="gap-x-8 gap-y-4 rounded-xl flex-1 flex flex-col px-4 py-5 sm:p-6">
@@ -203,12 +187,12 @@
                         </div>
                     </div>
                 </section>
-                <section class="py-24 sm:py-32">
-                    <div class="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl gap-16 sm:gap-y-24 flex flex-col">
+                <section id="precos" class="py-24 sm:py-32">
+                    <div  class="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl gap-16 sm:gap-y-24 flex flex-col">
                         <div class="text-center flex flex-col items-center">
-                            <div class="mb-2 text-base/7 font-semibold text-primary">
-                                Preços
-                            </div>
+<!--                            <div class="mb-2 text-base/7 font-semibold text-primary">-->
+<!--                                Preços-->
+<!--                            </div>-->
                             <h2 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl lg:text-5xl">
                                 Um plano para cada necessidade
                             </h2>
@@ -218,227 +202,51 @@
                         </div>
                         <div class="flex flex-col lg:grid lg:grid-cols-3 w-full justify-center items-center gap-8 scroll-mt-[calc(var(--header-height)+140px+128px+96px)] gap-x-0">
                             <div class="rounded-xl divide-y divide-gray-200 dark:divide-gray-800 ring-1 ring-gray-200 dark:ring-gray-800 shadow bg-white dark:bg-gray-900 relative flex flex-col self-stretch w-full">
-                                <div class="flex-1 gap-6 lg:gap-x-8 xl:gap-x-10 flex flex-col sm:p-6 p-6 lg:p-8 xl:p-10">
-                                    <div>
-                                        <div class="flex items-center gap-3">
-                                            <p class="text-2xl text-gray-900 dark:text-white sm:text-3xl font-semibold truncate">
-                                                Básico
-                                            </p>
-                                        </div>
-                                        <div class="text-sm sm:text-base text-gray-500 dark:text-gray-400 mt-2">
-                                            Um plano básico para indivíduos.
-                                        </div>
-                                    </div>
-                                    <div class="flex flex-row items-baseline gap-x-1">
-                                        <p class="text-gray-900 dark:text-white text-2xl sm:text-4xl font-semibold">
-                                            US$ 9,99
-                                        </p>
-                                    </div>
-                                    <div class="order-last flex-1">
-                                        <ul class="space-y-3 text-sm">
-                                            <li class="flex items-center gap-x-3 min-w-0">
-                                                <span class="iconify i-heroicons:check-circle-20-solid w-5 h-5 flex-shrink-0 text-gray-900 dark:text-white" aria-hidden="true"></span>
-                                                <span class="text-gray-600 dark:text-gray-400 truncate">
-                                                    1 GB de armazenamento
-                                                </span>
-                                            </li>
-                                            <li class="flex items-center gap-x-3 min-w-0">
-                                                <span class="iconify i-heroicons:check-circle-20-solid w-5 h-5 flex-shrink-0 text-gray-900 dark:text-white" aria-hidden="true"></span>
-                                                <span class="text-gray-600 dark:text-gray-400 truncate">
-                                                    1 conta de e-mail
-                                                </span>
-                                            </li>
-                                            <li class="flex items-center gap-x-3 min-w-0">
-                                                <span class="iconify i-heroicons:check-circle-20-solid w-5 h-5 flex-shrink-0 text-gray-900 dark:text-white" aria-hidden="true"></span>
-                                                <span class="text-gray-600 dark:text-gray-400 truncate">
-                                                    1 Domínio
-                                                </span>
-                                            </li>
-                                            <li class="flex items-center gap-x-3 min-w-0">
-                                                <span class="iconify i-heroicons:check-circle-20-solid w-5 h-5 flex-shrink-0 text-gray-900 dark:text-white" aria-hidden="true"></span>
-                                                <span class="text-gray-600 dark:text-gray-400 truncate">
-                                                    1 Site
-                                                </span>
-                                            </li>
-                                            <li class="flex items-center gap-x-3 min-w-0">
-                                                <span class="iconify i-heroicons:check-circle-20-solid w-5 h-5 flex-shrink-0 text-gray-900 dark:text-white" aria-hidden="true"></span>
-                                                <span class="text-gray-600 dark:text-gray-400 truncate">
-                                                    1 Banco de dados
-                                                </span>
-                                            </li>
-                                            <li class="flex items-center gap-x-3 min-w-0">
-                                                <span class="iconify i-heroicons:check-circle-20-solid w-5 h-5 flex-shrink-0 text-gray-900 dark:text-white" aria-hidden="true"></span>
-                                                <span class="text-gray-600 dark:text-gray-400 truncate">
-                                                    1 Certificado SSL
-                                                </span>
-                                            </li>
-                                            <li class="flex items-center gap-x-3 min-w-0">
-                                                <span class="iconify i-heroicons:check-circle-20-solid w-5 h-5 flex-shrink-0 text-gray-900 dark:text-white" aria-hidden="true"></span>
-                                                <span class="text-gray-600 dark:text-gray-400 truncate">
-                                                    1 Ticket de Suporte
-                                                </span>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div>
-                                        <button type="button"
-                                                class="focus:outline-none focus-visible:outline-0 disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:cursor-not-allowed aria-disabled:opacity-75 flex-shrink-0 font-medium rounded-full text-sm gap-x-2.5 px-3.5 py-2.5 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 text-gray-700 dark:text-gray-200 bg-gray-50 hover:bg-gray-100 disabled:bg-gray-50 aria-disabled:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700/50 dark:disabled:bg-gray-800 dark:aria-disabled:bg-gray-800 focus-visible:ring-2 focus-visible:ring-primary-500 dark:focus-visible:ring-primary-400 w-full flex justify-center items-center">
-                                            Começar
-                                        </button>
-                                    </div>
-                                </div>
+                                <PriceEmpty />
                             </div>
-                            <div class="rounded-xl divide-y divide-gray-200 dark:divide-gray-800 shadow bg-white dark:bg-gray-900 relative flex flex-col self-stretch w-full ring-2 ring-gray-900 dark:ring-white lg:scale-[1.1] lg:z-10">
+                            <div class="rounded-xl divide-y divide-gray-200 dark:divide-gray-800 shadow bg-white dark:bg-gray-900 relative flex flex-col self-stretch w-full ring-2 ring-orange-700 dark:ring-orange-600 lg:scale-[1.1] lg:z-10">
                                 <div class="flex-1 gap-6 lg:gap-x-8 xl:gap-x-10 flex flex-col sm:p-6 p-6 lg:p-8 xl:p-10">
                                     <div>
                                         <div class="flex items-center gap-3">
                                             <p class="text-2xl text-gray-900 dark:text-white sm:text-3xl font-semibold truncate">
-                                                Padrão
+                                                Tester
                                             </p>
                                         </div>
                                         <div class="text-sm sm:text-base text-gray-500 dark:text-gray-400 mt-2">
-                                            Um plano padrão para equipes pequenas.
+                                            Plano <b class="text-orange-600">gratuito</b> para testar a plataforma. Sem nenhuma mensalidade ou pegadinhas
                                         </div>
                                     </div>
                                     <div class="flex flex-row items-baseline gap-x-1">
                                         <p class="text-gray-900 dark:text-white text-2xl sm:text-4xl font-semibold">
-                                            US$ 19,99
+                                            R$ 00,00
                                         </p>
                                     </div>
                                     <div class="order-last flex-1">
                                         <ul class="space-y-3 text-sm">
-                                            <li class="flex items-center gap-x-3 min-w-0">
-                                                <span class="iconify i-heroicons:check-circle-20-solid w-5 h-5 flex-shrink-0 text-gray-900 dark:text-white" aria-hidden="true"></span>
+                                            <li v-for="item in prices" class="flex items-center gap-x-3 min-w-0">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-4 flex-shrink-0 text-gray-600 dark:text-white">
+                                                    <path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.857-9.809a.75.75 0 0 0-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 1 0-1.06 1.061l2.5 2.5a.75.75 0 0 0 1.137-.089l4-5.5Z" clip-rule="evenodd" />
+                                                </svg>
                                                 <span class="text-gray-600 dark:text-gray-400 truncate">
-                                                    10 GB de armazenamento
-                                                </span>
-                                            </li>
-                                            <li class="flex items-center gap-x-3 min-w-0">
-                                                <span class="iconify i-heroicons:check-circle-20-solid w-5 h-5 flex-shrink-0 text-gray-900 dark:text-white" aria-hidden="true"></span>
-                                                <span class="text-gray-600 dark:text-gray-400 truncate">
-                                                    10 contas de e-mail
-                                                </span>
-                                            </li>
-                                            <li class="flex items-center gap-x-3 min-w-0">
-                                                <span class="iconify i-heroicons:check-circle-20-solid w-5 h-5 flex-shrink-0 text-gray-900 dark:text-white" aria-hidden="true"></span>
-                                                <span class="text-gray-600 dark:text-gray-400 truncate">
-                                                    10 Domínios
-                                                </span>
-                                            </li>
-                                            <li class="flex items-center gap-x-3 min-w-0">
-                                                <span class="iconify i-heroicons:check-circle-20-solid w-5 h-5 flex-shrink-0 text-gray-900 dark:text-white" aria-hidden="true"></span>
-                                                <span class="text-gray-600 dark:text-gray-400 truncate">
-                                                    10 sites
-                                                </span>
-                                            </li>
-                                            <li class="flex items-center gap-x-3 min-w-0">
-                                                <span class="iconify i-heroicons:check-circle-20-solid w-5 h-5 flex-shrink-0 text-gray-900 dark:text-white" aria-hidden="true"></span>
-                                                <span class="text-gray-600 dark:text-gray-400 truncate">
-                                                    10 Bancos de Dados
-                                                </span>
-                                            </li>
-                                            <li class="flex items-center gap-x-3 min-w-0">
-                                                <span class="iconify i-heroicons:check-circle-20-solid w-5 h-5 flex-shrink-0 text-gray-900 dark:text-white" aria-hidden="true"></span>
-                                                <span class="text-gray-600 dark:text-gray-400 truncate">
-                                                    10 Certificados SSL
-                                                </span>
-                                            </li>
-                                            <li class="flex items-center gap-x-3 min-w-0">
-                                                <span class="iconify i-heroicons:check-circle-20-solid w-5 h-5 flex-shrink-0 text-gray-900 dark:text-white" aria-hidden="true"></span>
-                                                <span class="text-gray-600 dark:text-gray-400 truncate">
-                                                    10 tickets de suporte
+                                                    {{item}}
                                                 </span>
                                             </li>
                                         </ul>
                                     </div>
                                     <div>
-                                        <button type="button"
-                                                class="focus:outline-none focus-visible:outline-0 disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:cursor-not-allowed aria-disabled:opacity-75 flex-shrink-0 font-medium rounded-full text-sm gap-x-2.5 px-3.5 py-2.5 shadow-sm text-white dark:text-gray-900 bg-gray-900 hover:bg-gray-800 disabled:bg-gray-900 aria-disabled:bg-gray-900 dark:bg-white dark:hover:bg-gray-100 dark:disabled:bg-white dark:aria-disabled:bg-white focus-visible:ring-inset focus-visible:ring-2 focus-visible:ring-primary-500 dark:focus-visible:ring-primary-400 w-full flex justify-center items-center">
-                                            Começar
-                                        </button>
+                                        <ButtonSignIn text="Começar" class="w-full"/>
                                     </div>
                                 </div>
                             </div>
                             <div class="rounded-xl divide-y divide-gray-200 dark:divide-gray-800 ring-1 ring-gray-200 dark:ring-gray-800 shadow bg-white dark:bg-gray-900 relative flex flex-col self-stretch w-full">
-                                <div class="flex-1 gap-6 lg:gap-x-8 xl:gap-x-10 flex flex-col sm:p-6 p-6 lg:p-8 xl:p-10">
-                                    <div>
-                                        <div class="flex items-center gap-3">
-                                            <p class="text-2xl text-gray-900 dark:text-white sm:text-3xl font-semibold truncate">
-                                                Prêmio
-                                            </p>
-                                        </div>
-                                        <div class="text-sm sm:text-base text-gray-500 dark:text-gray-400 mt-2">
-                                            Um plano premium para grandes equipes.
-                                        </div>
-                                    </div>
-                                    <div class="flex flex-row items-baseline gap-x-1">
-                                        <p class="text-gray-900 dark:text-white text-2xl sm:text-4xl font-semibold">
-                                            US$ 29,99
-                                        </p>
-                                    </div>
-                                    <div class="order-last flex-1">
-                                        <ul class="space-y-3 text-sm">
-                                            <li class="flex items-center gap-x-3 min-w-0">
-                                                <span class="iconify i-heroicons:check-circle-20-solid w-5 h-5 flex-shrink-0 text-gray-900 dark:text-white" aria-hidden="true"></span>
-                                                <span class="text-gray-600 dark:text-gray-400 truncate">
-                                                    100 GB de armazenamento
-                                                </span>
-                                            </li>
-                                            <li class="flex items-center gap-x-3 min-w-0">
-                                                <span class="iconify i-heroicons:check-circle-20-solid w-5 h-5 flex-shrink-0 text-gray-900 dark:text-white" aria-hidden="true"></span>
-                                                <span class="text-gray-600 dark:text-gray-400 truncate">
-                                                    100 contas de e-mail
-                                                </span>
-                                            </li>
-                                            <li class="flex items-center gap-x-3 min-w-0">
-                                                <span class="iconify i-heroicons:check-circle-20-solid w-5 h-5 flex-shrink-0 text-gray-900 dark:text-white" aria-hidden="true"></span>
-                                                <span class="text-gray-600 dark:text-gray-400 truncate">
-                                                    100 Domínios
-                                                </span>
-                                            </li>
-                                            <li class="flex items-center gap-x-3 min-w-0">
-                                                <span class="iconify i-heroicons:check-circle-20-solid w-5 h-5 flex-shrink-0 text-gray-900 dark:text-white" aria-hidden="true"></span>
-                                                <span class="text-gray-600 dark:text-gray-400 truncate">
-                                                    100 sites
-                                                </span>
-                                            </li>
-                                            <li class="flex items-center gap-x-3 min-w-0">
-                                                <span class="iconify i-heroicons:check-circle-20-solid w-5 h-5 flex-shrink-0 text-gray-900 dark:text-white" aria-hidden="true"></span>
-                                                <span class="text-gray-600 dark:text-gray-400 truncate">
-                                                    100 bases de dados
-                                                </span>
-                                            </li>
-                                            <li class="flex items-center gap-x-3 min-w-0">
-                                                <span class="iconify i-heroicons:check-circle-20-solid w-5 h-5 flex-shrink-0 text-gray-900 dark:text-white" aria-hidden="true"></span>
-                                                <span class="text-gray-600 dark:text-gray-400 truncate">
-                                                    100 Certificados SSL
-                                                </span>
-                                            </li>
-                                            <li class="flex items-center gap-x-3 min-w-0">
-                                                <span class="iconify i-heroicons:check-circle-20-solid w-5 h-5 flex-shrink-0 text-gray-900 dark:text-white" aria-hidden="true"></span>
-                                                <span class="text-gray-600 dark:text-gray-400 truncate">
-                                                    100 tickets de suporte
-                                                </span>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div>
-                                        <button type="button"
-                                                class="focus:outline-none focus-visible:outline-0 disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:cursor-not-allowed aria-disabled:opacity-75 flex-shrink-0 font-medium rounded-full text-sm gap-x-2.5 px-3.5 py-2.5 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 text-gray-700 dark:text-gray-200 bg-gray-50 hover:bg-gray-100 disabled:bg-gray-50 aria-disabled:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700/50 dark:disabled:bg-gray-800 dark:aria-disabled:bg-gray-800 focus-visible:ring-2 focus-visible:ring-primary-500 dark:focus-visible:ring-primary-400 w-full flex justify-center items-center">
-                                            Começar
-                                        </button>
-                                    </div>
-                                </div>
+                                <PriceEmpty />
                             </div>
                         </div>
                     </div>
                 </section>
-                <section class="py-24 sm:py-32">
+                <section id="avaliacoes" class="py-24 sm:py-32">
                     <div class="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl gap-16 sm:gap-y-24 flex flex-col">
                         <div class="text-center flex flex-col items-center">
-                            <div class="mb-2 text-base/7 font-semibold text-primary">
-                                Testemunhos
-                            </div>
                             <h2 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl lg:text-5xl">
                                 O que nossos clientes estão dizendo.
                             </h2>
@@ -609,20 +417,17 @@
                                         Comece hoje mesmo
                                     </h2>
                                     <div class="mt-6 text-lg/8 text-gray-600 dark:text-gray-300">
-                                        A menos que suavize, existem algumas dificuldades.
+                                        A testar o Farol! E não se perca na navegação
                                     </div>
                                     <div class="mt-10 flex items-center gap-x-6 justify-center">
-                                        <button type="button"
-                                                class="focus:outline-none focus-visible:outline-0 disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:cursor-not-allowed aria-disabled:opacity-75 flex-shrink-0 font-medium rounded-full text-base gap-x-2.5 px-3.5 py-2.5 shadow-sm text-white dark:text-gray-900 bg-gray-900 hover:bg-gray-800 disabled:bg-gray-900 aria-disabled:bg-gray-900 dark:bg-white dark:hover:bg-gray-100 dark:disabled:bg-white dark:aria-disabled:bg-white focus-visible:ring-inset focus-visible:ring-2 focus-visible:ring-primary-500 dark:focus-visible:ring-primary-400 inline-flex items-center">
-                                            Cadastre-se gratuitamente
-                                        </button>
+                                        <ButtonSignIn text="ENTRAR NA PLATAFORMA"/>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </section>
-                <section class="py-24 sm:py-32">
+                <section id="perguntas" class="py-24 sm:py-32">
                     <div class="py-24 sm:py-32 scroll-mt-[var(--header-height)]" id="faq">
                         <div class="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl gap-16 sm:gap-y-24 flex flex-col">
                             <div class="text-center flex flex-col items-center">
@@ -859,4 +664,14 @@ import Logo from "~/components/Logo/Logo.vue";
 import ButtonDarkModeToggle from "~/components/ui-custom/Button/ButtonDarkModeToggle.vue";
 import ButtonLogin from "../../components/Home/Button/ButtonLogin.vue";
 import ButtonSignIn from "../../components/Home/Button/ButtonSignIn.vue";
+import ButtonMenu from "~/modules/lading-page/components/Home/Button/ButtonMenu.vue";
+import MenuItem from "~/modules/lading-page/components/Home/Menu/MenuItem.vue";
+import PriceEmpty from "~/modules/lading-page/components/Home/Price/PriceEmpty.vue";
+import {Icon} from "@iconify/vue";
+import {Button} from "~/components/ui/button";
+import MenuItemHome from "~/modules/lading-page/components/Home/Menu/MenuItemHome.vue";
+
+const route = useRoute()
+
+const prices = ref(['Acesso gratuito a plataforma', 'Consulta de pedidos', 'Consulta de produtos', 'Conferencia de estoque', 'Pesquisa de Mercado'])
 </script>

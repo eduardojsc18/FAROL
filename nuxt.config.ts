@@ -7,7 +7,7 @@ export default defineNuxtConfig({
 
     app: {
         head: {
-            htmlAttrs: {lang: 'pt-br'},
+            htmlAttrs: {lang: 'pt-br', class: 'scroll-smooth'},
             meta: [
                 {charset: 'utf-8'},
                 {name: 'viewport', content: 'width=device-width, initial-scale=1'},
@@ -34,7 +34,7 @@ export default defineNuxtConfig({
     modules: [
       '@nuxtjs/tailwindcss',
       '@pinia/nuxt',
-      '@pinia-plugin-persistedstate/nuxt',
+      // '@pinia-plugin-persistedstate/nuxt',
       '@vueuse/nuxt',
       'nuxt-lodash',
       'nuxt-swiper',

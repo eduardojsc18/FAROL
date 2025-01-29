@@ -1,5 +1,5 @@
 {
-    "name": "search-products",
+    "name": "FAROL",
     "private": true,
     "type": "module",
     "scripts": {
@@ -49,6 +49,7 @@
         "pinia": "^2.1.7",
         "radix-vue": "^1.9.10",
         "tailwind-merge": "^2.5.4",
+        "tinyexec": "^0.3.2",
         "vue3-click-away": "^1.2.4",
         "vuedraggable": "^4.1.0"
     }
