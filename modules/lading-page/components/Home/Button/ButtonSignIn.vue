@@ -1,5 +1,5 @@
 <template>
-    <NuxtLink to="/auth/sign-in">
+    <NuxtLink to="/auth/login">
         <Button class="rounded-full bg-orange-600 hover:bg-orange-700" v-bind="$attrs">
             {{ text }}
             <LucideArrowRightCircle class="size-5" :class="classIcon"/>

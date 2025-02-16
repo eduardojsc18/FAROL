@@ -25,10 +25,10 @@
                     <div class="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl gap-16 sm:gap-y-24 flex flex-col">
                         <div class="text-center">
                             <h1 class="text-5xl font-semibold tracking-tight text-gray-900 dark:text-white sm:text-7xl">
-                                Acompanhe suas vendas do <b class="relative font-bold inline-flex after:absolute after:w-[105%] after:-z-10 mx-3 after:h-[105%] after:left-1/2 after:top-1/2 after:-translate-x-1/2 after:-translate-y-1/2 after:bg-[#ffe600] dark:after:bg-transparent text-[#2d3177] dark:text-[#ffe600]">Mercado Livre</b> com precisão
+                                Acompanhe suas vendas do <b class="font-bold mx-3 text-orange-600">Mercado Livre</b> com precisão
                             </h1>
                             <div class="mt-6 text-lg tracking-tight text-gray-600 dark:text-gray-300">
-                                Farol oferece uma plataforma intuitiva para monitorar e analisar suas vendas no <b class="text-[#2d3177] dark:text-[#ffe600]">Mercado Livre</b>,
+                                Farol oferece uma plataforma intuitiva para monitorar e analisar suas vendas no <b class="text-orange-600">Mercado Livre</b>,
                                 ajudando você a tomar decisões informadas e aumentar seus lucros. <u class="underline-offset-4 font-medium">De forma simplificada!</u>
                             </div>
                             <div class="mt-10 flex items-center flex-wrap gap-x-6 gap-y-3 justify-center">

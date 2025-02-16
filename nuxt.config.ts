@@ -34,7 +34,7 @@ export default defineNuxtConfig({
     modules: [
       '@nuxtjs/tailwindcss',
       '@pinia/nuxt',
-      // '@pinia-plugin-persistedstate/nuxt',
+      '@pinia-plugin-persistedstate/nuxt',
       '@vueuse/nuxt',
       'nuxt-lodash',
       'nuxt-swiper',
