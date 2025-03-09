@@ -1,5 +1,7 @@
 <template>
-
+    <div>
+        confirmado
+    </div>
 </template>
 <script setup>
 //Props

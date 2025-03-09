@@ -33,17 +33,28 @@ export default defineNuxtConfig({
 
     modules: [
       '@nuxtjs/tailwindcss',
-      '@pinia/nuxt',
-      '@pinia-plugin-persistedstate/nuxt',
       '@vueuse/nuxt',
       'nuxt-lodash',
       'nuxt-swiper',
       '@nuxtjs/google-fonts',
       'dayjs-nuxt',
       'nuxt-lucide-icons',
-      'shadcn-nuxt',
       '@nuxtjs/color-mode',
+      '@pinia/nuxt',
+      'vuetify-nuxt-module',
+      '@nuxtjs/supabase',
     ],
+
+    supabase: {
+        redirectOptions: {
+            login: '/auth/login',
+            callback: '/auth/confirmation',
+            exclude: [
+                '/',
+                '/^\/index/', // usando regex para pegar variações
+            ],
+        },
+    },
 
     colorMode: {
         classSuffix: '',
@@ -52,9 +63,9 @@ export default defineNuxtConfig({
     },
 
     googleFonts: {
-        base64: true,
-        fontsDir: 'assets/fonts',
-        overwriting: true,
+        // base64: true,
+        // fontsDir: 'assets/fonts',
+        // overwriting: true,
         families: {
             Inter: [300, 400, 500, 600, 700, 800, 900],
             Raleway: [300, 400, 500, 600, 700, 800, 900],
@@ -63,6 +74,91 @@ export default defineNuxtConfig({
 
     tailwindcss: {
         cssPath: ['~/assets/css/main.css', {injectPosition: "first"}],
+        config: {
+            important: true,
+        }
+    },
+
+    vuetify: {
+        moduleOptions: {
+            /* module specific options */
+        },
+        vuetifyOptions: {
+            defaults: {
+                VBtn: {
+                    color: 'orange-darken-2',
+                    rounded: true,
+                    fontWeight: 'medium',
+                    letterSpacing: '0',
+                    textTransform: 'none',
+                    height: '40px',
+                    elevation: 0,
+                    class: ['transition-all', 'duration-150'],
+                    VIcon: {
+                        size: 'small',
+                    },
+                },
+                VTextField: {
+                    color: 'orange-darken-2',
+                    variant: 'outlined',
+                    density: 'comfortable',
+                    class: ['rounded-md', 'bg-background'],
+                    VIcon: {
+                        size: 'small',
+                    },
+                },
+                VTextarea: {
+                    color: 'orange-darken-2',
+                    variant: 'outlined',
+                    density: 'comfortable',
+                    class: ['rounded-md', 'bg-background'],
+                },
+                VSelect: {
+                    color: 'orange-darken-2',
+                    variant: 'outlined',
+                    density: 'comfortable',
+                    class: ['rounded-md', 'bg-background'],
+                    VIcon: {
+                        size: 'small',
+                    },
+                },
+                VCheckbox: {
+                    color: 'orange-darken-2',
+                    density: 'comfortable',
+                },
+                VRadio: {
+                    color: 'orange-darken-2',
+                    density: 'comfortable',
+                },
+                VSwitch: {
+                    color: 'orange-darken-2',
+                    inset: true,
+                },
+                VChip: {
+                    rounded: true,
+                    variant: 'flat',
+                },
+                VCard: {
+                    elevation: 1,
+                    rounded: 'lg',
+                    class: ['border', 'border-solid', 'border-border'],
+                },
+                VAlert: {
+                    rounded: 'lg',
+                    variant: 'tonal',
+                },
+                VDialog: {
+                    rounded: 'lg',
+                },
+                VNavigationDrawer: {
+                    elevation: 1,
+                },
+                VAppBar: {
+                    elevation: 0,
+                    class: ['border-b', 'border-solid', 'border-border'],
+                },
+            }
+        }
     },
 
     dayjs: {
@@ -71,17 +167,17 @@ export default defineNuxtConfig({
         defaultLocale: 'pt-br',
     },
 
-    shadcn: {
-        prefix: 'shadcn',
-        componentDir: './components/ui'
-    },
-
     build: {
         transpile: ['pinia-plugin-persistedstate'],
     },
 
     routeRules: {
         '/admin/**': { redirect: { to: '/dashboard'}, ssr: false },
+    },
+
+    lodash: {
+        prefix: 'lodash',
+        upperAfterPrefix: false
     },
 
     runtimeConfig: {

@@ -1,16 +1,16 @@
 <template>
     <li>
         <NuxtLink to="#inicio">
-            <Button variant="outline" class="rounded-full -ml-2 aspect-square size-8 !p-0 text-gray-500 dark:text-gray-400 !border-transparent hover:text-gray-700 dark:hover:text-gray-300 !bg-transparent" :class="{'!border-orange-600 !text-orange-600': isVisible}">
+            <button class="rounded-full -ml-2 aspect-square size-8 flex items-center justify-center  border dark:text-gray-400 dark:hover:text-gray-300 hover:text-orange-700" :class="!isVisible ? '!text-gray-500 !border-transparent' : '!border-orange-600 !text-orange-600'">
                 <Icon icon="radix-icons:home" class="size-5" />
+                <slot />
                 <span class="sr-only">Mudar tema</span>
-            </Button>
+            </button>
         </NuxtLink>
     </li>
 </template>
 <script setup>
 import {Icon} from "@iconify/vue";
-import {Button} from "~/components/ui/button";
 
 const props = defineProps({
     href: {type: String, default: ''},
@@ -18,6 +18,7 @@ const props = defineProps({
 })
 
 const isVisible = ref(false)
+const observer = ref()
 
 const handleIntersection = (entries) => {
     entries.forEach(entry => {
@@ -26,17 +27,17 @@ const handleIntersection = (entries) => {
 }
 
 onMounted(() => {
-    const observer = new IntersectionObserver(handleIntersection)
+    observer.value = new IntersectionObserver(handleIntersection)
     const targetElement = document.querySelector(props.href)
     if (targetElement) {
-        observer.observe(targetElement)
+        observer.value.observe(targetElement)
     }
 })
 
 onBeforeUnmount(() => {
     const targetElement = document.querySelector(props.href)
     if (targetElement) {
-        observer.unobserve(targetElement)
+        observer.value.unobserve(targetElement)
     }
 })
 </script>
