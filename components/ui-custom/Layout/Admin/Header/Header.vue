@@ -1,31 +1,62 @@
 <template>
-    <header class="z-[9999] max-md:sticky relative max-md:top-0 flex justify-between items-center p-3 md:p-4 gap-5 ">
-        <SidebarButtonShow class="md:invisible" />
-        <InputSearchAll />
+    <header class="z-[9999] sticky top-0 w-full flex justify-between items-center px-5 py-2 gap-5 ">
+        <SidebarButtonShow />
+        <!-- <InputSearchAll /> -->
         <div class="flex items-center gap-px">
-            <ButtonDarkModeToggle />
-            <NotificationButtonShow />
+<!--            <ButtonDarkModeToggle />-->
+<!--            <NotificationButtonShow />-->
+            <v-menu>
+                <template v-slot:activator="{ props }">
+                    <v-list-item
+                        active
+                        variant="text"
+                        color="transparent"
+                        v-bind="props"
+                        class="!p-2 !pr-6 rounded-xl"
+                    >
+                        <template #prepend>
+                            <div class="bg-white p-1 mr-3 shadow-sm rounded-full">
+                                <v-img rounded="full" width="30" height="30" :src="me.user_metadata.avatar_url" :alt="me.user_metadata.full_name" />
+                            </div>
+                        </template>
+                        <template #default>
+                            <p class="font-semibold text-neutral-800">{{ me.user_metadata.full_name }}</p>
+                        </template>
+                    </v-list-item>
+                </template>
+                <v-list class="!shadow-md">
+                    <NuxtLink to="/admin/minha-conta">
+                        <v-list-item>
+                            <v-list-item-title>Minha conta</v-list-item-title>
+                        </v-list-item>
+                    </NuxtLink>
+                    <v-list-item @click="signOut">
+                        <v-list-item-title>Sair</v-list-item-title>
+                    </v-list-item>
+                </v-list>
+            </v-menu>
         </div>
     </header>
 </template>
 <script setup>
 import SidebarButtonShow from "~/components/ui-custom/Layout/Admin/Sidebar/Button/SidebarButtonShow.vue";
-import NotificationButtonShow from "~/components/ui-custom/Layout/Admin/Notification/Button/NotificationButtonShow.vue";
-import InputSearchAll from "~/components/shared/InputSearchAll/InputSearchAll.vue";
-import ButtonDarkModeToggle from "~/components/ui-custom/Button/ButtonDarkModeToggle.vue";
+import { useFetchSupabase } from "~/composables/useFetchSupabase.js";
 
-//Props
+const supabase = useSupabaseClient()
+const router = useRouter()
+const { $fetchSupabase } = useNuxtApp()
 
-//Emits
+const { data: me } = await useAsyncData('me', () => $fetchSupabase('/api/me'))
 
-//Variables
-
-//Watch
-
-//Computed
-
-//Methods
-
+const signOut = async () => {
+    try {
+        await supabase.auth.signOut()
+    } catch (error) {
+        console.log(error)
+    } finally {
+        await router.push('/auth/login')
+    }
+}
 </script>
 <style scoped>
 

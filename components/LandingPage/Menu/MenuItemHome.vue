@@ -1,10 +1,9 @@
 <template>
     <li>
         <NuxtLink to="#inicio">
-            <button class="rounded-full -ml-2 aspect-square size-8 flex items-center justify-center  border dark:text-gray-400 dark:hover:text-gray-300 hover:text-orange-700" :class="!isVisible ? '!text-gray-500 !border-transparent' : '!border-orange-600 !text-orange-600'">
+            <button :class="{'text-orange-600 ring-1 ring-orange-600': isVisible}" class="rounded-full -ml-[9px] aspect-square size-8 flex items-center justify-center text-gray-500 hover:text-orange-700">
                 <Icon icon="radix-icons:home" class="size-5" />
                 <slot />
-                <span class="sr-only">Mudar tema</span>
             </button>
         </NuxtLink>
     </li>
@@ -27,7 +26,9 @@ const handleIntersection = (entries) => {
 }
 
 onMounted(() => {
-    observer.value = new IntersectionObserver(handleIntersection)
+    observer.value = new IntersectionObserver(handleIntersection, {
+        threshold: 0,
+    })
     const targetElement = document.querySelector(props.href)
     if (targetElement) {
         observer.value.observe(targetElement)

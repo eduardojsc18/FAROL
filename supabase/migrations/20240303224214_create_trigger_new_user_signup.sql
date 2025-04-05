@@ -1,4 +1,4 @@
-
-create trigger add_user_to_profile_trigger
-  after insert on auth.users
-for each row execute procedure add_new_user_to_profile_function();
+CREATE TRIGGER add_user_to_profile_trigger
+    AFTER INSERT ON auth.users
+    FOR EACH ROW
+    EXECUTE FUNCTION add_new_user_to_profile_function();

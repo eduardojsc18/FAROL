@@ -5,7 +5,7 @@ export const useMeli = async () => {
     const meliConfig = await storage.getItem('meli_config') ?? {}
 
     const api = $fetch.create({
-        baseURL: config.public.apiBase,
+        baseURL: config.public.meliUrl,
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/x-www-form-urlencoded',

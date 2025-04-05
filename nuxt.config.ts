@@ -49,10 +49,7 @@ export default defineNuxtConfig({
         redirectOptions: {
             login: '/auth/login',
             callback: '/auth/confirmation',
-            exclude: [
-                '/',
-                '/^\/index/', // usando regex para pegar variações
-            ],
+            include: ['/admin(/*)?'],
         },
     },
 
@@ -69,6 +66,7 @@ export default defineNuxtConfig({
         families: {
             Inter: [300, 400, 500, 600, 700, 800, 900],
             Raleway: [300, 400, 500, 600, 700, 800, 900],
+            Nunito: true,
         },
     },
 
@@ -87,22 +85,19 @@ export default defineNuxtConfig({
             defaults: {
                 VBtn: {
                     color: 'orange-darken-2',
-                    rounded: true,
+                    rounded: 'sm',
                     fontWeight: 'medium',
                     letterSpacing: '0',
                     textTransform: 'none',
                     height: '40px',
                     elevation: 0,
                     class: ['transition-all', 'duration-150'],
-                    VIcon: {
-                        size: 'small',
-                    },
                 },
                 VTextField: {
                     color: 'orange-darken-2',
                     variant: 'outlined',
                     density: 'comfortable',
-                    class: ['rounded-md', 'bg-background'],
+                    class: ['rounded-sm', 'bg-background'],
                     VIcon: {
                         size: 'small',
                     },
@@ -139,9 +134,10 @@ export default defineNuxtConfig({
                     variant: 'flat',
                 },
                 VCard: {
-                    elevation: 1,
-                    rounded: 'lg',
-                    class: ['border', 'border-solid', 'border-border'],
+                    elevation: 0,
+                    rounded: 'none',
+                    border: 'none',
+                    class: ['shadow-xl bg-white'],
                 },
                 VAlert: {
                     rounded: 'lg',
@@ -156,6 +152,15 @@ export default defineNuxtConfig({
                 VAppBar: {
                     elevation: 0,
                     class: ['border-b', 'border-solid', 'border-border'],
+                },
+                vListItem: {
+                    rounded: 'lg',
+                },
+                vList: {
+                    rounded: 'lg',
+                },
+                VMenu: {
+                    contentClass: 'rounded-lg mt-2',
                 },
             }
         }
@@ -172,7 +177,8 @@ export default defineNuxtConfig({
     },
 
     routeRules: {
-        '/admin/**': { redirect: { to: '/dashboard'}, ssr: false },
+        '/admin': { redirect: { to: '/admin/dashboard'}, ssr: false},
+        '/auth': { redirect: { to: '/auth/login'} },
     },
 
     lodash: {
@@ -182,9 +188,14 @@ export default defineNuxtConfig({
 
     runtimeConfig: {
         public: {
-            appName: process.env.NUXT_PUBLIC_APP_NAME || 'FAROL',
-            apiBase: process.env.NUXT_PUBLIC_API_BASE,
-        }
+            nodeEnv: process.env.NODE_ENV,
+            supabaseUrl: process.env.SUPABASE_URL,
+            supabaseKey: process.env.SUPABASE_KEY,
+            siteUrl: process.env.SITE_URL,
+            appName: process.env.APP_NAME,
+            meliUrlOAuth: process.env.MELI_URL_OAUTH,
+            meliUrl: process.env.MELI_URL,
+        },
     },
 
 })

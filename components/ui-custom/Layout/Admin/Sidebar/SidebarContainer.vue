@@ -3,19 +3,18 @@
         enter-active-class="transition ease-in-out duration-500" enter-from-class="max-md:-translate-x-full" enter-to-class="max-md:translate-x-0"
         leave-active-class="transition ease-in-out duration-500" leave-from-class="max-md:translate-x-0" leave-to-class="max-md:-translate-x-full"
     >
-        <aside v-show="!useSidebar().minify" class="md:!block max-w-screen h-screen flex-shrink-0 self-stretch group/aside max-md:fixed md:sticky top-0 left-0 md:top-0 z-[9999999] md:pl-2 md:py-2 will-change-transform">
-            <nav class="w-[60vw] sm:w-[280px] flex flex-col min-h-full overflow-visible max-md:overflow-y-auto bg-orange-100 dark:bg-neutral-900 shadow-md md:rounded-2xl transition-[width] will-change-[width] duration-500 z-10" :class="{'md:!w-[55px]': useSidebar().minify}">
-                <div class="flex justify-between p-3 px-[13px]">
-                    <SidebarButtonShow />
-                    <ButtonDarkModeToggle class="md:hidden" />
-                </div>
-                <header class="h-24 flex flex-col p-2 justify-center">
+        <aside v-show="!useSidebar().minify" class="md:!block max-w-screen h-screen flex-shrink-0 self-stretch group/aside max-md:fixed md:sticky top-0 left-0 md:top-0 z-[9999999] will-change-transform">
+            <nav class="w-[60vw] sm:w-[250px] flex flex-col min-h-full overflow-visible max-md:overflow-y-auto bg-white shadow-inner transition-[width] will-change-[width] duration-500 z-10" :class="{'md:!w-[55px]': useSidebar().minify}">
+<!--                <div class="flex justify-between p-3 px-[13px]">-->
+<!--                    <ButtonDarkModeToggle class="md:hidden" />-->
+<!--                </div>-->
+                <header class="h-[70px] flex flex-col overflow-hidden p-2 justify-center">
                     <slot name="header" />
                 </header>
-                <main class="py-4 px-2 space-y-px">
+                <main class="py-4 grow mt-10 space-y-8">
                     <slot />
                 </main>
-                <footer  class="py-4 space-y-5">
+                <footer class="py-4 mt-10 space-y-5">
                     <slot name="footer" />
                 </footer>
             </nav>

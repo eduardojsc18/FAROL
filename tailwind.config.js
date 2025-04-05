@@ -8,10 +8,12 @@ module.exports = {
         "./pages/**/*.vue",
         "./plugins/**/*.{js,ts}",
         "./app.vue",
+        "./nuxt.config.js",
         "./error.vue",
         "./modules/**/*.{js,vue,ts}"
     ],
     darkMode: 'selector',
     safelist: ['dark'],
+
     plugins: [tailwindcssAnimate, require("tailwindcss-animate")],
 }
