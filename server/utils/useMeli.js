@@ -1,8 +1,6 @@
 export const useMeli = async () => {
 
     const config = useRuntimeConfig()
-    const storage = useStorage('data')
-    const meliConfig = await storage.getItem('meli_config') ?? {}
 
     const api = $fetch.create({
         baseURL: config.public.meliUrl,

@@ -187,6 +187,8 @@ export default defineNuxtConfig({
     },
 
     runtimeConfig: {
+        meliClientId: process.env.MELI_CLIENT_ID,
+        meliSecretPassword: process.env.MELI_SECRET_PASSWORD,
         public: {
             nodeEnv: process.env.NODE_ENV,
             supabaseUrl: process.env.SUPABASE_URL,
@@ -194,7 +196,7 @@ export default defineNuxtConfig({
             siteUrl: process.env.SITE_URL,
             appName: process.env.APP_NAME,
             meliUrlOAuth: process.env.MELI_URL_OAUTH,
-            meliUrl: process.env.MELI_URL,
+            meliRedirectUri: process.env.MELI_REDIRECT_URI,
         },
     },
 

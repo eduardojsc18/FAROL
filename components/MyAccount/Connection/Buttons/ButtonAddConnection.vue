@@ -44,13 +44,26 @@
             <v-card-actions>
                 <v-spacer />
                 <v-btn
+                    v-if="step === 1"
                     color="orange"
                     class="text-white px-5"
                     variant="flat"
                     @click="execCreateConnection"
-                    append-icon="mdi-arrow-right"
+                    :disabled="form.title < 3"
+                    :loading="loading"
                 >
                     Salvar conexão
+                </v-btn>
+                <v-btn
+                    v-if="step === 2"
+                    color="orange"
+                    class="text-white px-5"
+                    variant="flat"
+                    @click="execConnection"
+                    :disabled="form.code < 30"
+                    :loading="loading"
+                >
+                    Testar conexão
                 </v-btn>
             </v-card-actions>
         </v-card>
@@ -62,28 +75,52 @@ import FormConnectionOAuth from "~/components/MyAccount/Connection/Forms/FormCon
 import {useFetchSupabase} from "~/composables/useFetchSupabase.js";
 const { $fetchSupabase } = useNuxtApp()
 
+const emits = defineEmits(['created'])
+
 const showDialog = ref(false)
 const step = ref(1)
 const form = ref({
-    type: 'meli'
+    title: '',
+    description: '',
+    code: '',
+    type: 'meli',
 })
 const loading = ref(false)
 
 const execCreateConnection = async () => {
     try {
+        loading.value = true
         const payload = {...form.value}
-        const response = await $fetchSupabase('/api/connections/create', {
+        const { data } = await $fetchSupabase('/api/connections/create', {
+            method: 'POST',
+            body: payload,
+        })
+
+        if (data.id) {
+            form.value = {...data}
+            emits('created')
+            step.value++
+        }
+
+    } catch (e) {
+        console.log(e)
+    } finally {
+        loading.value = false
+    }
+}
+const execConnection = async () => {
+    try {
+        loading.value = true
+        const payload = {...form.value}
+        const { data } = await $fetchSupabase(`/api/connections/${payload.id}/establish-connection`, {
             method: 'POST',
             body: payload,
         })
     } catch (e) {
-
+        console.log(e)
     } finally {
-
+        loading.value = false
     }
-}
-const execSaveConnection = async () => {
-
 }
 const closeDialog = (item) => {
     if(!!item) {

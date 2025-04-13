@@ -18,7 +18,7 @@
                             <p class="font-medium text-neutral-700 text-lg">Configurações de conexão</p>
                             <p class="text-sm text-neutral-500">Configure aqui sua conexão com o MercadoLivre</p>
                         </div>
-                        <ButtonAddConnection />
+                        <ButtonAddConnection @created="refresh" />
                     </header>
                     <div class="mt-5 flex justify-start">
                         <v-data-table

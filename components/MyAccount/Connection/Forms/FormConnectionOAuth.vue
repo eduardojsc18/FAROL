@@ -1,5 +1,5 @@
 <template>
-    <v-card-text class="px-6 space-y-1">
+    <v-card-text class="space-y-1">
         <ButtonOAuth v-model="form" />
     </v-card-text>
 </template>
