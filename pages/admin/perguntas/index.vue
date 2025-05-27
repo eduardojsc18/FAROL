@@ -14,13 +14,13 @@
     </div>
 </template>
 <script setup>
+import HeaderPage from "~/components/UI/Layouts/Admin/Header/HeaderPage.vue";
+import QuestionTable from "~/components/question/QuestionTable.vue";
+import QuestionTableItem from "~/components/question/QuestionTableItem.vue";
+import IconQuestion from "~/components/UI/Icons/IconQuestion.vue";
 import {useHelpers} from "~/composables/useHelpers.js";
 import {useMe} from "~/stores/useMe.js";
-import HeaderPage from "~/components/ui/Layout/Admin/Header/HeaderPage.vue";
 import {useDayjs} from "#dayjs";
-import QuestionTable from "~/components/Admin/question/QuestionTable.vue";
-import QuestionTableItem from "~/components/Admin/question/QuestionTableItem.vue";
-import IconQuestion from "~/components/Admin/shared/icons/IconQuestion.vue";
 
 const dayjs = useDayjs()
 const { customFetch } = useHelpers()

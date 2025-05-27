@@ -22,19 +22,7 @@
     </div>
 </template>
 <script setup>
-//Props
-
-//Emits
-
-//Variables
-
-//Watch
-
-//Computed
-
-//Methods
-
-import LoaderSkeleton from "~/components/ui/Loader/LoaderSkeleton.vue";
+import LoaderSkeleton from "~/components/UI/Loader/LoaderSkeleton.vue";
 </script>
 <style scoped>
 

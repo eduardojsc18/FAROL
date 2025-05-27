@@ -35,9 +35,9 @@
     </div>
 </template>
 <script setup>
-import HeaderPage from "~/components/ui/Layout/Admin/Header/HeaderPage.vue";
+import HeaderPage from "~/components/UI/Layouts/Admin/Header/HeaderPage.vue";
 import Draggable from "vuedraggable";
-import IconMarketResearch from "~/components/Admin/shared/icons/IconMarketResearch.vue";
+import IconMarketResearch from "~/components/UI/Icons/IconMarketResearch.vue";
 
 const items = ref([
     {id: 1, title: 'Produtos', products: [{id: 1111, name: 'Fone de Ouvido'}, {id: 2222, name: 'Carregador'}, {id: 3333, name: 'Carrinho de BEBE'}]},
