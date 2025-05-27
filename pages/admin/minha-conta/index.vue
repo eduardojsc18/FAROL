@@ -6,7 +6,7 @@
         >
             <template #icon>
                 <div class="bg-white p-1 shadow-sm rounded-full">
-                    <v-img rounded="full" class="size-12" :src="me.user_metadata.avatar_url" :alt="me.user_metadata.full_name" />
+                    <v-img rounded="full" class="size-12" loading="lazy" :src="me.user_metadata.avatar_url" :alt="me.user_metadata.full_name" />
                 </div>
             </template>
         </HeaderPage>
@@ -18,7 +18,10 @@
                             <p class="font-medium text-neutral-700 text-lg">Configurações de conexão</p>
                             <p class="text-sm text-neutral-500">Configure aqui sua conexão com o MercadoLivre</p>
                         </div>
-                        <ButtonAddConnection @created="refresh" />
+                        <ButtonAddConnection
+                            :disabled="me.connections.length > 0"
+                            @created="refresh"
+                        />
                     </header>
                     <div class="mt-5 flex justify-start">
                         <v-data-table
@@ -34,6 +37,12 @@
                             <template #item.account_info="{ item }">
                                 <div v-if="!item.account_info" class="text-xs italic text-neutral-500">
                                     Nenhuma conta vinculada
+                                </div>
+                                <div v-else class="flex justify-start">
+                                    <div class="flex items-center justify-start gap-2">
+                                        <v-img class="size-5" :src="item.account_info.thumbnail.picture_url"/>
+                                        {{ item.account_info.nickname }}
+                                    </div>
                                 </div>
                             </template>
                             <template #item.actions="{ item }">
@@ -51,12 +60,11 @@
     </div>
 </template>
 <script setup>
-import HeaderPage from "~/components/ui-custom/Layout/Admin/Header/HeaderPage.vue";
+import HeaderPage from "~/components/UI/Layouts/Admin/Header/HeaderPage.vue";
 import ButtonAddConnection from "~/components/MyAccount/Connection/Buttons/ButtonAddConnection.vue";
-import ButtonDeleteWithConfirmation from "~/components/ui-custom/Button/ButtonDeleteWithConfirmation.vue";
+import ButtonDeleteWithConfirmation from "~/components/UI/Buttons/ButtonDeleteWithConfirmation/ButtonDeleteWithConfirmation.vue";
 
 const { $fetchSupabase } = useNuxtApp()
-
 const { data: me, refresh } = await useAsyncData('me', () => $fetchSupabase('/api/me'))
 
 const DEFAULT_CONNECTIONS_HEADERS = [

@@ -28,18 +28,4 @@
 </template>
 <script setup>
 import OrderTableItemLoading from "~/components/Admin/order/table/OrderTableItemLoading.vue";
-
-const fixed = ref()
-
-onMounted(() => {
-    let total = document.getElementById("thead-order-table")
-    if (total) {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                fixed.value = entry.isIntersecting
-            })
-        }, {threshold: 1, rootMargin: '20px'})
-        observer.observe(total)
-    }
-})
 </script>

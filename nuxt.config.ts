@@ -32,17 +32,15 @@ export default defineNuxtConfig({
     devtools: {enabled: true},
 
     modules: [
-      '@nuxtjs/tailwindcss',
-      '@vueuse/nuxt',
-      'nuxt-lodash',
-      'nuxt-swiper',
-      '@nuxtjs/google-fonts',
-      'dayjs-nuxt',
-      'nuxt-lucide-icons',
-      '@nuxtjs/color-mode',
-      '@pinia/nuxt',
-      'vuetify-nuxt-module',
-      '@nuxtjs/supabase',
+        '@nuxtjs/tailwindcss',
+        '@vueuse/nuxt',
+        'nuxt-lodash',
+        'nuxt-swiper',
+        '@nuxtjs/google-fonts',
+        'dayjs-nuxt',
+        '@pinia/nuxt',
+        'vuetify-nuxt-module',
+        '@nuxtjs/supabase',
     ],
 
     supabase: {
@@ -95,6 +93,15 @@ export default defineNuxtConfig({
                 },
                 VTextField: {
                     color: 'orange-darken-2',
+                    variant: 'outlined',
+                    density: 'comfortable',
+                    class: ['rounded-sm', 'bg-background'],
+                    VIcon: {
+                        size: 'small',
+                    },
+                },
+                VDateInput: {
+                    color: 'orange',
                     variant: 'outlined',
                     density: 'comfortable',
                     class: ['rounded-sm', 'bg-background'],
@@ -162,7 +169,11 @@ export default defineNuxtConfig({
                 VMenu: {
                     contentClass: 'rounded-lg mt-2',
                 },
-            }
+            },
+            icons: {
+                defaultSet: 'mdi'
+            },
+            labComponents: true,
         }
     },
 
@@ -195,6 +206,7 @@ export default defineNuxtConfig({
             supabaseKey: process.env.SUPABASE_KEY,
             siteUrl: process.env.SITE_URL,
             appName: process.env.APP_NAME,
+            meliUrl: process.env.MELI_URL,
             meliUrlOAuth: process.env.MELI_URL_OAUTH,
             meliRedirectUri: process.env.MELI_REDIRECT_URI,
         },

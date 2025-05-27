@@ -33,8 +33,8 @@
     </div>
 </template>
 <script setup>
-import HeaderPage from "~/components/ui-custom/Layout/Admin/Header/HeaderPage.vue";
-import IconSeller from "~/components/shared/icons/IconSeller.vue";
+import HeaderPage from "~/components/UI/Layouts/Admin/Header/HeaderPage.vue";
+import IconSeller from "~/components/UI/Icons/IconSeller.vue";
 
 useHead({
     title: 'Vendedores'

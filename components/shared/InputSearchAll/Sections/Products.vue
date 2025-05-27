@@ -80,9 +80,9 @@
     </section>
 </template>
 <script setup>
-import LoaderError from "~/components/ui-custom/Loader/LoaderError.vue";
-import LoaderWaiting from "~/components/ui-custom/Loader/LoaderWaiting.vue";
-import LoaderLoading from "~/components/ui-custom/Loader/LoaderLoading.vue";
+import LoaderError from "~/components/UI/Loader/LoaderError.vue";
+import LoaderWaiting from "~/components/UI/Loader/LoaderWaiting.vue";
+import LoaderLoading from "~/components/UI/Loader/LoaderLoading.vue";
 
 const props = defineProps({
     status: {type: String, default: ''},

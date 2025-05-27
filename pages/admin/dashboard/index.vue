@@ -70,13 +70,29 @@
 
             </div>
         </section>
+        <section>
+            <v-btn @click="test">
+                TESTAR CONEXAO
+            </v-btn>
+            <pre>{{ result }}</pre>
+        </section>
     </div>
 </template>
 <script setup>
-import HeaderPage from "~/components/ui-custom/Layout/Admin/Header/HeaderPage.vue";
-import IconDashboard from "~/components/shared/icons/IconDashboard.vue";
+import HeaderPage from "~/components/UI/Layouts/Admin/Header/HeaderPage.vue";
+import IconDashboard from "~/components/UI/Icons/IconDashboard.vue";
 
 useHead({
     title: 'Dashboard'
 })
+
+const result = ref({})
+
+const test = async () => {
+
+    const {data} = await $fetch('/api/connections/test')
+    result.value = data
+}
+
+
 </script>

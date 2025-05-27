@@ -1,10 +1,7 @@
 <template>
-    <header class="z-[9999] sticky top-0 w-full flex justify-between items-center px-5 py-2 gap-5 ">
-        <SidebarButtonShow />
-        <!-- <InputSearchAll /> -->
+    <header class="z-[9999] sticky top-0 w-full flex justify-between shadow-sm items-center px-3 py-2 gap-5 ">
+        <SidebarButtonShow class="-translate-x-1" />
         <div class="flex items-center gap-px">
-<!--            <ButtonDarkModeToggle />-->
-<!--            <NotificationButtonShow />-->
             <v-menu>
                 <template v-slot:activator="{ props }">
                     <v-list-item
@@ -16,7 +13,7 @@
                     >
                         <template #prepend>
                             <div class="bg-white p-1 mr-3 shadow-sm rounded-full">
-                                <v-img rounded="full" width="30" height="30" :src="me.user_metadata.avatar_url" :alt="me.user_metadata.full_name" />
+                                <v-img rounded="full" width="30" height="30" loading="lazy" :src="me.user_metadata.avatar_url" :alt="me.user_metadata.full_name" />
                             </div>
                         </template>
                         <template #default>
@@ -39,8 +36,7 @@
     </header>
 </template>
 <script setup>
-import SidebarButtonShow from "~/components/ui-custom/Layout/Admin/Sidebar/Button/SidebarButtonShow.vue";
-import { useFetchSupabase } from "~/composables/useFetchSupabase.js";
+import SidebarButtonShow from "~/components/UI/Layouts/Admin/Sidebar/Button/SidebarButtonShow.vue";
 
 const supabase = useSupabaseClient()
 const router = useRouter()

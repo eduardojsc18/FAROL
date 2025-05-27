@@ -12,6 +12,7 @@ create table
         access_token varchar,
         refresh_token varchar,
         expires_in varchar,
+        expires_at timestamp with time zone,
 
         account_info jsonb,
 

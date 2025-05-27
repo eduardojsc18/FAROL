@@ -1,5 +1,5 @@
 <template>
-    <header class="z-0">
+    <header class="z-0 flex md:justify-between *:shrink-0 max-sm:flex-col gap-5">
         <div class="relative flex items-center gap-2">
             <div v-if="$slots.icon" class="relative z-20">
                 <slot name="icon"/>
@@ -9,6 +9,7 @@
                 <p v-if="props.description" class="text-sm text-neutral-400">{{ props.description }}</p>
             </div>
         </div>
+        <slot name="right" />
     </header>
 </template>
 <script setup>

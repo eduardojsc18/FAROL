@@ -1,4 +1,4 @@
-import { serverSupabaseClient } from "#supabase/server";
+import {serverSupabaseClient} from "#supabase/server";
 
 export default defineEventHandler(async (event) => {
     const client = await serverSupabaseClient(event)
@@ -9,8 +9,23 @@ export default defineEventHandler(async (event) => {
 
     let responseData = {}
 
+    const getAccountInfo = async (connection) => {
+        try {
+            return await $fetch('https://api.mercadolibre.com/users/me', {
+                headers: {
+                    Authorization: `Bearer ${connection.access_token}`,
+                    Accept: 'application/json',
+                },
+            })
+        } catch (error) {
+            console.error('Erro ao buscar informações da conta:', error)
+            throw error
+        }
+    }
+
     const updateConnection = async (connection) => {
         try {
+
             const accountInfo = await getAccountInfo(connection)
 
             const { data, error } = await client
@@ -21,9 +36,10 @@ export default defineEventHandler(async (event) => {
                     access_token: connection.access_token,
                     refresh_token: connection.refresh_token,
                     expires_in: connection.expires_in,
+                    expires_at: new Date(Date.now() + 6 * 60 * 60 * 1000),
                     account_info: accountInfo,
                 })
-                .eq('id', payload.id)
+                .eq('id', id)
                 .select('*')
                 .single()
 
@@ -38,30 +54,15 @@ export default defineEventHandler(async (event) => {
         }
     }
 
-    const getAccountInfo = async (connection) => {
-        try {
-            const response = await $fetch('https://api.mercadolibre.com/users/me', {
-                headers: {
-                    Authorization: `Bearer ${connection.access_token}`,
-                    Accept: 'application/json',
-                },
-            })
-            return response
-        } catch (error) {
-            console.error('Erro ao buscar informações da conta:', error)
-            throw error
-        }
-    }
-
     try {
-        // Preparando o corpo da requisição no formato correto para x-www-form-urlencoded
-        const formData = new URLSearchParams({
+
+        const formData = {
             grant_type: 'authorization_code',
             client_id: config.meliClientId,
             client_secret: config.meliSecretPassword,
             redirect_uri: config.public.meliRedirectUri,
             code: payload.code
-        }).toString()
+        }
 
         const response = await $fetch('https://api.mercadolibre.com/oauth/token', {
             method: 'POST',
@@ -69,7 +70,7 @@ export default defineEventHandler(async (event) => {
                 Accept: 'application/json',
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: formData // Não usar JSON.stringify aqui
+            body: formData
         })
 
         if (response.access_token) {
@@ -87,5 +88,5 @@ export default defineEventHandler(async (event) => {
         })
     }
 
-    return responseData
+    return responseData.account_info
 })
