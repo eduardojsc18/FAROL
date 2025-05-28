@@ -9,7 +9,7 @@
                 <IconOrder class="!size-10" />
             </template>
             <template #right>
-                <div class="flex items-center">
+                <form @submit.prevent="execReport" class="flex items-center gap-2">
                     <InputDate
                         v-model="request.date_range"
                         placeholder="DD/MM/YYYY - DD/MM/YYYY"
@@ -20,7 +20,13 @@
                         show-select-period
                         min-width="300"
                     />
-                </div>
+                    <v-btn
+                        icon="mdi-magnify"
+                        color="orange-darken-2"
+                        rounded="lg"
+                        type="submit"
+                    />
+                </form>
             </template>
         </HeaderPage>
 
@@ -72,7 +78,6 @@
                 </section>
             </v-card-title>
             <v-card-text class="!p-0">
-
                 <v-data-table
                     fixed-header
                     :headers="DEFAULT_ORDER_TABLE_HEADERS"
@@ -135,7 +140,7 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="text-center font-semibold text-blue-500">
+                            <td class="text-center font-semibold text-blue-500 whitespace-nowrap">
                                 R$ {{ toBRL(item.order_total) }}
                                 <p v-if="item.quantity > 1" class="text-gray-400 text-[10px]">{{item.quantity}} x R${{ toBRL(item.unit_price) }}</p>
                             </td>
@@ -145,7 +150,7 @@
                             <td class="text-center whitespace-nowrap" :class="item.tax_marketplace_shipping_after ? 'text-red-500' : 'text-gray-400'">
                                 R$ {{ toBRL(item.tax_marketplace_shipping_after) }}
                             </td>
-                            <td class="text-center whitespace-nowrap text-blue-500">
+                            <td class="text-center whitespace-nowrap text-red-500">
                                 R$ {{ toBRL(item.tax_nfe) }}
                             </td>
                             <td class="text-center whitespace-nowrap" :class="item.product_cost_total ? 'text-red-500' : 'text-gray-400'">
@@ -162,6 +167,7 @@
                 </v-data-table>
             </v-card-text>
         </v-card>
+
         <v-dialog width="700" v-model="editOrder.showDialog">
             <v-card>
                 <v-card-text>
@@ -253,6 +259,7 @@
                 </v-form>
             </v-card>
         </v-dialog>
+
     </div>
 </template>
 <script setup>
@@ -329,8 +336,7 @@ const execReport = async () => {
     loading.value = true
 
     const dataFilter = {
-        ...route.query,
-        ...request.value,
+        date_range: [dayjs(request.value.date_range[0]).tz('America/Sao_Paulo').startOf('day').toISOString(), dayjs(request.value.date_range[1]).tz('America/Sao_Paulo').endOf('day').toISOString()]
     }
 
     try {
