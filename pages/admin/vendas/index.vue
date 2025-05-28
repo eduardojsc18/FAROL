@@ -261,6 +261,11 @@ import HeaderPage from "~/components/UI/Layouts/Admin/Header/HeaderPage.vue";
 import WidgetReportTotals from "~/components/UI/Widgets/ReportTotals/WidgetReportTotals.vue";
 import dayjs from "dayjs";
 import InputDate from "~/components/UI/Inputs/InputDate/InputDate.vue";
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const { $fetchSupabase } = useNuxtApp()
 const { toBRL } = useHelpers()
@@ -288,7 +293,7 @@ const CONFIG_STATUSES = {
 }
 
 const request = ref({
-    date_range: [dayjs().toISOString(), dayjs().toISOString()],
+    date_range: [dayjs().tz('America/Sao_Paulo').startOf('day').toISOString(), dayjs().tz('America/Sao_Paulo').endOf('day').toISOString()],
     ...route.query,
 })
 
