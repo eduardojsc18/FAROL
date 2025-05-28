@@ -9,7 +9,7 @@
                 <IconOrder class="!size-10" />
             </template>
             <template #right>
-                <form @submit.prevent="execReport" class="flex items-center gap-2">
+                <form @submit.prevent="execReport" class="flex max-sm:flex-col items-center gap-2">
                     <InputDate
                         v-model="request.date_range"
                         placeholder="DD/MM/YYYY - DD/MM/YYYY"
@@ -21,10 +21,12 @@
                         min-width="300"
                     />
                     <v-btn
-                        icon="mdi-magnify"
+                        prepend-icon="mdi-magnify"
+                        text="buscar"
                         color="orange-darken-2"
                         rounded="lg"
                         type="submit"
+                        class="max-sm:!w-full"
                     />
                 </form>
             </template>
