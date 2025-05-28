@@ -288,7 +288,7 @@ const CONFIG_STATUSES = {
 }
 
 const request = ref({
-    date_range: [dayjs().startOf('month').toISOString(), dayjs().toISOString()],
+    date_range: [dayjs().toISOString(), dayjs().toISOString()],
     ...route.query,
 })
 
