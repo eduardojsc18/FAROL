@@ -363,7 +363,9 @@ const execReport = async () => {
     loading.value = true
 
     const dataFilter = {
-        date_range: [dayjs(request.value.date_range[0]).tz('America/Sao_Paulo').startOf('day').toISOString(), dayjs(request.value.date_range[1]).tz('America/Sao_Paulo').endOf('day').toISOString()]
+        date_range: [
+            dayjs(request.value.date_range[0]).tz('America/Sao_Paulo').startOf('day').toISOString(),
+            dayjs(request.value.date_range[1]).tz('America/Sao_Paulo').endOf('day').toISOString()]
     }
 
     try {

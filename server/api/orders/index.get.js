@@ -496,7 +496,7 @@ function generateOrdersReport(ordersDetails) {
 // Função para pegar a imagem de capa do produto
 function getThumbnailUrl(product, order_variation) {
 
-    if(product.variations.length <= 1 || !product.variations) {
+    if(product?.variations?.length <= 1 || !product.variations) {
         return product.thumbnail;
     }
 

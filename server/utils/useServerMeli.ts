@@ -3,10 +3,10 @@ import {$fetch, FetchOptions} from "ofetch";
 
 export async function useServerMeli(event: any) {
 
-    const client = await serverSupabaseClient(event)
-    const user = await serverSupabaseUser(event)
-    const config = useRuntimeConfig()
-
+    interface User {
+        id: string|number;
+        name?: string;
+    }
     interface TokenData {
         access_token?: string;
         refresh_token?: string;
@@ -14,6 +14,10 @@ export async function useServerMeli(event: any) {
         updated_at?: Date;
         status?: string;
     }
+
+    const client = await serverSupabaseClient(event)
+    const user: User = await serverSupabaseUser(event)
+    const config = useRuntimeConfig()
 
     const isTokenExpired = (expiresAt: Date|any): boolean => {
         return Date.now() >= new Date(expiresAt).getTime()
