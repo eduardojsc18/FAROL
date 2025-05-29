@@ -28,19 +28,21 @@ export default defineEventHandler(async (event) => {
         const allOrders = await fetchAllOrders(meliFetch, query);
 
         if (!allOrders.length) {
-            return { data: { orders: [] } };
+            return { data: { orders: [], report: {} } };
         }
 
         // 2. Buscar detalhes em lotes para otimizar performance
         const ordersDetails = await fetchOrdersDetails(meliFetch, allOrders);
 
         // 3. Gerar relatório com totais
-        const report = generateOrdersReport(ordersDetails);
+        const {report, report_per_product} = generateOrdersReport(ordersDetails);
+
 
         return {
             data: {
                 orders: ordersDetails,
-                report: report
+                report,
+                report_per_product,
             }
         };
 
@@ -203,8 +205,6 @@ async function fetchSingleOrderDetails(meliFetch, order) {
     } else {
         requests.push(Promise.resolve(null));
     }
-
-    console.log('Pedido:', requests[0]);
 
     const [product, shipping, shipping_costs, advertising] = await Promise.all(requests);
 
@@ -402,12 +402,42 @@ function generateOrdersReport(ordersDetails) {
         total_canceled_gross_revenue: 0,
     };
 
+    const report_per_product = {}
+
     let firstDate = null;
     let lastDate = null;
 
     ordersDetails.forEach(order => {
 
         if (order.order_status === 'paid') {
+
+            if (!report_per_product[order.item_id]) {
+                report_per_product[order.item_id] = {
+                    product_data: {
+                        item_id: order.item_id,
+                        item_title: order.item_title,
+                        item_sku: order.item_sku,
+                        item_thumbnail: order.item_thumbnail,
+                        item_variations: order.item_variations,
+                        item_variation_attributes: order.item_variation_attributes,
+                    },
+                    total_orders: 0,
+                    total_products: 0,
+                    total_unit_price: 0,
+                    total_tax_marketplace: 0,
+                    total_tax_marketplace_shipping_before: 0,
+                    total_tax_marketplace_shipping_after: 0,
+                    total_tax_nfe: 0,
+                    total_product_cost: 0,
+                    total_product_cost_percent: 0,
+                    total_gross_revenue: 0,
+                    total_net_revenue: 0,
+                    total_net_revenue_percent: 0,
+                    total_canceled_orders: 0,
+                    total_canceled_products: 0,
+                    total_canceled_gross_revenue: 0,
+                };
+            }
 
             report.total_products += order.quantity || 0;
             report.total_unit_price += order.unit_price || 0;
@@ -419,6 +449,19 @@ function generateOrdersReport(ordersDetails) {
             report.total_tax_nfe += order.tax_nfe || 0;
             report.total_product_cost += order.product_cost_total || 0;
             report.total_net_revenue += order.net_revenue || 0;
+
+            report_per_product[order.item_id].total_orders += 1
+            report_per_product[order.item_id].total_products += order.quantity || 0;
+            report_per_product[order.item_id].total_unit_price += order.unit_price || 0;
+            report_per_product[order.item_id].total_gross_revenue += order.order_total || 0;
+            report_per_product[order.item_id].total_tax_marketplace += order.tax_marketplace || 0;
+            report_per_product[order.item_id].total_tax_marketplace_shipping_before += order.tax_marketplace_shipping_before || 0;
+            report_per_product[order.item_id].total_tax_marketplace_shipping_after += order.tax_marketplace_shipping_after || 0;
+            report_per_product[order.item_id].total_advertising_cost += order.advertising_cost || 0;
+            report_per_product[order.item_id].total_tax_nfe += order.tax_nfe || 0;
+            report_per_product[order.item_id].total_product_cost += order.product_cost_total || 0;
+            report_per_product[order.item_id].total_net_revenue += order.net_revenue || 0;
+
 
         } else {
 
@@ -446,20 +489,14 @@ function generateOrdersReport(ordersDetails) {
     report.period_summary.first_order_date = firstDate?.toISOString();
     report.period_summary.last_order_date = lastDate?.toISOString();
 
-    // Arredondar valores para 2 casas decimais
-    Object.keys(report).forEach(key => {
-        if (typeof report[key] === 'number') {
-            report[key] = Math.round(report[key] * 100) / 100;
-        }
-    });
-
-    return report;
+    return {report, report_per_product};
 
 }
 
+// Função para pegar a imagem de capa do produto
 function getThumbnailUrl(product, order_variation) {
 
-    if(product.variations.length === 1) {
+    if(product.variations.length <= 1 || !product.variations) {
         return product.thumbnail;
     }
 

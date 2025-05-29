@@ -78,6 +78,29 @@
                         :loading="loading"
                     />
                 </section>
+                <section class="flex flex-wrap *:grow mt-2 !items-stretch gap-3">
+                    <v-card v-for="item in report_per_product" border>
+                        <v-card-title class="!p-1 flex justify-start gap-2">
+                            <v-img :src="item.product_data?.item_thumbnail" width="60" height="60" class="max-w-[60px] border rounded-sm !bg-white"/>
+                            <div>
+                                <div class="flex justify-start gap-2 font-bold text-base">
+                                    <div>
+                                        Pedidos: {{ item.total_orders }}
+                                    </div>
+                                    <div>
+                                        Quantidade: {{ item.total_products }}
+                                    </div>
+                                </div>
+                                <p class="line-clamp-1 text-sm">{{ item.product_data?.item_title }}</p>
+                                <p class="text-[10px] text-neutral-600 first:*:pl-0 *:px-2 last:*:pr-0 *:leading-none divide-x">
+                                    <span v-for="variation in item.product_data.item_variation_attributes">
+                                        {{ variation.name }}: {{ variation.value_name }}
+                                    </span>
+                                </p>
+                            </div>
+                        </v-card-title>
+                    </v-card>
+                </section>
             </v-card-title>
             <v-card-text class="!p-0">
                 <v-data-table
@@ -157,6 +180,7 @@
                             </td>
                             <td class="text-center whitespace-nowrap" :class="item.product_cost_total ? 'text-red-500' : 'text-gray-400'">
                                 R$ {{ toBRL(item.product_cost_total) }}
+                                <p v-if="item.quantity > 1" class="text-gray-400 text-[10px]">{{item.quantity}} x R${{ toBRL(item.product_cost_unit) }}</p>
                             </td>
                             <td class="text-center whitespace-nowrap" :class="item.net_revenue > 0 ? 'text-green-500' : 'text-gray-400'">
                                 R$ {{ toBRL(item.net_revenue) }} <small class="text-xs text-gray-400">({{item.net_revenue_percent}}%)</small>
@@ -332,6 +356,7 @@ const report = ref({
     total_canceled_products: 0,
     total_canceled_gross_revenue: 0,
 })
+const report_per_product = ref({})
 
 const execReport = async () => {
 
@@ -345,6 +370,7 @@ const execReport = async () => {
         const response = await $fetchSupabase('/api/orders', {query: dataFilter })
         orders.value = response.data.orders || []
         report.value = response.data.report || []
+        report_per_product.value = response.data.report_per_product || {}
         await router.push({query: dataFilter})
     } catch (e) {
         console.log(e)
