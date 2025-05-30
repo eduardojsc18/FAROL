@@ -1,5 +1,5 @@
 <template>
-    <header class="z-[9999] sticky top-0 w-full flex justify-between shadow-sm items-center px-3 py-2 gap-5 ">
+    <header class="z-[9999999999999999] sticky top-0 w-full flex justify-between bg-white shadow-sm items-center px-3 py-2 gap-5 ">
         <SidebarButtonShow class="-translate-x-1" />
         <div class="flex items-center gap-px">
             <v-menu>
@@ -21,7 +21,7 @@
                         </template>
                     </v-list-item>
                 </template>
-                <v-list class="!shadow-md">
+                <v-list class="!shadow-md !z-[9999999999999999999999] relative">
                     <NuxtLink to="/admin/minha-conta">
                         <v-list-item>
                             <v-list-item-title>Minha conta</v-list-item-title>

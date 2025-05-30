@@ -36,7 +36,7 @@
                     </SidebarLinkItem>
                 </template>
             </SidebarContainer>
-            <section class="flex flex-col min-h-screen grow overflow-x-hidden">
+            <section class="relative flex flex-col min-h-screen grow">
                 <TheHeader/>
                 <main class="z-0 w-full grow mb-10 px-5 pt-7 ">
                     <div class="3xl:container mx-auto">

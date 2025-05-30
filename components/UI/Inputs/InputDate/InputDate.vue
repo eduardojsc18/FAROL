@@ -50,6 +50,11 @@
 <script setup>
 import dayjs from 'dayjs'
 import { useAttrs } from 'vue'
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 defineOptions({
     inheritAttrs: false,
@@ -85,10 +90,10 @@ const form = defineModel('modelValue', {
         if (attrs.multiple) {
             if (!!value?.length) {
                 const formattedValues = []
-                if (value[0]) formattedValues.push(dayjs(value[0]).format('YYYY-MM-DD'))
+                if (value[0]) formattedValues.push(dayjs(value[0]).tz('America/Sao_Paulo').startOf('day').toISOString())
                 !value[1] ?
-                    formattedValues.push(dayjs(value[0]).format('YYYY-MM-DD')) :
-                    formattedValues.push(dayjs(value[value.length - 1]).format('YYYY-MM-DD'))
+                    formattedValues.push(dayjs(value[0]).tz('America/Sao_Paulo').startOf('day').toISOString()) :
+                    formattedValues.push(dayjs(value[value.length - 1]).tz('America/Sao_Paulo').startOf('day').toISOString())
 
                 return formattedValues ?? []
             }

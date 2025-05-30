@@ -411,8 +411,10 @@ function generateOrdersReport(ordersDetails) {
 
         if (order.order_status === 'paid') {
 
-            if (!report_per_product[order.item_id]) {
-                report_per_product[order.item_id] = {
+            const key = `${order.item_id}-${order.item_sku}`
+
+            if (!report_per_product[key]) {
+                report_per_product[key] = {
                     product_data: {
                         item_id: order.item_id,
                         item_title: order.item_title,
@@ -450,17 +452,17 @@ function generateOrdersReport(ordersDetails) {
             report.total_product_cost += order.product_cost_total || 0;
             report.total_net_revenue += order.net_revenue || 0;
 
-            report_per_product[order.item_id].total_orders += 1
-            report_per_product[order.item_id].total_products += order.quantity || 0;
-            report_per_product[order.item_id].total_unit_price += order.unit_price || 0;
-            report_per_product[order.item_id].total_gross_revenue += order.order_total || 0;
-            report_per_product[order.item_id].total_tax_marketplace += order.tax_marketplace || 0;
-            report_per_product[order.item_id].total_tax_marketplace_shipping_before += order.tax_marketplace_shipping_before || 0;
-            report_per_product[order.item_id].total_tax_marketplace_shipping_after += order.tax_marketplace_shipping_after || 0;
-            report_per_product[order.item_id].total_advertising_cost += order.advertising_cost || 0;
-            report_per_product[order.item_id].total_tax_nfe += order.tax_nfe || 0;
-            report_per_product[order.item_id].total_product_cost += order.product_cost_total || 0;
-            report_per_product[order.item_id].total_net_revenue += order.net_revenue || 0;
+            report_per_product[key].total_orders += 1
+            report_per_product[key].total_products += order.quantity || 0;
+            report_per_product[key].total_unit_price += order.unit_price || 0;
+            report_per_product[key].total_gross_revenue += order.order_total || 0;
+            report_per_product[key].total_tax_marketplace += order.tax_marketplace || 0;
+            report_per_product[key].total_tax_marketplace_shipping_before += order.tax_marketplace_shipping_before || 0;
+            report_per_product[key].total_tax_marketplace_shipping_after += order.tax_marketplace_shipping_after || 0;
+            report_per_product[key].total_advertising_cost += order.advertising_cost || 0;
+            report_per_product[key].total_tax_nfe += order.tax_nfe || 0;
+            report_per_product[key].total_product_cost += order.product_cost_total || 0;
+            report_per_product[key].total_net_revenue += order.net_revenue || 0;
 
 
         } else {

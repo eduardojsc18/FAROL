@@ -19,8 +19,10 @@
                         multiple="range"
                         show-select-period
                         min-width="300"
+                        :loading="loading"
                     />
                     <v-btn
+                        :loading="loading"
                         prepend-icon="mdi-magnify"
                         text="buscar"
                         color="orange-darken-2"
@@ -78,26 +80,29 @@
                         :loading="loading"
                     />
                 </section>
-                <section class="flex flex-wrap *:grow mt-2 !items-stretch gap-3">
-                    <v-card v-for="item in report_per_product" border>
+                <section class="flex flex-wrap *:grow mt-2 !items-stretch gap-2">
+                    <v-card v-for="item in report_per_product" border :loading="loading">
                         <v-card-title class="!p-1 flex justify-start gap-2">
-                            <v-img :src="item.product_data?.item_thumbnail" width="60" height="60" class="max-w-[60px] border rounded-sm !bg-white"/>
-                            <div>
-                                <div class="flex justify-start gap-2 font-bold text-base">
-                                    <div>
-                                        Pedidos: {{ item.total_orders }}
+                            <v-skeleton-loader v-if="loading" width="100%" height="60px"/>
+                            <template v-else>
+                                <v-img :src="item.product_data?.item_thumbnail" width="60" height="60" class="max-w-[60px] border rounded-sm !bg-white"/>
+                                <div>
+                                    <div class="flex justify-start gap-2 font-bold text-base">
+                                        <div>
+                                            Pedidos: {{ item.total_orders }}
+                                        </div>
+                                        <div>
+                                            Quantidade: {{ item.total_products }}
+                                        </div>
                                     </div>
-                                    <div>
-                                        Quantidade: {{ item.total_products }}
-                                    </div>
+                                    <p class="line-clamp-1 text-sm">{{ item.product_data?.item_title }}</p>
+                                    <p class="text-[10px] text-neutral-600 first:*:pl-0 *:px-2 last:*:pr-0 *:leading-none divide-x">
+                                        <span v-for="variation in item.product_data.item_variation_attributes">
+                                            {{ variation.name }}: {{ variation.value_name }}
+                                        </span>
+                                    </p>
                                 </div>
-                                <p class="line-clamp-1 text-sm">{{ item.product_data?.item_title }}</p>
-                                <p class="text-[10px] text-neutral-600 first:*:pl-0 *:px-2 last:*:pr-0 *:leading-none divide-x">
-                                    <span v-for="variation in item.product_data.item_variation_attributes">
-                                        {{ variation.name }}: {{ variation.value_name }}
-                                    </span>
-                                </p>
-                            </div>
+                            </template>
                         </v-card-title>
                     </v-card>
                 </section>
@@ -132,7 +137,9 @@
 <!--                                    </div>-->
                                     <div class="flex items-center *:px-2 leading-none divide-x text-xs p-1 bg-white rounded-md border group-hover:shadow-md transition-shadow">
                                         <div data-tooltip="Numero pedido Mercado Livre" class="min-w-[146px]">
-                                            #{{ item.order_number }}
+                                            <a class="hover:underline" :href="`https://www.mercadolivre.com.br/vendas/${item.order_number}/detalhe`" target="_blank">
+                                                #{{ item.order_number }}
+                                            </a>
                                         </div>
                                         <div data-tooltip="Pedido criado em" class="whitespace-nowrap flex items-center gap-1 text-gray-500 min-w-[135px]">
                                             <v-icon icon="mdi-calendar" class="" size="12" />
@@ -153,17 +160,19 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="flex items-center justify-start gap-3">
-                                    <v-img :src="item.item_thumbnail" :alt="item.item_title" width="60" height="60" class="max-w-[60px] border rounded-md bg-white" rounded/>
-                                    <div class="grow-0">
-                                        <p class="text-base font-satoshi-medium">{{ item.item_title }}</p>
-                                        <p class="mt-1 text-xs text-neutral-600 *:bg-white *:px-2 *:border *:rounded-md *:mr-2 *:py-0.5 *:leading-none">
-                                            <span v-for="variation in item.item_variation_attributes">
-                                                {{ variation.name }}: {{ variation.value_name }}
-                                            </span>
-                                        </p>
+                                <a :href="`https://www.mercadolivre.com.br/metricas/${item.item_id}/performance-item?start_period_evolutionary=custom|${request.date_range[0]}to${request.date_range[1]}`" target="_blank">
+                                    <div class="flex items-center justify-start gap-3 ring-[3px] ring-transparent outline outline-white outline-2 rounded-sm hover:ring-blue-300/50">
+                                        <v-img :src="item.item_thumbnail" :alt="item.item_title" width="50" height="50" class="max-w-[50px] border rounded-md bg-white" rounded/>
+                                        <div class="grow-0">
+                                            <p class="text-base font-satoshi-medium">{{ item.item_title }}</p>
+                                            <p class="mt-1 text-xs text-neutral-600 *:bg-white *:px-2 *:border *:rounded-md *:mr-2 *:py-0.5 *:leading-none">
+                                                <span v-for="variation in item.item_variation_attributes">
+                                                    {{ variation.name }}: {{ variation.value_name }}
+                                                </span>
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
+                                </a>
                             </td>
                             <td class="text-center font-semibold text-blue-500 whitespace-nowrap">
                                 R$ {{ toBRL(item.order_total) }}
