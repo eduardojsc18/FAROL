@@ -9,7 +9,7 @@
                 <IconOrder class="!size-10" />
             </template>
             <template #right>
-                <form @submit.prevent="execReport" class="flex max-sm:flex-col items-center gap-2">
+                <form @submit.prevent="execReport" class="flex max-sm:flex-col lg:items-center gap-2">
                     <InputDate
                         v-model="request.date_range"
                         placeholder="DD/MM/YYYY - DD/MM/YYYY"
@@ -19,6 +19,7 @@
                         multiple="range"
                         show-select-period
                         min-width="300"
+                        class="max-md:!w-full"
                         :loading="loading"
                     />
                     <v-btn

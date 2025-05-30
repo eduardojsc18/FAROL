@@ -36,11 +36,14 @@
                     </SidebarLinkItem>
                 </template>
             </SidebarContainer>
-            <section class="relative flex flex-col min-h-screen grow">
-                <TheHeader/>
-                <main class="z-0 w-full grow mb-10 px-5 pt-7 ">
-                    <div class="3xl:container mx-auto">
-                        <NuxtPage/>
+            <section class="z-0 flex flex-col min-h-screen flex-1 min-w-0 md:w-auto w-0">
+                <TheHeader class="w-full"/>
+                <main class="flex-1 w-full px-2 md:px-5 pt-7 pb-10">
+                    <div class="3xl:container mx-auto w-full">
+                        <!-- Container responsivo para o conteúdo -->
+                        <div class="w-full min-w-0 max-w-full">
+                            <NuxtPage/>
+                        </div>
                     </div>
                 </main>
                 <Notification/>
