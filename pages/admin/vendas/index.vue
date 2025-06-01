@@ -52,7 +52,7 @@
                     />
                     <WidgetReportTotals
                         label="- taxas transporte"
-                        :value="`R$ ${toBRL(report.total_tax_marketplace_shipping_before)}`"
+                        :value="`R$ ${toBRL(report.total_tax_marketplace_shipping_after)}`"
                         color="red"
                         :loading="loading"
                     />
@@ -82,29 +82,34 @@
                     />
                 </section>
                 <section class="flex flex-wrap *:grow mt-2 !items-stretch gap-2">
-                    <v-card v-for="item in report_per_product" border :loading="loading">
-                        <v-card-title class="!p-1 flex justify-start gap-2">
-                            <v-skeleton-loader v-if="loading" width="100%" height="60px"/>
+                    <v-card v-for="item in report_per_product" border :loading="loading" color="">
+                        <v-card-text class="!p-1 !overflow-hidden">
+                            <v-skeleton-loader v-if="loading" width="100%" height="50px"/>
                             <template v-else>
-                                <v-img :src="item.product_data?.item_thumbnail" width="60" height="60" class="max-w-[60px] border rounded-sm !bg-white"/>
-                                <div>
-                                    <div class="flex justify-start gap-2 font-bold text-base">
-                                        <div>
-                                            Pedidos: {{ item.total_orders }}
+                                <div class="flex gap-2">
+                                    <v-img :src="item.product_data?.item_thumbnail" class="w-full shrink-0 aspect-square max-w-[50px] border rounded-sm !bg-white"/>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="flex justify-start gap-2 font-bold text-base">
+                                            <div>
+                                                Pedidos: {{ item.total_orders }}
+                                            </div>
+                                            <div>
+                                                Quantidade: {{ item.total_products }}
+                                            </div>
                                         </div>
-                                        <div>
-                                            Quantidade: {{ item.total_products }}
+                                        <div class="w-full min-w-0">
+                                            <p class="!line-clamp-1 text-xs">{{ item.product_data?.item_title }}</p>
+                                            <p class="text-[9px] text-neutral-600 truncate">
+                                                <span v-for="(variation, index) in item.product_data.item_variation_attributes" :key="index">
+                                                    <span v-if="index > 0"> | </span>
+                                                    {{ variation.name }}: {{ variation.value_name }}
+                                                </span>
+                                            </p>
                                         </div>
                                     </div>
-                                    <p class="line-clamp-1 text-sm">{{ item.product_data?.item_title }}</p>
-                                    <p class="text-[10px] text-neutral-600 first:*:pl-0 *:px-2 last:*:pr-0 *:leading-none divide-x">
-                                        <span v-for="variation in item.product_data.item_variation_attributes">
-                                            {{ variation.name }}: {{ variation.value_name }}
-                                        </span>
-                                    </p>
                                 </div>
                             </template>
-                        </v-card-title>
+                        </v-card-text>
                     </v-card>
                 </section>
             </v-card-title>
@@ -162,7 +167,9 @@
                                     </div>
                                 </div>
                                 <a :href="`https://www.mercadolivre.com.br/metricas/${item.item_id}/performance-item?start_period_evolutionary=custom|${request.date_range[0]}to${request.date_range[1]}`" target="_blank">
-                                    <div class="flex items-center justify-start gap-3 ring-[3px] ring-transparent outline outline-white outline-2 rounded-sm hover:ring-blue-300/50">
+                                    <div
+                                        class="flex items-center justify-start gap-3 hover:drop-shadow transition-shadow"
+                                    >
                                         <v-img :src="item.item_thumbnail" :alt="item.item_title" width="50" height="50" class="max-w-[50px] border rounded-md bg-white" rounded/>
                                         <div class="grow-0">
                                             <p class="text-base font-satoshi-medium">{{ item.item_title }}</p>

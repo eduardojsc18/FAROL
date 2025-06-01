@@ -129,6 +129,7 @@ async function fetchOrdersDetails(meliFetch, allOrders) {
     const ordersDetails = [];
 
     for (let i = 0; i < allOrders.length; i += batchSize) {
+
         const batch = allOrders.slice(i, i + batchSize);
 
         const batchPromises = batch.map(order =>
@@ -136,6 +137,7 @@ async function fetchOrdersDetails(meliFetch, allOrders) {
         );
 
         try {
+
             const batchResults = await Promise.allSettled(batchPromises);
 
             batchResults.forEach((result, index) => {
@@ -143,12 +145,10 @@ async function fetchOrdersDetails(meliFetch, allOrders) {
                     ordersDetails.push(result.value);
                 } else {
                     console.error(`Erro ao processar pedido ${batch[index].id}:`, result.reason);
-                    // Adicionar pedido com dados básicos mesmo com erro
                     ordersDetails.push(createBasicOrderData(batch[index]));
                 }
             });
 
-            // Rate limiting entre lotes
             if (i + batchSize < allOrders.length) {
                 await new Promise(resolve => setTimeout(resolve, 200));
             }
@@ -163,6 +163,7 @@ async function fetchOrdersDetails(meliFetch, allOrders) {
 
 // Função para buscar detalhes de um pedido específico
 async function fetchSingleOrderDetails(meliFetch, order) {
+
     const requests = [];
 
     // Request básicos sempre necessários
