@@ -49,9 +49,8 @@ export default defineEventHandler(async (event) => {
     }
     catch (error) {
 
-        console.error('Erro ao busca detalhes dos pedidos:', error);
+        console.error('Erro ao busca detalhes dos produtos:', error);
 
-        // Tratamento de erro específico da API do ML
         if (error.status === 429) {
             throw createError({
                 status: 429,
@@ -235,9 +234,10 @@ function createOrderData(order, product, shipping, shipping_costs, advertising) 
         'MLB3991070331': 23.50, // KIT FACA AFIADOR
         'MLB3985510287': 40, // KIT TECLADO PRETO (ANTIGO)
         'MLB3952492195': 40, // KIT TECLADO PRETO (ANTIGO)
-        'MLB3866006087': 40, // KIT TECLADO BRANCO
+        'MLB3866006087': 44, // KIT TECLADO BRANCO
         'MLB5014464806': 40, // KIT TECLADO PRETO (ANTIGO)
         'MLB3793458613': 13.50, // KIT 4 DINOS
+        'MLB4085120641': 42, // KIT 4 DINOS
     }
 
     const orderItem = order.order_items?.[0] || {};
