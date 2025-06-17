@@ -237,7 +237,7 @@ function createOrderData(order, product, shipping, shipping_costs, advertising) 
         'MLB3866006087': 44, // KIT TECLADO BRANCO
         'MLB5014464806': 40, // KIT TECLADO PRETO (ANTIGO)
         'MLB3793458613': 13.50, // KIT 4 DINOS
-        'MLB4085120641': 42, // KIT 4 DINOS
+        'MLB4085120641': 42, // KIT TECLADO PRETO TECLAS ALTAS
     }
 
     const orderItem = order.order_items?.[0] || {};

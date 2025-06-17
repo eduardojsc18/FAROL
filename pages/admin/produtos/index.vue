@@ -1,38 +1,40 @@
 <template>
+    <div>
 
-    <HeaderPage
-        title="Produtos"
-        :description="`Produtos anunciados`"
-    >
-        <template #icon>
-            <IconProduct />
-        </template>
-    </HeaderPage>
+        <HeaderPage
+            title="Produtos"
+            :description="`Produtos anunciados`"
+        >
+            <template #icon>
+                <IconProduct />
+            </template>
+        </HeaderPage>
 
-    <section>
-        FILTROS
-    </section>
+        <section>
+            FILTROS
+        </section>
 
-    <v-card variant="outlined" rounded border>
-        <v-card-title class="!pt-3">
-            <div class="flex items-start justify-start gap-5">
-                <v-img class="size-28 max-w-28 aspect-square bg-gray-100" />
-                <div>
-                    <p class="text-xl mb-2 font-semibold leading-none">Opa</p>
-                    <div class="flex justify-start gap-3">
-                        <div v-for="i in 5" class="bg-blue-100 rounded-md p-3">
-                            <p class="text-xs">Preço de Venda</p>
-                            <p>R$ 00,00</p>
+        <v-card variant="outlined" rounded border>
+            <v-card-title class="!pt-3">
+                <div class="flex items-start justify-start gap-5">
+                    <v-img class="size-28 max-w-28 aspect-square bg-gray-100" />
+                    <div>
+                        <p class="text-xl mb-2 font-semibold leading-none">Opa</p>
+                        <div class="flex justify-start gap-3">
+                            <div v-for="i in 5" class="bg-blue-100 rounded-md p-3">
+                                <p class="text-xs">Preço de Venda</p>
+                                <p>R$ 00,00</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </v-card-title>
-        <v-card-text>
+            </v-card-title>
+            <v-card-text>
 
-        </v-card-text>
-    </v-card>
+            </v-card-text>
+        </v-card>
 
+    </div>
 </template>
 <script setup>
 import HeaderPage from "~/components/UI/Layouts/Admin/Header/HeaderPage.vue";

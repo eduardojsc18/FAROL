@@ -41,7 +41,7 @@
                 <main class="flex-1 w-full px-2 md:px-5 pt-7 pb-10">
                     <div class="3xl:container mx-auto w-full">
                         <!-- Container responsivo para o conteúdo -->
-                        <div class="w-full min-w-0 max-w-full space-y-10">
+                        <div class="w-full min-w-0 max-w-full *:space-y-10">
                             <NuxtPage/>
                         </div>
                     </div>
