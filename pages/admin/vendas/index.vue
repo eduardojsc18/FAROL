@@ -2,38 +2,38 @@
     <div>
 
         <HeaderPage
-        title="Vendas"
-        description="lista das ultimas vendas realizadas"
-    >
-        <template #icon>
-            <IconOrder class="!size-10" />
-        </template>
-        <template #right>
-            <form @submit.prevent="execReport" class="flex max-sm:flex-col lg:items-center gap-2">
-                <InputDate
-                    v-model="request.date_range"
-                    placeholder="DD/MM/YYYY - DD/MM/YYYY"
-                    label="periodo"
-                    density="compact"
-                    hide-details
-                    multiple="range"
-                    show-select-period
-                    min-width="300"
-                    class="max-md:!w-full"
-                    :loading="loading"
-                />
-                <v-btn
-                    :loading="loading"
-                    prepend-icon="mdi-magnify"
-                    text="buscar"
-                    color="orange-darken-2"
-                    rounded="lg"
-                    type="submit"
-                    class="max-sm:!w-full"
-                />
-            </form>
-        </template>
-    </HeaderPage>
+            title="Vendas"
+            description="lista das ultimas vendas realizadas"
+        >
+            <template #icon>
+                <IconOrder class="!size-10" />
+            </template>
+            <template #right>
+                <form @submit.prevent="execReport" class="flex max-sm:flex-col lg:items-center gap-2">
+                    <InputDate
+                        v-model="request.date_range"
+                        placeholder="DD/MM/YYYY - DD/MM/YYYY"
+                        label="periodo"
+                        density="compact"
+                        hide-details
+                        multiple="range"
+                        show-select-period
+                        min-width="300"
+                        class="max-md:!w-full"
+                        :loading="loading"
+                    />
+                    <v-btn
+                        :loading="loading"
+                        prepend-icon="mdi-magnify"
+                        text="buscar"
+                        color="orange-darken-2"
+                        rounded="lg"
+                        type="submit"
+                        class="max-sm:!w-full"
+                    />
+                </form>
+            </template>
+        </HeaderPage>
 
         <v-card variant="flat" elevation="0" border rounded>
             <v-card-title class="!p-2 !border-b">

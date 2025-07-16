@@ -81,6 +81,7 @@ const fetchAllProducts = async (meliFetch, query) => {
 }
 
 const fetchProductsDetails = async (meliFetch, allProducts) => {
+
     const batchSize = 10;
     const productsDetails = [];
 
@@ -101,7 +102,7 @@ const fetchProductsDetails = async (meliFetch, allProducts) => {
                     productsDetails.push(result.value);
                 } else {
                     console.error(`Erro ao processar pedido ${batch[index].id}:`, result.reason);
-                    productsDetails.push(createBasicOrderData(batch[index]));
+                    productsDetails.push(createBasicData(batch[index]));
                 }
             });
 
@@ -117,7 +118,7 @@ const fetchProductsDetails = async (meliFetch, allProducts) => {
     return productsDetails;
 }
 
-const createBasicOrderData = (product) => {
+const createBasicData = (product) => {
     return {
         ...product,
         fetched_at: new Date().toISOString(),
@@ -135,7 +136,6 @@ const fetchSingleProductDetails = async (meliFetch, productId) => {
 
     const requests = [];
 
-    // Request básicos sempre necessários
     if (productId) {
         requests.push(
             meliFetch(`items/${productId}`)
@@ -150,6 +150,7 @@ const fetchSingleProductDetails = async (meliFetch, productId) => {
     const [productDetail] = await Promise.all(requests);
 
     return createProductData(productDetail)
+
 }
 
 const createProductData = (product) => {
@@ -161,7 +162,7 @@ const createProductData = (product) => {
         "pickup": "COLETA",
         "me2": "MERCADO ENVIO",
         "custom": "PERSONALIZADO"
-    };
+    }
     const productCost = {
         'MLB5402391910': 49, // LUMINARIA BRANCA
         'MLB5385112480': 40, // KIT TECLADO PRETO
@@ -179,7 +180,48 @@ const createProductData = (product) => {
     }
 
     return {
-        ...product,
+
+        id_meli: product.id,
+        title: product.title,
+        thumbnail: product.thumbnail,
+        pictures: product.pictures,
+        variations: product.variations,
+        permalink: product.permalink,
+
+        shipping_type: shippingTypeMap[product.shipping.logistic_type] ?? 'Customizado',
+        shipping_free: product.shipping.free_shipping,
+        status: product.status,
+
+        health: product.health,
+
+        created_at: product.date_created,
+        updated_at: product.last_updated,
+
+        visits: product.visits,
+        in_stock: 0,
+
+        sale_price_init: 0,
+        sale_price_current: 0,
+
+        product_cost_unit: 0,
+        tax_nfe_unit: 0,
+        profit_unit: 0,
+
+        report_received: {
+            received_gross: 0,
+            received_cost: 0,
+            received_profit: 0,
+        },
+        report_receivable: {
+
+        },
+        total_gross: 0,
+        total_receivable: 0,
+        total_cost: 0,
+        total_profit: 0,
+
+        product_data: product,
+
     }
 
 }
@@ -190,4 +232,10 @@ const generateOrdersReport = async (productDetails) => {
         report: {},
         report_per_product: []
     }
+}
+
+const getThumbnailUrl = (product, variation) => {
+
+    return product.pictures.find(picture => picture.id === variation.url || product.thumbnail).url ?? product.thumbnail;
+
 }

@@ -51,12 +51,6 @@ export default defineNuxtConfig({
         },
     },
 
-    colorMode: {
-        classSuffix: '',
-        preference: 'system',
-        fallback: 'dark',
-    },
-
     googleFonts: {
         // base64: true,
         // fontsDir: 'assets/fonts',
