@@ -43,7 +43,7 @@
                     />
                     <WidgetReportTotals
                         label="Lucro a receber"
-                        :value="`R$ -`"
+                        :value="`R$ ${toBRL(report.total_profit)}`"
                         color="green"
                         :loading="loading"
                     />
@@ -97,17 +97,24 @@
                                     </div>
                                 </a>
                             </td>
-                            <td class="text-center font-semibold  whitespace-nowrap" :class="item.shipping_cost > 0 ? 'text-red-500' : 'text-blue-500'">
-                                -
+                            <td class="text-center font-semibold whitespace-nowrap">
+                                {{ item.total_visits }}
                             </td>
-                            <td class="text-center font-semibold whitespace-nowrap text-red-500">
-                                -
+                            <td class="text-center font-semibold whitespace-nowrap">
+                                {{ item.total_sold }}
                             </td>
                             <td class="text-center font-semibold whitespace-nowrap" :class="item.stock_available > 0 ? 'text-green-500' : 'text-red-500'">
                                 {{ item.stock_available }}
                             </td>
                             <td class="text-center whitespace-nowrap text-blue-500">
                                 R$ {{ toBRL(item.sale_price) }}
+                            </td>
+                            <td class="text-center whitespace-nowrap text-red-500" >
+                                R$ {{ toBRL(item.tax_meli_unit) }}
+                                <template v-if="item.shipping_free">
+                                    <p class="text-gray-400 text-[10px]">frete R$ {{item.estimated_shipping_cost}} </p>
+                                    <p class="text-gray-400 text-[10px]"> + tax R$ {{ toBRL(item.marketplace_fee_total) }}</p>
+                                </template>
                             </td>
                             <td class="text-center whitespace-nowrap text-red-500">
                                 R$ {{ toBRL(item.cost_unit) }}
@@ -116,46 +123,16 @@
                                 R$ {{ toBRL(item.tax_nfe_unit) }}
                             </td>
                             <td class="text-center whitespace-nowrap text-green-500">
-                                -
+                                R$ {{ toBRL(item.selling_fees?.total_fee) }} <small class="text-[9px]">({{item.profit_unit_percent}}%)</small>
                             </td>
-                            <td class="text-sm whitespace-nowrap">
+                            <td class="text-sm whitespace-nowrap text-blue-500">
                                 R$ {{ toBRL(item.receivable_total_gross) }}
-<!--                                <table class="divide-y">-->
-<!--                                    <tr class="*:p-1">-->
-<!--                                        <td class="whitespace-nowrap text-xs">FATURADO</td>-->
-<!--                                        <td class="whitespace-nowrap font-semibold text-sm">R$ {{ toBRL(item.received_total_gross) }}</td>-->
-<!--                                    </tr>-->
-<!--                                    <tr class="*:p-1">-->
-<!--                                        <td class="whitespace-nowrap text-xs">A FATURAR</td>-->
-<!--                                        <td class="whitespace-nowrap font-semibold text-sm">R$ {{ toBRL(item.receivable_total_gross) }}</td>-->
-<!--                                    </tr>-->
-<!--                                </table>-->
                             </td>
-                            <td class="text-sm whitespace-nowrap">
+                            <td class="text-sm whitespace-nowrap text-red-500">
                                 R$ {{ toBRL(item.receivable_total_cost) }}
-<!--                                <table class="divide-y">-->
-<!--                                    <tr class="*:p-1">-->
-<!--                                        <td class="whitespace-nowrap text-xs">FATURADO</td>-->
-<!--                                        <td class="whitespace-nowrap font-semibold text-sm">R$ {{ toBRL(item.received_total_cost) }}</td>-->
-<!--                                    </tr>-->
-<!--                                    <tr class="*:p-1">-->
-<!--                                        <td class="whitespace-nowrap text-xs">A FATURAR</td>-->
-<!--                                        <td class="whitespace-nowrap font-semibold text-sm">R$ {{ toBRL(item.receivable_total_cost) }}</td>-->
-<!--                                    </tr>-->
-<!--                                </table>-->
                             </td>
-                            <td class="text-sm">
-                                -
-<!--                                <table class="divide-y">-->
-<!--                                    <tr class="*:p-1">-->
-<!--                                        <td class="whitespace-nowrap text-xs">FATURADO</td>-->
-<!--                                        <td class="whitespace-nowrap font-semibold text-sm">R$ {{ toBRL(item.received_total_profit) }}</td>-->
-<!--                                    </tr>-->
-<!--                                    <tr class="*:p-1">-->
-<!--                                        <td class="whitespace-nowrap text-xs">A FATURAR</td>-->
-<!--                                        <td class="whitespace-nowrap font-semibold text-sm">R$ {{ toBRL(item.receivable_total_profit) }}</td>-->
-<!--                                    </tr>-->
-<!--                                </table>-->
+                            <td class="text-sm whitespace-nowrap text-green-600">
+                                R$ {{ toBRL(item.receivable_total_profit) }}
                             </td>
                         </tr>
                         <template v-if="!!item.variations">
@@ -169,8 +146,9 @@
                                     </div>
                                 </td>
                                 <td class="text-center whitespace-nowrap"> -  </td>
-                                <td class="text-center whitespace-nowrap"> - </td>
+                                <td class="text-center whitespace-nowrap"> {{ variation.sold_quantity }} </td>
                                 <td class="text-center whitespace-nowrap"> {{ variation.available_quantity }} </td>
+                                <td class="text-center whitespace-nowrap"> - </td>
                                 <td class="text-center whitespace-nowrap"> - </td>
                                 <td class="text-center whitespace-nowrap"> - </td>
                                 <td class="text-center whitespace-nowrap"> - </td>
@@ -203,13 +181,14 @@ const router = useRouter()
 
 const DEFAULT_ORDER_TABLE_HEADERS = [
     { title: 'Produto', value: 'name', class: 'whitespace-nowrap' },
-    { title: 'Transporte', value: 'type_shipping', align: 'center' },
-    { title: 'Visitas', value: 'visiting', align: 'center' },
+    { title: 'Visitas', value: 'total_visits', align: 'center' },
+    { title: 'Vendas', value: 'total_sold', align: 'center' },
     { title: 'Estoque', value: 'stock_available', align: 'center' },
     { title: 'Anuncio', value: 'sale', align: 'center' },
+    { title: 'Taxa Meli', value: 'tax_meli_unit', align: 'center' },
     { title: 'Custo', value: 'cost', align: 'center' },
     { title: 'NFe 4%', value: 'tax_nfe', align: 'center', class: 'whitespace-nowrap' },
-    { title: 'Lucro', value: 'profit_per_unit', align: 'center' },
+    { title: 'Lucro Unitário', value: 'profit_per_unit', align: 'center' },
     { title: 'Total Bruto', value: 'total_gross'},
     { title: 'Total Custo', value: 'total_cost'},
     { title: 'Total Lucro', value: 'total_profit'},
@@ -227,7 +206,7 @@ const CONFIG_STATUSES = {
 }
 
 const request = ref({
-    date_range: [dayjs().tz('America/Sao_Paulo').startOf('day').toISOString(), dayjs().tz('America/Sao_Paulo').endOf('day').toISOString()],
+    // date_range: [dayjs().tz('America/Sao_Paulo').startOf('day').toISOString(), dayjs().tz('America/Sao_Paulo').endOf('day').toISOString()],
     ...route.query,
 })
 const products = ref([])
@@ -247,9 +226,9 @@ const execGetProducts = async () => {
     loading.value = true
 
     const dataFilter = {
-        date_range: [
-            dayjs(request.value.date_range[0]).tz('America/Sao_Paulo').startOf('day').toISOString(),
-            dayjs(request.value.date_range[1]).tz('America/Sao_Paulo').endOf('day').toISOString()]
+        // date_range: [
+        //     dayjs(request.value.date_range[0]).tz('America/Sao_Paulo').startOf('day').toISOString(),
+        //     dayjs(request.value.date_range[1]).tz('America/Sao_Paulo').endOf('day').toISOString()]
     }
 
     try {
