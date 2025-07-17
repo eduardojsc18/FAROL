@@ -59,18 +59,24 @@
                     items-per-page-text="por página"
                     no-data-text="Nenhum produto encontrado"
                     multi-sort
+                    height="70vh"
                     :header-props="{ class: 'whitespace-nowrap' } "
                 >
                     <template #item="{ item, index }">
                         <tr class="*:!pb-5 group *:!pt-14" :class="CONFIG_STATUSES[item.status].classTrBgColor">
                             <td class="relative max-lg:whitespace-nowrap min-w-[400px]">
                                 <div class="absolute flex items-center w-full gap-3 top-4 left-4">
-                                    <div class="flex items-center *:px-2 leading-none divide-x text-xs p-1 bg-white rounded-md border group-hover:shadow-md transition-shadow">
-                                        <div data-tooltip="criado em" class="whitespace-nowrap flex items-center gap-1 text-gray-500 min-w-[135px]">
+                                    <div class="flex items-center *:px-2 leading-none divide-x text-[10px] p-1 bg-white rounded-md border group-hover:shadow-md transition-shadow">
+                                        <a :href="`https://www.mercadolivre.com.br/anuncios/${item.id_meli}/modificar`" target="_blank" class="hover:underline text-gray-500 hover:text-blue-700">
+                                            <div data-tooltip="editar anuncio" class="whitespace-nowrap flex items-center gap-1 ">
+                                               {{ item.id_meli }}
+                                            </div>
+                                        </a>
+                                        <div data-tooltip="criado em" class="whitespace-nowrap flex items-center gap-1 text-gray-500">
                                             <v-icon icon="mdi-calendar" class="" size="12" />
                                             {{ dayjs(item.created_at).format('DD/MM/YYYY HH:mm') }}
                                         </div>
-                                        <div data-tooltip="atualizado em" class="whitespace-nowrap flex items-center gap-1 text-gray-500 min-w-[135px]">
+                                        <div data-tooltip="atualizado em" class="whitespace-nowrap flex items-center gap-1 text-gray-500">
                                             <v-icon icon="mdi-pencil" class="" size="12" />
                                             {{ dayjs(item.updated_at).format('DD/MM/YYYY HH:mm') }}
                                         </div>
@@ -153,9 +159,9 @@
                                 <td class="text-center whitespace-nowrap"> - </td>
                                 <td class="text-center whitespace-nowrap"> - </td>
                                 <td class="text-center whitespace-nowrap"> - </td>
-                                <td class="text-center whitespace-nowrap"> R$ {{ toBRL(variation.receivable_total_gross) }} </td>
-                                <td class="text-center whitespace-nowrap"> R$ {{ toBRL(variation.receivable_total_cost) }} </td>
-                                <td class="text-center whitespace-nowrap"> R$ {{ toBRL(variation.receivable_total_profit) }} <small>({{ variation.receivable_total_profit_percent }}%)</small> </td>
+                                <td class="whitespace-nowrap"> R$ {{ toBRL(variation.receivable_total_gross) }} </td>
+                                <td class="whitespace-nowrap"> R$ {{ toBRL(variation.receivable_total_cost) }} </td>
+                                <td class="whitespace-nowrap"> R$ {{ toBRL(variation.receivable_total_profit) }} <small>({{ variation.receivable_total_profit_percent }}%)</small> </td>
                             </tr>
                         </template>
                     </template>
