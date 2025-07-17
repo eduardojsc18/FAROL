@@ -10,17 +10,23 @@
             </template>
         </HeaderPage>
 
-        <section>
-            FILTROS
-        </section>
+<!--        <section>-->
+<!--            FILTROS-->
+<!--        </section>-->
 
         <v-card variant="flat" elevation="0" border rounded>
             <v-card-title class="!p-2 !border-b">
                 <section class="flex flex-wrap *:grow !items-stretch justify-between gap-3">
                     <WidgetReportTotals
+                        :label="`Anuncios / ativo: ${report.total_products_active} / pausado: ${report.total_products_paused}`"
+                        :value="report.total_products"
+                        color="blue"
+                        :loading="loading"
+                    />
+                    <WidgetReportTotals
                         label="Em estoque"
                         :value="report.total_stock_available"
-                        color="blue"
+                        color="purple"
                         :loading="loading"
                     />
                     <WidgetReportTotals
@@ -36,14 +42,8 @@
                         :loading="loading"
                     />
                     <WidgetReportTotals
-                        label="Total a Receber"
-                        :value="`R$ ${toBRL(report.total_receivable)}`"
-                        color="red"
-                        :loading="loading"
-                    />
-                    <WidgetReportTotals
                         label="Lucro a receber"
-                        :value="`R$ ${toBRL(report.total_net_revenue)} (${report.total_net_revenue_percent} %)`"
+                        :value="`R$ -`"
                         color="green"
                         :loading="loading"
                     />
@@ -59,21 +59,25 @@
                     items-per-page-text="por página"
                     no-data-text="Nenhum produto encontrado"
                     multi-sort
+                    :header-props="{ class: 'whitespace-nowrap' } "
                 >
                     <template #item="{ item, index }">
-                        <tr class="*:!pb-5 group *:!pt-14" :class="{'bg-red-50': item.order_status === 'cancelled'}">
+                        <tr class="*:!pb-5 group *:!pt-14" :class="CONFIG_STATUSES[item.status].classTrBgColor">
                             <td class="relative max-lg:whitespace-nowrap min-w-[400px]">
                                 <div class="absolute flex items-center w-full gap-3 top-4 left-4">
                                     <div class="flex items-center *:px-2 leading-none divide-x text-xs p-1 bg-white rounded-md border group-hover:shadow-md transition-shadow">
-                                        <div data-tooltip="Pedido criado em" class="whitespace-nowrap flex items-center gap-1 text-gray-500 min-w-[135px]">
+                                        <div data-tooltip="criado em" class="whitespace-nowrap flex items-center gap-1 text-gray-500 min-w-[135px]">
                                             <v-icon icon="mdi-calendar" class="" size="12" />
-                                            {{ dayjs(item.date_created).format('DD/MM/YYYY HH:mm') }}
+                                            {{ dayjs(item.created_at).format('DD/MM/YYYY HH:mm') }}
+                                        </div>
+                                        <div data-tooltip="atualizado em" class="whitespace-nowrap flex items-center gap-1 text-gray-500 min-w-[135px]">
+                                            <v-icon icon="mdi-pencil" class="" size="12" />
+                                            {{ dayjs(item.updated_at).format('DD/MM/YYYY HH:mm') }}
                                         </div>
                                         <div data-tooltip="Status do pedido">
-                                            <div class="flex items-center leading-none gap-2 text-xs" :class="CONFIG_STATUSES[item.order_status]?.classTextColor">
-                                                <v-icon :icon="CONFIG_STATUSES[item.order_status]?.icon" size="10"/>
-                                                {{ CONFIG_STATUSES[item.order_status]?.label }}
-                                                {{ item.status }}
+                                            <div class="flex items-center leading-none whitespace-nowrap gap-2 text-xs" :class="CONFIG_STATUSES[item.status]?.classTextColor">
+                                                <v-icon :icon="CONFIG_STATUSES[item.status]?.icon" size="10"/>
+                                                {{ CONFIG_STATUSES[item.status]?.label }}
                                             </div>
                                         </div>
                                         <div data-tooltip="Tipo de transporte" class="flex justify-center text-[10px] min-w-10">
@@ -84,61 +88,98 @@
                                         </div>
                                     </div>
                                 </div>
-                                <a :href="`https://www.mercadolivre.com.br/metricas/${item.item_id}/performance-item?start_period_evolutionary=custom|${request.date_range[0]}to${request.date_range[1]}`" target="_blank">
+                                <a :href="item.permalink" target="_blank">
                                     <div class="flex items-center justify-start gap-3 hover:drop-shadow transition-shadow">
-                                        <v-img :src="item.item_thumbnail" :alt="item.item_title" width="50" height="50" class="max-w-[50px] border rounded-md bg-white" rounded/>
+                                        <v-img :src="item.thumbnail" :alt="item.title" width="50" height="50" class="max-w-[50px] border rounded-md bg-white" rounded/>
                                         <div class="grow-0">
-                                            <p class="text-base font-satoshi-medium">{{ item.item_title }}</p>
-                                            <p class="mt-1 text-xs text-neutral-600 *:bg-white *:px-2 *:border *:rounded-md *:mr-2 *:py-0.5 *:leading-none">
-                                                <span v-for="variation in item.item_variation_attributes">
-                                                    {{ variation.name }}: {{ variation.value_name }}
-                                                </span>
-                                            </p>
+                                            <p class="text-base font-satoshi-medium">{{ item.title }}</p>
                                         </div>
                                     </div>
                                 </a>
                             </td>
-                            <td class="text-center font-semibold text-blue-500 whitespace-nowrap">
-                                R$ {{ toBRL(item.order_total) }}
-                                <p v-if="item.quantity > 1" class="text-gray-400 text-[10px]">{{item.quantity}} x R${{ toBRL(item.unit_price) }}</p>
+                            <td class="text-center font-semibold  whitespace-nowrap" :class="item.shipping_cost > 0 ? 'text-red-500' : 'text-blue-500'">
+                                -
+                            </td>
+                            <td class="text-center font-semibold whitespace-nowrap text-red-500">
+                                -
+                            </td>
+                            <td class="text-center font-semibold whitespace-nowrap" :class="item.stock_available > 0 ? 'text-green-500' : 'text-red-500'">
+                                {{ item.stock_available }}
+                            </td>
+                            <td class="text-center whitespace-nowrap text-blue-500">
+                                R$ {{ toBRL(item.sale_price) }}
                             </td>
                             <td class="text-center whitespace-nowrap text-red-500">
-                                R$ {{ toBRL(item.tax_marketplace) }}
+                                R$ {{ toBRL(item.cost_unit) }}
                             </td>
-                            <td class="text-center whitespace-nowrap" :class="item.tax_marketplace_shipping_after ? 'text-red-500' : 'text-gray-400'">
-                                R$ {{ toBRL(item.tax_marketplace_shipping_after) }}
+                            <td class="text-center whitespace-nowrap text-red-500" >
+                                R$ {{ toBRL(item.tax_nfe_unit) }}
                             </td>
-                            <td class="text-center whitespace-nowrap text-red-500">
-                                R$ {{ toBRL(item.tax_nfe) }}
+                            <td class="text-center whitespace-nowrap text-green-500">
+                                -
                             </td>
-                            <td class="text-center whitespace-nowrap" :class="item.product_cost_total ? 'text-red-500' : 'text-gray-400'">
-                                R$ {{ toBRL(item.product_cost_total) }}
-                                <p v-if="item.quantity > 1" class="text-gray-400 text-[10px]">{{item.quantity}} x R${{ toBRL(item.product_cost_unit) }}</p>
+                            <td class="text-sm whitespace-nowrap">
+                                R$ {{ toBRL(item.receivable_total_gross) }}
+<!--                                <table class="divide-y">-->
+<!--                                    <tr class="*:p-1">-->
+<!--                                        <td class="whitespace-nowrap text-xs">FATURADO</td>-->
+<!--                                        <td class="whitespace-nowrap font-semibold text-sm">R$ {{ toBRL(item.received_total_gross) }}</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr class="*:p-1">-->
+<!--                                        <td class="whitespace-nowrap text-xs">A FATURAR</td>-->
+<!--                                        <td class="whitespace-nowrap font-semibold text-sm">R$ {{ toBRL(item.receivable_total_gross) }}</td>-->
+<!--                                    </tr>-->
+<!--                                </table>-->
                             </td>
-                            <td class="text-center whitespace-nowrap" :class="item.product_cost_total ? 'text-red-500' : 'text-gray-400'">
-                                R$ {{ toBRL(item.product_cost_total) }}
-                                <p v-if="item.quantity > 1" class="text-gray-400 text-[10px]">{{item.quantity}} x R${{ toBRL(item.product_cost_unit) }}</p>
+                            <td class="text-sm whitespace-nowrap">
+                                R$ {{ toBRL(item.receivable_total_cost) }}
+<!--                                <table class="divide-y">-->
+<!--                                    <tr class="*:p-1">-->
+<!--                                        <td class="whitespace-nowrap text-xs">FATURADO</td>-->
+<!--                                        <td class="whitespace-nowrap font-semibold text-sm">R$ {{ toBRL(item.received_total_cost) }}</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr class="*:p-1">-->
+<!--                                        <td class="whitespace-nowrap text-xs">A FATURAR</td>-->
+<!--                                        <td class="whitespace-nowrap font-semibold text-sm">R$ {{ toBRL(item.receivable_total_cost) }}</td>-->
+<!--                                    </tr>-->
+<!--                                </table>-->
                             </td>
-                            <td class="text-center whitespace-nowrap" :class="item.product_cost_total ? 'text-red-500' : 'text-gray-400'">
-                                R$ {{ toBRL(item.product_cost_total) }}
-                                <p v-if="item.quantity > 1" class="text-gray-400 text-[10px]">{{item.quantity}} x R${{ toBRL(item.product_cost_unit) }}</p>
-                            </td>
-                            <td class="text-center whitespace-nowrap" :class="item.product_cost_total ? 'text-red-500' : 'text-gray-400'">
-                                R$ {{ toBRL(item.product_cost_total) }}
-                                <p v-if="item.quantity > 1" class="text-gray-400 text-[10px]">{{item.quantity}} x R${{ toBRL(item.product_cost_unit) }}</p>
-                            </td>
-                            <td class="text-center whitespace-nowrap" :class="item.product_cost_total ? 'text-red-500' : 'text-gray-400'">
-                                R$ {{ toBRL(item.product_cost_total) }}
-                                <p v-if="item.quantity > 1" class="text-gray-400 text-[10px]">{{item.quantity}} x R${{ toBRL(item.product_cost_unit) }}</p>
-                            </td>
-                            <td class="text-center whitespace-nowrap" :class="item.product_cost_total ? 'text-red-500' : 'text-gray-400'">
-                                R$ {{ toBRL(item.product_cost_total) }}
-                                <p v-if="item.quantity > 1" class="text-gray-400 text-[10px]">{{item.quantity}} x R${{ toBRL(item.product_cost_unit) }}</p>
-                            </td>
-                            <td class="text-center whitespace-nowrap" :class="item.net_revenue > 0 ? 'text-green-500' : 'text-gray-400'">
-                                R$ {{ toBRL(item.net_revenue) }} <small class="text-xs text-gray-400">({{item.net_revenue_percent}}%)</small>
+                            <td class="text-sm">
+                                -
+<!--                                <table class="divide-y">-->
+<!--                                    <tr class="*:p-1">-->
+<!--                                        <td class="whitespace-nowrap text-xs">FATURADO</td>-->
+<!--                                        <td class="whitespace-nowrap font-semibold text-sm">R$ {{ toBRL(item.received_total_profit) }}</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr class="*:p-1">-->
+<!--                                        <td class="whitespace-nowrap text-xs">A FATURAR</td>-->
+<!--                                        <td class="whitespace-nowrap font-semibold text-sm">R$ {{ toBRL(item.receivable_total_profit) }}</td>-->
+<!--                                    </tr>-->
+<!--                                </table>-->
                             </td>
                         </tr>
+                        <template v-if="!!item.variations">
+                            <tr v-for="variation in item.variations" class="bg-gray-50 text-xs" :class="variation.available_quantity > 0 ? 'bg-gray-50' : 'text-red-600 italic bg-red-50'">
+                                <td class="text-center whitespace-nowrap pl-9">
+                                    <div class="flex items-center justify-start gap-3 hover:drop-shadow transition-shadow">
+                                        <v-img :src="variation.thumbnail" :alt="variation.title" width="30" height="30" class="max-w-[30px] border rounded-md bg-white" rounded/>
+                                        <div class="grow-0">
+                                            <p class="">{{ variation.title }}</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="text-center whitespace-nowrap"> -  </td>
+                                <td class="text-center whitespace-nowrap"> - </td>
+                                <td class="text-center whitespace-nowrap"> {{ variation.available_quantity }} </td>
+                                <td class="text-center whitespace-nowrap"> - </td>
+                                <td class="text-center whitespace-nowrap"> - </td>
+                                <td class="text-center whitespace-nowrap"> - </td>
+                                <td class="text-center whitespace-nowrap"> - </td>
+                                <td class="text-center whitespace-nowrap"> R$ {{ toBRL(variation.receivable_total_gross) }} </td>
+                                <td class="text-center whitespace-nowrap"> R$ {{ toBRL(variation.receivable_total_cost) }} </td>
+                                <td class="text-center whitespace-nowrap"> R$ {{ toBRL(variation.receivable_total_profit) }} <small>({{ variation.receivable_total_profit_percent }}%)</small> </td>
+                            </tr>
+                        </template>
                     </template>
                     <template #loading>
                         <v-skeleton-loader type="table-row@8" height="500px" width="100%" loading-text="carregando..." />
@@ -161,18 +202,17 @@ const { toBRL } = useHelpers()
 const router = useRouter()
 
 const DEFAULT_ORDER_TABLE_HEADERS = [
-    { title: 'Produto', value: 'name' },
+    { title: 'Produto', value: 'name', class: 'whitespace-nowrap' },
     { title: 'Transporte', value: 'type_shipping', align: 'center' },
     { title: 'Visitas', value: 'visiting', align: 'center' },
     { title: 'Estoque', value: 'stock_available', align: 'center' },
     { title: 'Anuncio', value: 'sale', align: 'center' },
     { title: 'Custo', value: 'cost', align: 'center' },
-    { title: 'NFe 4%', value: 'tax_nfe', align: 'center' },
+    { title: 'NFe 4%', value: 'tax_nfe', align: 'center', class: 'whitespace-nowrap' },
     { title: 'Lucro', value: 'profit_per_unit', align: 'center' },
-    { title: 'Total Bruto', value: 'total_gross', align: 'center' },
-    { title: 'Total a Receber', value: 'total_receivable', align: 'center' },
-    { title: 'Total Custo', value: 'total_cost', align: 'center' },
-    { title: 'Total Lucro', value: 'total_profit', align: 'center' },
+    { title: 'Total Bruto', value: 'total_gross'},
+    { title: 'Total Custo', value: 'total_cost'},
+    { title: 'Total Lucro', value: 'total_profit'},
 ]
 const CONFIG_SHIPPING_TYPES = {
     'FULL': {styleColor: '#15803d', classBgColor: 'bg-green-700', classTextColor: 'text-green-700', icon: 'mdi-lightning-bolt'},
@@ -181,9 +221,9 @@ const CONFIG_SHIPPING_TYPES = {
     'MERCADO ENVIOS': {styleColor: '#374151', classBgColor: 'bg-gray-700', classTextColor: 'text-gray-700', icon: 'mdi-handshake'},
 }
 const CONFIG_STATUSES = {
-    'paused': { classTextColor: 'text-yellow-600 ', icon: 'mdi-circle', label: 'Pausado' },
-    'active': { classTextColor: 'text-green-600', icon: 'mdi-circle', label: 'Ativo' },
-    'no_stock': { classTextColor: 'text-red-600', icon: 'mdi-circle', label: 'Sem estoque' },
+    'paused': { classTextColor: 'text-yellow-600', classTrBgColor: 'bg-yellow-50/50', icon: 'mdi-circle', label: 'Pausado' },
+    'active': { classTextColor: 'text-green-600', classTrBgColor: '', icon: 'mdi-circle', label: 'Ativo' },
+    'no_stock': { classTextColor: 'text-red-600', classTrBgColor: 'bg-red-50/50', icon: 'mdi-circle', label: 'Sem estoque' },
 }
 
 const request = ref({

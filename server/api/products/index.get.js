@@ -1,4 +1,5 @@
 import {serverSupabaseUser} from "#supabase/server";
+import {useServerDefaultValues} from "~/server/utils/useServerDefaultValues.js";
 
 export default defineEventHandler(async (event) => {
 
@@ -30,13 +31,12 @@ export default defineEventHandler(async (event) => {
 
     const productsDetails = await fetchProductsDetails(meliFetch, allProducts)
 
-    const {report, report_per_product} = generateOrdersReport(productsDetails)
+    const { report} = generateProductsReport(productsDetails)
 
     return {
         data: {
             products: productsDetails,
             report,
-            report_per_product,
         }
     }
 
@@ -50,7 +50,6 @@ const fetchAllProducts = async (meliFetch, query) => {
     let hasMore = true;
 
     while (hasMore) {
-
         try {
 
             const productsResponse = await meliFetch('/users/1492625301/items/search');
@@ -79,7 +78,6 @@ const fetchAllProducts = async (meliFetch, query) => {
     return allProducts;
 
 }
-
 const fetchProductsDetails = async (meliFetch, allProducts) => {
 
     const batchSize = 10;
@@ -95,7 +93,7 @@ const fetchProductsDetails = async (meliFetch, allProducts) => {
 
         try {
 
-            const batchResults = await Promise.allSettled(batchPromises);
+            const batchResults = await Promise.allSettled(batchPromises) ?? [];
 
             batchResults.forEach((result, index) => {
                 if (result.status === 'fulfilled') {
@@ -107,7 +105,7 @@ const fetchProductsDetails = async (meliFetch, allProducts) => {
             });
 
             if (i + batchSize < allProducts.length) {
-                await new Promise(resolve => setTimeout(resolve, 200));
+                await new Promise(resolve => setTimeout(resolve, 100));
             }
 
         } catch (error) {
@@ -116,8 +114,8 @@ const fetchProductsDetails = async (meliFetch, allProducts) => {
     }
 
     return productsDetails;
-}
 
+}
 const createBasicData = (product) => {
     return {
         ...product,
@@ -131,7 +129,6 @@ const createBasicData = (product) => {
         }
     };
 }
-
 const fetchSingleProductDetails = async (meliFetch, productId) => {
 
     const requests = [];
@@ -153,44 +150,20 @@ const fetchSingleProductDetails = async (meliFetch, productId) => {
 
 }
 
+const { productCost, shippingType } = useServerDefaultValues()
 const createProductData = (product) => {
 
-    const shippingTypeMap = {
-        "fulfillment": "FULL",
-        "self_service": "FLEX",
-        "cross_docking": "FLEX",
-        "pickup": "COLETA",
-        "me2": "MERCADO ENVIO",
-        "custom": "PERSONALIZADO"
-    }
-    const productCost = {
-        'MLB5402391910': 49, // LUMINARIA BRANCA
-        'MLB5385112480': 40, // KIT TECLADO PRETO
-        'MLB5370856210': 49, // LUMINARIA PRETA
-        'MLB5349332438': 35, // PENDRIVE 128GB
-        'MLB4001628013': 33.70, // KIT 8 NECESSAIRE
-        'MLB3991098369': 58, // KIT 6 BANHEIRO BAMBU
-        'MLB3991149161': 49, // LUMINARIA PRETA (ANTIGO)
-        'MLB3991070331': 23.50, // KIT FACA AFIADOR
-        'MLB3985510287': 40, // KIT TECLADO PRETO (ANTIGO)
-        'MLB3952492195': 40, // KIT TECLADO PRETO (ANTIGO)
-        'MLB3866006087': 40, // KIT TECLADO BRANCO
-        'MLB5014464806': 40, // KIT TECLADO PRETO (ANTIGO)
-        'MLB3793458613': 13.50, // KIT 4 DINOS
-    }
-
-    return {
+    const tax_nfe = 0.04
+    const data = {
 
         id_meli: product.id,
         title: product.title,
         thumbnail: product.thumbnail,
-        pictures: product.pictures,
-        variations: product.variations,
         permalink: product.permalink,
 
-        shipping_type: shippingTypeMap[product.shipping.logistic_type] ?? 'Customizado',
+        shipping_type: shippingType[product.shipping.logistic_type] ?? 'Customizado',
         shipping_free: product.shipping.free_shipping,
-        status: product.status,
+        status: product.available_quantity > 0 ? product.status : 'no_stock',
 
         health: product.health,
 
@@ -198,44 +171,125 @@ const createProductData = (product) => {
         updated_at: product.last_updated,
 
         visits: product.visits,
-        in_stock: 0,
-
-        sale_price_init: 0,
-        sale_price_current: 0,
-
-        product_cost_unit: 0,
-        tax_nfe_unit: 0,
-        profit_unit: 0,
-
-        report_received: {
-            received_gross: 0,
-            received_cost: 0,
-            received_profit: 0,
-        },
-        report_receivable: {
-
-        },
-        total_gross: 0,
-        total_receivable: 0,
-        total_cost: 0,
-        total_profit: 0,
+        stock_available: product.available_quantity,
+        stock_init: product.initial_quantity,
 
         product_data: product,
 
     }
 
+    data.total_sold = product.sold_quantity
+    data.sale_price = product.price
+
+    data.cost_unit = productCost[product.id] ?? 0
+    data.tax_nfe_unit = productCost[product.id] * 0.04 ?? 0
+    data.profit_unit = data.sale_price - data.cost_unit - data.tax_nfe_unit
+
+    data.received_total_gross = data.sale_price * data.total_sold
+    data.received_total_cost = data.cost_unit * data.total_sold
+    data.received_total_profit = data.profit_unit * data.total_sold
+
+    data.receivable_total_gross = data.sale_price * data.stock_available
+    data.receivable_total_cost = data.cost_unit * data.stock_available
+    data.receivable_total_profit = data.profit_unit * data.stock_available
+    data.receivable_total_profit_percent = (data.receivable_total_profit / data.receivable_total_cost * 100).toFixed(2)
+
+    if( product.variations?.length > 1 ) {
+        data.variations = product.variations.map((variation) => {
+
+            const attributes = {
+                ...variation,
+                attribute_1_name: variation.attribute_combinations[0]?.name,
+                attribute_1_value: variation.attribute_combinations[0]?.value_name,
+                title: `${variation.attribute_combinations[0]?.value_name}`,
+                thumbnail: getThumbnailUrl(product, variation.picture_ids[0]),
+            };
+
+            if (variation.attribute_combinations[1]?.name) {
+                attributes.attribute_2_name = variation.attribute_combinations[1].name;
+                attributes.attribute_2_value = variation.attribute_combinations[1].value_name;
+            }
+
+            attributes.profit_unit = variation.price - data.cost_unit - data.tax_nfe_unit;
+
+            attributes.receivable_total_gross = attributes.price * attributes.available_quantity
+            attributes.receivable_total_cost = data.cost_unit * attributes.available_quantity
+            attributes.receivable_total_profit = attributes.profit_unit * attributes.stock_available
+            attributes.receivable_total_profit_percent = (attributes.receivable_total_profit / attributes.receivable_total_cost * 100).toFixed(2)
+
+            return attributes;
+        })
+    }
+
+    return data
+
 }
 
-const generateOrdersReport = async (productDetails) => {
+function generateProductsReport(productDetails) {
 
-    return {
-        report: {},
-        report_per_product: []
-    }
+    const report = {
+        total_products: productDetails.length,
+        total_stock_available: 0,
+        total_cost: 0,
+        total_gross: 0,
+        total_profit: 0,
+        total_profit_percent: 0,
+        total_products_active: 0,
+        total_products_paused: 0
+    };
+
+    productDetails.forEach(product => {
+
+        // const key = `${order.item_id}-${order.item_sku}`
+        //
+        // if (!report_per_product[key]) {
+        //     report_per_product[key] = {
+        //         product_data: {
+        //             item_id: order.item_id,
+        //             item_title: order.item_title,
+        //             item_sku: order.item_sku,
+        //             item_thumbnail: order.item_thumbnail,
+        //             item_variations: order.item_variations,
+        //             item_variation_attributes: order.item_variation_attributes,
+        //         },
+        //         total_orders: 0,
+        //         total_products: 0,
+        //         total_unit_price: 0,
+        //         total_tax_marketplace: 0,
+        //         total_tax_marketplace_shipping_before: 0,
+        //         total_tax_marketplace_shipping_after: 0,
+        //         total_tax_nfe: 0,
+        //         total_product_cost: 0,
+        //         total_product_cost_percent: 0,
+        //         total_gross_revenue: 0,
+        //         total_net_revenue: 0,
+        //         total_net_revenue_percent: 0,
+        //         total_canceled_orders: 0,
+        //         total_canceled_products: 0,
+        //         total_canceled_gross_revenue: 0,
+        //     };
+        // }
+
+        if (product.status === 'active') {
+            report.total_products_active++
+        } else {
+            report.total_products_paused++
+        }
+
+        report.total_stock_available += product.stock_available || 0
+        report.total_cost += product.receivable_total_cost
+        report.total_gross += product.receivable_total_gross
+        report.total_profit += product.receivable_total_profit
+        report.total_profit_percent += product.receivable_total_profit_percent
+
+    });
+
+    return {report};
+
 }
 
 const getThumbnailUrl = (product, variation) => {
 
-    return product.pictures.find(picture => picture.id === variation.url || product.thumbnail).url ?? product.thumbnail;
+    return product.pictures.find(picture => picture.id === variation).url;
 
 }
