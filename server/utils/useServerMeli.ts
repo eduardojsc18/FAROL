@@ -18,6 +18,7 @@ export async function useServerMeli(event: any) {
     const client = await serverSupabaseClient(event)
     const user: User = await serverSupabaseUser(event)
     const config = useRuntimeConfig()
+    let sellerId = ''
 
     const isTokenExpired = (expiresAt: Date|any): boolean => {
         return Date.now() >= new Date(expiresAt).getTime()
@@ -85,10 +86,14 @@ export async function useServerMeli(event: any) {
     const getTokenData = async (): Promise<TokenData | any> => {
 
        return client.from('connections')
-           .select('id, title, description, type, status, status_message, expires_at, access_token, refresh_token')
+           .select('id, title, description, type, status, seller_id, status_message, expires_at, access_token, refresh_token')
            .eq('profile_id', user.id)
            .single();
 
+    }
+    const getSellerId = async (): Promise<string> => {
+        const {data} = await getTokenData()
+        return data.seller_id || ''
     }
     const meliFetch = async <T>(
         url: string,
@@ -161,7 +166,7 @@ export async function useServerMeli(event: any) {
     }
 
     return {
-        meliFetch
+        meliFetch, getSellerId
     }
 
 }

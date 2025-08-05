@@ -1,5 +1,6 @@
 import { serverSupabaseClient, serverSupabaseUser } from "#supabase/server";
 import {useServerDefaultValues} from "~/server/utils/useServerDefaultValues.js";
+import {useServerFetchAllPagination} from "~/server/utils/useServerFetchAllPagination.ts";
 
 export default defineEventHandler(async (event) => {
 
@@ -12,7 +13,7 @@ export default defineEventHandler(async (event) => {
         })
     }
 
-    const { meliFetch } = await useServerMeli(event);
+    const { meliFetch, getSellerId } = await useServerMeli(event);
     let query = getQuery(event)
 
     // Validação dos parâmetros de entrada
@@ -25,19 +26,23 @@ export default defineEventHandler(async (event) => {
 
     try {
 
-        // 1. Buscar todos os pedidos com paginação otimizada
-        const allOrders = await fetchAllOrders(meliFetch, query);
+        query = {
+            ...query,
+            seller: await getSellerId(),
+            sort: 'date_desc',
+            'order.date_created.from': query.date_range[0],
+            'order.date_created.to': query.date_range[1],
+        }
+
+        const allOrders = await useServerFetchAllPagination(meliFetch, 'orders/search', query);
 
         if (!allOrders.length) {
             return { data: { orders: [], report: {} } };
         }
 
-        // 2. Buscar detalhes em lotes para otimizar performance
         const ordersDetails = await fetchOrdersDetails(meliFetch, allOrders);
 
-        // 3. Gerar relatório com totais
         const {report, report_per_product} = generateOrdersReport(ordersDetails);
-
 
         return {
             data: {
@@ -74,58 +79,10 @@ export default defineEventHandler(async (event) => {
 
 })
 
-// Função para buscar todos os pedidos com paginação
-async function fetchAllOrders(meliFetch, query) {
-
-    let offset = 0;
-    const limit = 50; // Máximo permitido pela API
-    let allOrders = [];
-    let hasMore = true;
-
-    while (hasMore) {
-
-        try {
-
-            const ordersResponse = await meliFetch('orders/search', {
-                query: {
-                    seller: 1492625301,
-                    sort: 'date_desc',
-                    limit,
-                    offset,
-                    'order.date_created.from': query.date_range[0],
-                    'order.date_created.to': query.date_range[1],
-                },
-            });
-
-            const orders = ordersResponse.results || [];
-
-            if (!orders.length) {
-                hasMore = false;
-                break;
-            }
-
-            allOrders.push(...orders);
-            offset += limit;
-
-            if (orders.length < limit || offset >= (ordersResponse.paging?.total || 0)) {
-                hasMore = false;
-            }
-
-        }
-        catch (error) {
-
-            console.error(`Erro na paginação offset ${offset}:`, error);
-            throw error;
-        }
-    }
-
-    return allOrders;
-}
-
 // Função para buscar detalhes dos pedidos em lotes
 async function fetchOrdersDetails(meliFetch, allOrders) {
 
-    const batchSize = 10; // Processar em lotes para evitar sobrecarga
+    const batchSize = 10;
     const ordersDetails = [];
 
     for (let i = 0; i < allOrders.length; i += batchSize) {

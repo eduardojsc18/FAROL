@@ -1,5 +1,6 @@
 import {serverSupabaseUser} from "#supabase/server";
 import {useServerDefaultValues} from "~/server/utils/useServerDefaultValues.js";
+import {useServerFetchAllPagination} from "~/server/utils/useServerFetchAllPagination.ts";
 
 export default defineEventHandler(async (event) => {
 
@@ -12,10 +13,17 @@ export default defineEventHandler(async (event) => {
         })
     }
 
-    const { meliFetch } = await useServerMeli(event);
+    const { meliFetch, getSellerId } = await useServerMeli(event);
     let query = getQuery(event)
 
-    const allProducts = await fetchAllProducts(meliFetch, query)
+    const sellerId = await getSellerId()
+
+    query = {
+        ...query,
+        sort: 'date_desc',
+    }
+
+    const allProducts = await useServerFetchAllPagination(meliFetch, `/users/${sellerId}/items/search`, query);
 
     if (!allProducts.length) {
         return { data: { orders: [], report: {}, report_per_product: [] } }
@@ -33,49 +41,6 @@ export default defineEventHandler(async (event) => {
     }
 
 })
-
-const fetchAllProducts = async (meliFetch, query) => {
-
-    let offset = 0;
-    const limit = 50
-    let allProducts = [];
-    let hasMore = true;
-
-    while (hasMore) {
-        try {
-
-            const productsResponse = await meliFetch('/users/1492625301/items/search', {
-                params: {
-                    sort: 'date_desc', // ordena da data mais recente para a mais antiga
-                    offset,
-                    limit
-                }
-            });
-
-            const products = productsResponse.results || [];
-
-            if (!products.length) {
-                hasMore = false;
-                break;
-            }
-
-            allProducts.push(...products);
-            offset += limit;
-
-            if (products.length < limit || offset >= (productsResponse.paging?.total || 0)) {
-                hasMore = false;
-            }
-
-        }
-        catch (error) {
-            console.error(`Erro na paginação offset ${offset}:`, error);
-            throw error;
-        }
-    }
-
-    return allProducts;
-
-}
 
 const fetchProductsDetails = async (meliFetch, allProducts) => {
 
@@ -172,7 +137,10 @@ const fetchSingleProductDetails = async (meliFetch, productId) => {
 
 }
 
-const { productCost, shippingType } = useServerDefaultValues()
+const {
+    productCost,
+    shippingType
+} = useServerDefaultValues()
 
 const createProductData = async (product, visitsData, meliFetch, productId) => {
 

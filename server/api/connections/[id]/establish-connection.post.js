@@ -34,6 +34,7 @@ export default defineEventHandler(async (event) => {
                     status: 'connected',
                     oauth_id: connection.user_id,
                     access_token: connection.access_token,
+                    seller_id: accountInfo.id,
                     refresh_token: connection.refresh_token,
                     expires_in: connection.expires_in,
                     expires_at: new Date(Date.now() + 6 * 60 * 60 * 1000),

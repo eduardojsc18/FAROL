@@ -207,6 +207,7 @@ const CONFIG_SHIPPING_TYPES = {
 }
 const CONFIG_STATUSES = {
     'paused': { classTextColor: 'text-yellow-600', classTrBgColor: 'bg-yellow-50/50', icon: 'mdi-circle', label: 'Pausado' },
+    'closed': { classTextColor: 'text-orange-600', classTrBgColor: 'bg-orange-50/50', icon: 'mdi-circle', label: 'Encerrado' },
     'active': { classTextColor: 'text-green-600', classTrBgColor: '', icon: 'mdi-circle', label: 'Ativo' },
     'no_stock': { classTextColor: 'text-red-600', classTrBgColor: 'bg-red-50/50', icon: 'mdi-circle', label: 'Sem estoque' },
 }
