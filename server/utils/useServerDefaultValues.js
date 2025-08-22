@@ -25,6 +25,7 @@ export function useServerDefaultValues() {
         'MLB5519950026': 38, // KIT TECLADO BRANCO PREMIUM
         'MLB4135519735': 38, // KIT TECLADO BRANCO PREMIUM
         'MLB4132860047': 11.30, // NECESSAIRE BANHEIRO
+        'MLB5599395448': 12.90 // NECESSAIRE SAPATO
     }
 
     const shippingType = {
