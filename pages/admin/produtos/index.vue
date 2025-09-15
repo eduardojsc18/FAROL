@@ -8,17 +8,38 @@
             <template #icon>
                 <IconProduct />
             </template>
+            <template #right>
+                <div class="flex items-center gap-2">
+                    <v-select
+                        label="Mostrar produtos"
+                        :items="Object.values(CONFIG_STATUSES)"
+                        v-model="request.status"
+                        item-value="key"
+                        item-title="label"
+                        density="compact"
+                        hide-details
+                        :loading="loading"
+                        class="max-w-[200px]"
+                    />
+                    <v-btn
+                        :loading="loading"
+                        prepend-icon="mdi-magnify"
+                        text="buscar"
+                        color="orange-darken-2"
+                        rounded="lg"
+                        type="submit"
+                        class="max-sm:!w-full"
+                        @click="execGetProducts"
+                    />
+                </div>
+            </template>
         </HeaderPage>
-
-<!--        <section>-->
-<!--            FILTROS-->
-<!--        </section>-->
 
         <v-card variant="flat" elevation="0" border rounded>
             <v-card-title class="!p-2 !border-b">
                 <section class="flex flex-wrap *:grow !items-stretch justify-between gap-3">
                     <WidgetReportTotals
-                        :label="`Anuncios / ativo: ${report.total_products_active} / pausado: ${report.total_products_paused}`"
+                        :label="`Anuncios / ativo: ${report.total_products_active ?? 0} / pausado: ${report.total_products_paused ?? 0}`"
                         :value="report.total_products"
                         color="blue"
                         :loading="loading"
@@ -67,6 +88,7 @@
                             <td class="relative max-lg:whitespace-nowrap min-w-[400px]">
                                 <div class="absolute flex items-center w-full gap-3 top-4 left-4">
                                     <div class="flex items-center *:px-2 leading-none divide-x text-[10px] p-1 bg-white rounded-md border group-hover:shadow-md transition-shadow">
+                                        <div v-if="item.product_data.catalog_listing" class="font-medium">CATÁLOGO</div>
                                         <a :href="`https://www.mercadolivre.com.br/anuncios/${item.id_meli}/modificar`" target="_blank" class="hover:underline text-gray-500 hover:text-blue-700">
                                             <div data-tooltip="editar anuncio" class="whitespace-nowrap flex items-center gap-1 ">
                                                {{ item.id_meli }}
@@ -103,8 +125,13 @@
                                     </div>
                                 </a>
                             </td>
-                            <td class="text-center font-semibold whitespace-nowrap">
-                                {{ item.total_visits }}
+                            <td class="text-center font-semibold whitespace-nowrap leading-none">
+<!--                                <p>hoje: {{ item.visits_last_3_days.today }}</p>-->
+                                <p data-tooltip="total de visitas">{{ item.total_visits }}</p>
+                                <p class="text-neutral-900 font-normal">
+                                    <small class="text-[9px] pr-1 border-r">ontem: {{ item.visits_last_3_days.yesterday }}</small>
+                                    <small class="text-[9px] pl-1">anteontem: {{ item.visits_last_3_days.day_before_yesterday }}</small>
+                                </p>
                             </td>
                             <td class="text-center font-semibold whitespace-nowrap">
                                 {{ item.total_sold }}
@@ -129,7 +156,9 @@
                                 R$ {{ toBRL(item.tax_nfe_unit) }}
                             </td>
                             <td class="text-center whitespace-nowrap text-green-500">
-                                R$ {{ toBRL(item.selling_fees?.total_fee) }} <small class="text-[9px]">({{item.profit_unit_percent}}%)</small>
+                                R$ {{ toBRL(item.profit_unit) }}
+                                <p class="leading-none"><small class="text-[9px]">(Venda: {{item.profit_unit_percent}}%)</small></p>
+                                <p class="leading-none"><small class="text-[9px]">(Custo: {{item.markup_percent}}%)</small></p>
                             </td>
                             <td class="text-sm whitespace-nowrap text-blue-500">
                                 R$ {{ toBRL(item.receivable_total_gross) }}
@@ -186,18 +215,18 @@ const { toBRL } = useHelpers()
 const router = useRouter()
 
 const DEFAULT_ORDER_TABLE_HEADERS = [
-    { title: 'Produto', value: 'name', class: 'whitespace-nowrap' },
-    { title: 'Visitas', value: 'total_visits', align: 'center' },
-    { title: 'Vendas', value: 'total_sold', align: 'center' },
-    { title: 'Estoque', value: 'stock_available', align: 'center' },
-    { title: 'Anuncio', value: 'sale', align: 'center' },
-    { title: 'Taxa Meli', value: 'tax_meli_unit', align: 'center' },
-    { title: 'Custo', value: 'cost', align: 'center' },
-    { title: 'NFe 4%', value: 'tax_nfe', align: 'center', class: 'whitespace-nowrap' },
-    { title: 'Lucro Unitário', value: 'profit_per_unit', align: 'center' },
-    { title: 'Total Bruto', value: 'total_gross'},
-    { title: 'Total Custo', value: 'total_cost'},
-    { title: 'Total Lucro', value: 'total_profit'},
+    { title: 'Produto', key: 'title', class: 'whitespace-nowrap' },
+    { title: 'Visitas', key: 'total_visits', align: 'center' },
+    { title: 'Vendas', key: 'total_sold', align: 'center' },
+    { title: 'Estoque', key: 'stock_available', align: 'center' },
+    { title: 'Anuncio', key: 'sale_price', align: 'center' },
+    { title: 'Taxa Meli', key: 'tax_meli_unit', align: 'center' },
+    { title: 'Custo', key: 'cost_unit', align: 'center' },
+    { title: 'NFe 4%', key: 'tax_nfe_unit', align: 'center', class: 'whitespace-nowrap' },
+    { title: 'Lucro Unitário', key: 'profit_unit', align: 'center' },
+    { title: 'Total Bruto', key: 'receivable_total_gross'},
+    { title: 'Total Custo', key: 'receivable_total_cost'},
+    { title: 'Total Lucro', key: 'receivable_total_profit'},
 ]
 const CONFIG_SHIPPING_TYPES = {
     'FULL': {styleColor: '#15803d', classBgColor: 'bg-green-700', classTextColor: 'text-green-700', icon: 'mdi-lightning-bolt'},
@@ -206,14 +235,16 @@ const CONFIG_SHIPPING_TYPES = {
     'MERCADO ENVIOS': {styleColor: '#374151', classBgColor: 'bg-gray-700', classTextColor: 'text-gray-700', icon: 'mdi-handshake'},
 }
 const CONFIG_STATUSES = {
-    'paused': { classTextColor: 'text-yellow-600', classTrBgColor: 'bg-yellow-50/50', icon: 'mdi-circle', label: 'Pausado' },
-    'closed': { classTextColor: 'text-orange-600', classTrBgColor: 'bg-orange-50/50', icon: 'mdi-circle', label: 'Encerrado' },
-    'active': { classTextColor: 'text-green-600', classTrBgColor: '', icon: 'mdi-circle', label: 'Ativo' },
-    'no_stock': { classTextColor: 'text-red-600', classTrBgColor: 'bg-red-50/50', icon: 'mdi-circle', label: 'Sem estoque' },
+    'all_products': { classTextColor: 'text-blue-600', classTrBgColor: 'bg-blue-50/50', icon: 'mdi-circle', label: 'Todos produtos', key: 'all_products' },
+    'active': { classTextColor: 'text-green-600', classTrBgColor: '', icon: 'mdi-circle', label: 'Ativo', key: 'active' },
+    'no_stock': { classTextColor: 'text-red-600', classTrBgColor: 'bg-red-50/50', icon: 'mdi-circle', label: 'Sem estoque', key: 'no_stock' },
+    'paused': { classTextColor: 'text-yellow-600', classTrBgColor: 'bg-yellow-50/50', icon: 'mdi-circle', label: 'Pausado', key: 'paused' },
+    'closed': { classTextColor: 'text-orange-600', classTrBgColor: 'bg-orange-50/50', icon: 'mdi-circle', label: 'Encerrado', key: 'closed' },
 }
 
 const request = ref({
     // date_range: [dayjs().tz('America/Sao_Paulo').startOf('day').toISOString(), dayjs().tz('America/Sao_Paulo').endOf('day').toISOString()],
+    status: 'all_products',
     ...route.query,
 })
 const products = ref([])
@@ -233,6 +264,7 @@ const execGetProducts = async () => {
     loading.value = true
 
     const dataFilter = {
+        ...request.value
         // date_range: [
         //     dayjs(request.value.date_range[0]).tz('America/Sao_Paulo').startOf('day').toISOString(),
         //     dayjs(request.value.date_range[1]).tz('America/Sao_Paulo').endOf('day').toISOString()]
