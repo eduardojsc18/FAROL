@@ -9,7 +9,7 @@
                 <IconProduct />
             </template>
             <template #right>
-                <div class="flex items-center gap-2">
+                <div class="flex max-md:flex-col items-center gap-2">
                     <v-select
                         label="Mostrar produtos"
                         :items="Object.values(CONFIG_STATUSES)"
@@ -19,7 +19,7 @@
                         density="compact"
                         hide-details
                         :loading="loading"
-                        class="max-w-[200px]"
+                        class="max-w-[200px] w-full"
                     />
                     <v-btn
                         :loading="loading"
@@ -72,7 +72,6 @@
             </v-card-title>
             <v-card-text class="!p-0">
                 <v-data-table
-                    fixed-header
                     :headers="DEFAULT_ORDER_TABLE_HEADERS"
                     :items="products"
                     :loading="loading"
@@ -80,7 +79,6 @@
                     items-per-page-text="por página"
                     no-data-text="Nenhum produto encontrado"
                     multi-sort
-                    height="70vh"
                     :header-props="{ class: 'whitespace-nowrap' } "
                 >
                     <template #item="{ item, index }">
