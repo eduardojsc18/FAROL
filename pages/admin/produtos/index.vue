@@ -19,7 +19,7 @@
                         density="compact"
                         hide-details
                         :loading="loading"
-                        class="max-w-[200px] w-full"
+                        class="lg:max-w-[200px] w-full"
                     />
                     <v-btn
                         :loading="loading"
