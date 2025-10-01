@@ -35,7 +35,7 @@
                 <p v-if="props.question.answer.text" class="bg-green-950 w-auto flex-1 rounded-l-lg text-xs text-gray-400 italic mt-2 rounded-t-lg relative p-2 leading-none after:absolute after:-right-1 after:border-green-950 after:bottom-0 after:border-2 after:border-t-transparent after:border-r-transparent">
                     R: {{ props.question.answer.text }}
                 </p>
-                <img alt class="size-7 translate-y-1 flex-shrink-0 bg-white rounded-3xl aspect-square object-cover object-center transition-all" :src="logoDefault">
+<!--                <img alt class="size-7 translate-y-1 flex-shrink-0 bg-white rounded-3xl aspect-square object-cover object-center transition-all" :src="logoDefault">-->
             </div>
         </div>
         <div class="max-sm:rounded-l-xl max-sm:ml-1 max-sm:py-2 max-sm:pb-5 max-sm:bg-neutral-700/50 gap-1">
@@ -60,7 +60,6 @@
 import {useDayjs} from "#dayjs";
 import {useGetOrders} from "~/stores/orders/useGetOrders.js";
 import {useSidebar} from "~/stores/useSidebar.js";
-import logoDefault from "assets/img/IMG_20240228_140009_538-removebg-preview.png";
 const dayjs = useDayjs()
 
 const props = defineProps({
