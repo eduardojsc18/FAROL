@@ -1,7 +1,7 @@
 import {navigateTo} from "#app";
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
-    const session = await useSupabaseSession()
+    const session = useSupabaseSession()
 
     if (!session.value && to.path.startsWith('/admin')) {
         return navigateTo('/auth/login')

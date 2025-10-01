@@ -27,7 +27,7 @@
                         prepend-icon="mdi-magnify"
                         text="buscar"
                         color="orange-darken-2"
-                        rounded="lg"
+                        rounded="md"
                         type="submit"
                         class="max-sm:!w-full"
                     />

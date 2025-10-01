@@ -1,6 +1,6 @@
 <template>
     <NuxtLink to="/auth/login">
-        <v-btn rounded="xl" variant="flat" append-icon="mdi-arrow-right-circle" class="rounded-full !bg-orange-600 hover:bg-orange-700 text-white" v-bind="$attrs">
+        <v-btn variant="flat" append-icon="mdi-arrow-right-circle" class="!bg-orange-600 hover:bg-orange-700 text-white" v-bind="$attrs">
             {{ text }}
         </v-btn>
     </NuxtLink>

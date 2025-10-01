@@ -1,9 +1,16 @@
 <template>
-    <div id="application" class="bg-neutral-50/50 font-[Nunito]">
-        <div class="flex divide-x divide-neutral-200">
+    <div id="application" class="bg-[#FEF9F2] font-['Nunito']">
+        <div class="flex">
             <SidebarContainer>
                 <template #header>
-                    <Logo :class="{'px-8': !useSidebar().minify}"/>
+                    <div class="flex justify-start">
+                        <div class="flex items-center justify-start gap-2 bg-[#FE7C01]">
+                            <Logo />
+                            <div v-if="!useSidebarStore.minify" class="text-orange-50 font-semibold text-lg pr-3">
+                                FAROL
+                            </div>
+                        </div>
+                    </div>
                 </template>
                 <SidebarLinkItem to="/admin/dashboard" label="Dashboard">
                     <IconDashboard />
@@ -36,9 +43,9 @@
                     </SidebarLinkItem>
                 </template>
             </SidebarContainer>
-            <section class="z-0 flex flex-col min-h-screen flex-1 min-w-0 md:w-auto w-0">
+            <section class="z-0 flex flex-col min-h-screen flex-1 min-w-0 bg-[#FEF9F2] md:w-auto w-0">
                 <TheHeader class="w-full"/>
-                <main class="flex-1 w-full px-2 md:px-5 pt-7 pb-10">
+                <main class="flex-1 w-full px-2 md:px-5 pt-7 lg:border lg:rounded-tl-md bg-white pb-10">
                     <div class="3xl:container mx-auto w-full">
                         <!-- Container responsivo para o conteúdo -->
                         <div class="w-full min-w-0 max-w-full *:space-y-10">
@@ -57,10 +64,12 @@ import SidebarContainer from "~/components/UI/Layouts/Admin/Sidebar/SidebarConta
 import TheHeader from "~/components/UI/Layouts/Admin/Header/TheHeader.vue";
 import Notification from "~/components/UI/Layouts/Admin/Notification/Notification.vue";
 import Logo from "~/components/shared/Logo/Logo.vue";
-import {useSidebar} from "~/stores/useSidebar.js";
+import { useSidebar } from "~/stores/useSidebar.js";
 import IconOrder from "~/components/UI/Icons/IconOrder.vue";
 import IconProduct from "~/components/UI/Icons/IconProduct.vue";
 import IconDashboard from "~/components/UI/Icons/IconDashboard.vue";
+
+const useSidebarStore = useSidebar();
 
 </script>
 <style scoped>

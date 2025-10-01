@@ -17,16 +17,16 @@
                         item-value="key"
                         item-title="label"
                         density="compact"
+                        rounded="md"
                         hide-details
                         :loading="loading"
-                        class="lg:max-w-[200px] w-full"
+                        class="lg:max-w-[200px] min-w-[200px] w-full"
                     />
                     <v-btn
                         :loading="loading"
                         prepend-icon="mdi-magnify"
                         text="buscar"
                         color="orange-darken-2"
-                        rounded="lg"
                         type="submit"
                         class="max-sm:!w-full"
                         @click="execGetProducts"

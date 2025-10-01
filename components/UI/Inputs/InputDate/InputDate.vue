@@ -40,6 +40,7 @@
             show-adjacent-months
             cancel-text="cancelar"
             clearable
+            rounded="md"
             @click:clear="form = [dayjs().format('YYYY-MM-DD'), dayjs().format('YYYY-MM-DD')]"
             v-bind="$attrs"
             :data-show-select-period="props.showSelectPeriod"

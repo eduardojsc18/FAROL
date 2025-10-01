@@ -16,9 +16,9 @@ export async function useServerMeli(event: any) {
     }
 
     const client = await serverSupabaseClient(event)
+    // @ts-ignore
     const user: User = await serverSupabaseUser(event)
     const config = useRuntimeConfig()
-    let sellerId = ''
 
     const isTokenExpired = (expiresAt: Date|any): boolean => {
         return Date.now() >= new Date(expiresAt).getTime()
@@ -62,6 +62,7 @@ export async function useServerMeli(event: any) {
 
             const { data, error } = await client
                 .from('connections')
+                // @ts-ignore
                 .update({
                     access_token: tokenData.access_token,
                     refresh_token: tokenData.refresh_token,

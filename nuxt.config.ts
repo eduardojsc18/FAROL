@@ -13,8 +13,8 @@ export default defineNuxtConfig({
                 {name: 'viewport', content: 'width=device-width, initial-scale=1'},
                 {name: 'description', content: 'Sistema de gerenciamento'},
                 {name: 'format-detection', content: 'telephone=no'},
-                {name: 'theme-color', media: '(prefers-color-scheme: light)', content: '#FFFFFF'},
-                {name: 'theme-color', media: '(prefers-color-scheme: dark)', content: '#FFFFFF'},
+                {name: 'theme-color', media: '(prefers-color-scheme: light)', content: '#FEF9F2'},
+                {name: 'theme-color', media: '(prefers-color-scheme: dark)', content: '#FEF9F2'},
                 {name: 'mobile-web-app-capable', content: 'yes'},
                 {name: 'apple-mobile-web-app-capable', content: 'yes'},
                 {name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent'},
@@ -77,7 +77,7 @@ export default defineNuxtConfig({
             defaults: {
                 VBtn: {
                     color: 'orange-darken-2',
-                    rounded: 'sm',
+                    rounded: 'md',
                     fontWeight: 'medium',
                     letterSpacing: '0',
                     textTransform: 'none',
@@ -89,7 +89,7 @@ export default defineNuxtConfig({
                     color: 'orange-darken-2',
                     variant: 'outlined',
                     density: 'comfortable',
-                    class: ['rounded-sm', 'bg-background'],
+                    class: ['rounded-md', 'bg-background'],
                     VIcon: {
                         size: 'small',
                     },
@@ -98,7 +98,7 @@ export default defineNuxtConfig({
                     color: 'orange',
                     variant: 'outlined',
                     density: 'comfortable',
-                    class: ['rounded-sm', 'bg-background'],
+                    class: ['rounded-md', 'bg-background'],
                     VIcon: {
                         size: 'small',
                     },
@@ -136,16 +136,16 @@ export default defineNuxtConfig({
                 },
                 VCard: {
                     elevation: 0,
-                    rounded: 'none',
+                    rounded: 'md',
                     border: 'none',
                     class: ['shadow-xl bg-white'],
                 },
                 VAlert: {
-                    rounded: 'lg',
+                    rounded: 'md',
                     variant: 'tonal',
                 },
                 VDialog: {
-                    rounded: 'lg',
+                    rounded: 'md',
                 },
                 VNavigationDrawer: {
                     elevation: 1,
@@ -155,13 +155,13 @@ export default defineNuxtConfig({
                     class: ['border-b', 'border-solid', 'border-border'],
                 },
                 vListItem: {
-                    rounded: 'lg',
+                    rounded: 'md',
                 },
                 vList: {
-                    rounded: 'lg',
+                    rounded: 'md',
                 },
                 VMenu: {
-                    contentClass: 'rounded-lg mt-2',
+                    contentClass: 'rounded-md mt-2',
                 },
             },
             icons: {

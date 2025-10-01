@@ -26,6 +26,7 @@ export function useServerDefaultValues() {
         'MLB5452372540': 55, // LUMINARIA LED REDONDA
         'MLB5519950026': 38, // KIT TECLADO BRANCO PREMIUM
         'MLB4135519735': 38, // KIT TECLADO BRANCO PREMIUM
+        'MLB5759698976': 38, // KIT TECLADO BRANCO PREMIUM
         'MLB4132860047': 11.30, // NECESSAIRE BANHEIRO
         'MLB5629157816': 11.30, // NECESSAIRE BANHEIRO
         'MLB5599395448': 12.90, // NECESSAIRE SAPATO
@@ -44,7 +45,6 @@ export function useServerDefaultValues() {
         "me2": "MERCADO ENVIO",
         "custom": "PERSONALIZADO"
     };
-
 
     return {
         productCost,

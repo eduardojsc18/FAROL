@@ -87,6 +87,7 @@ export async function useServerFetchAllPagination<T = any>(
             }
 
             // Se esgotou as tentativas, lança o erro
+            // @ts-ignore
             throw new Error(`Falha ao buscar dados após ${maxRetries} tentativas: ${error.message}`);
         }
     }
@@ -94,8 +95,8 @@ export async function useServerFetchAllPagination<T = any>(
     return allResults;
 }
 export class ServerPaginationBuilder<T = any> {
-    private fetchFn: FetchFunction;
-    private endpoint: string;
+    private readonly fetchFn: FetchFunction;
+    private readonly endpoint: string;
     private queryParams: Record<string, any> = {};
     private options: PaginationOptions = {};
 

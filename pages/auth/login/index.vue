@@ -100,7 +100,15 @@ definePageMeta({
 const config = useRuntimeConfig()
 
 const supabase = useSupabaseClient()
+const session = useSupabaseSession()
+
+if (!!session.value) {
+    navigateTo('/auth/confirmation')
+}
+
 const form = ref({})
+
+
 
 const signInWithGithub = async () => {
     return await supabase.auth.signInWithOAuth({
