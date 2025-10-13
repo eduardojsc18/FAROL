@@ -1,5 +1,5 @@
 <template>
-    <header class="z-[9999999999999999] sticky top-0 flex justify-between max-md:border-b bg-[#FEF9F2] items-center px-3 py-1 gap-5 ">
+    <header class="z-[9999999999999999] sticky top-0 flex justify-between border-b border-neutral-200 bg-white items-center px-3 py-1 gap-5 ">
         <SidebarButtonShow class="-translate-x-1" />
         <div class="flex items-center gap-px">
             <v-menu>

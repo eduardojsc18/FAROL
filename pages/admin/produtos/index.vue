@@ -124,12 +124,7 @@
                                 </a>
                             </td>
                             <td class="text-center font-semibold whitespace-nowrap leading-none">
-<!--                                <p>hoje: {{ item.visits_last_3_days.today }}</p>-->
                                 <p data-tooltip="total de visitas">{{ item.total_visits }}</p>
-                                <p class="text-neutral-900 font-normal">
-                                    <small class="text-[9px] pr-1 border-r">ontem: {{ item.visits_last_3_days.yesterday }}</small>
-                                    <small class="text-[9px] pl-1">anteontem: {{ item.visits_last_3_days.day_before_yesterday }}</small>
-                                </p>
                             </td>
                             <td class="text-center font-semibold whitespace-nowrap">
                                 {{ item.total_sold }}
@@ -148,7 +143,16 @@
                                 </template>
                             </td>
                             <td class="text-center whitespace-nowrap text-red-500">
-                                R$ {{ toBRL(item.cost_unit) }}
+                                <div class="flex items-center justify-center gap-2">
+                                    <span>R$ {{ toBRL(item.cost_unit) }}</span>
+                                    <v-btn
+                                        icon="mdi-pencil"
+                                        size="x-small"
+                                        variant="text"
+                                        color="blue"
+                                        @click="openEditCostModal(item)"
+                                    />
+                                </div>
                             </td>
                             <td class="text-center whitespace-nowrap text-red-500" >
                                 R$ {{ toBRL(item.tax_nfe_unit) }}
@@ -199,6 +203,74 @@
             </v-card-text>
         </v-card>
 
+        <!-- Modal de Edição de Custo -->
+        <v-dialog v-model="editCostDialog" max-width="500px">
+            <v-card>
+                <v-card-title class="text-h6">
+                    Editar Custo do Produto
+                </v-card-title>
+                <v-card-text>
+                    <div class="mb-4">
+                        <p class="text-sm text-gray-600 mb-2">{{ selectedProduct?.title }}</p>
+                    </div>
+
+                    <v-select
+                        v-model="costSource"
+                        label="Origem do custo"
+                        :items="costSourceOptions"
+                        item-value="value"
+                        item-title="label"
+                        density="compact"
+                        class="mb-4"
+                    />
+
+                    <v-select
+                        v-if="costSource === 'copy'"
+                        v-model="selectedProductToCopy"
+                        label="Copiar custo de outro produto"
+                        :items="products"
+                        item-value="id"
+                        item-title="title"
+                        density="compact"
+                        class="mb-4"
+                        return-object
+                        @update:model-value="copyCostFromProduct"
+                    >
+                        <template #item="{ props, item }">
+                            <v-list-item v-bind="props">
+                                <template #prepend>
+                                    <v-img :src="item.raw.thumbnail" width="30" height="30" class="mr-2" />
+                                </template>
+                                <template #append>
+                                    <span class="text-xs text-gray-500">R$ {{ toBRL(item.raw.cost_unit || 0) }}</span>
+                                </template>
+                            </v-list-item>
+                        </template>
+                    </v-select>
+
+                    <v-text-field
+                        v-model="editingCost"
+                        label="Custo unitário"
+                        type="number"
+                        step="0.01"
+                        prefix="R$"
+                        density="compact"
+                        :disabled="costSource === 'copy'"
+                    />
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer />
+                    <v-btn text="Cancelar" @click="closeEditCostModal" />
+                    <v-btn
+                        text="Salvar"
+                        color="primary"
+                        @click="saveCost"
+                        :loading="savingCost"
+                    />
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
     </div>
 </template>
 <script setup>
@@ -206,6 +278,8 @@ import HeaderPage from "~/components/UI/Layouts/Admin/Header/HeaderPage.vue";
 import IconProduct from "~/components/UI/Icons/IconProduct.vue";
 import dayjs from "dayjs";
 import WidgetReportTotals from "~/components/UI/Widgets/ReportTotals/WidgetReportTotals.vue";
+import {useRoute} from "#app";
+import {useHelpers} from "~/composables/useHelpers.js";
 
 const route = useRoute()
 const { $fetchSupabase } = useNuxtApp()
@@ -238,6 +312,7 @@ const CONFIG_STATUSES = {
     'no_stock': { classTextColor: 'text-red-600', classTrBgColor: 'bg-red-50/50', icon: 'mdi-circle', label: 'Sem estoque', key: 'no_stock' },
     'paused': { classTextColor: 'text-yellow-600', classTrBgColor: 'bg-yellow-50/50', icon: 'mdi-circle', label: 'Pausado', key: 'paused' },
     'closed': { classTextColor: 'text-orange-600', classTrBgColor: 'bg-orange-50/50', icon: 'mdi-circle', label: 'Encerrado', key: 'closed' },
+    'no_cost': { classTextColor: 'text-purple-600', classTrBgColor: 'bg-purple-50/50', icon: 'mdi-currency-usd-off', label: 'Sem custo', key: 'no_cost' },
 }
 
 const request = ref({
@@ -256,6 +331,72 @@ const report = ref({
 })
 const report_per_product = ref([])
 const loading = ref(false)
+
+// Estados do modal de edição de custo
+const editCostDialog = ref(false)
+const selectedProduct = ref(null)
+const editingCost = ref(0)
+const savingCost = ref(false)
+const costSource = ref('manual')
+const selectedProductToCopy = ref(null)
+
+const costSourceOptions = [
+    { label: 'Inserir manualmente', value: 'manual' },
+    { label: 'Copiar de outro produto', value: 'copy' }
+]
+
+const openEditCostModal = (product) => {
+    selectedProduct.value = product
+    editingCost.value = product.cost_unit || 0
+    costSource.value = 'manual'
+    selectedProductToCopy.value = null
+    editCostDialog.value = true
+}
+
+const closeEditCostModal = () => {
+    editCostDialog.value = false
+    selectedProduct.value = null
+    editingCost.value = 0
+    costSource.value = 'manual'
+    selectedProductToCopy.value = null
+}
+
+const copyCostFromProduct = (product) => {
+    if (product) {
+        editingCost.value = product.cost_unit || 0
+    }
+}
+
+const saveCost = async () => {
+    if (!selectedProduct.value) return
+
+    savingCost.value = true
+    try {
+        await $fetchSupabase('/api/products/update-cost', {
+            method: 'PATCH',
+            body: {
+                product_id: selectedProduct.value.id_meli,
+                cost_unit: parseFloat(editingCost.value)
+            }
+        })
+
+        // Atualizar o produto localmente
+        const productIndex = products.value.findIndex(p => p.id === selectedProduct.value.id)
+        if (productIndex !== -1) {
+            products.value[productIndex].cost_unit = parseFloat(editingCost.value)
+        }
+
+        // Recarregar produtos para atualizar cálculos
+        await execGetProducts()
+
+        closeEditCostModal()
+    } catch (error) {
+        console.error('Erro ao salvar custo:', error)
+        alert('Erro ao salvar custo do produto')
+    } finally {
+        savingCost.value = false
+    }
+}
 
 const execGetProducts = async () => {
 

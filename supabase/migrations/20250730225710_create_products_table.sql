@@ -1,13 +1,13 @@
 CREATE TABLE products (
       id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      connection_id UUID NOT NULL REFERENCES connections(id) ON DELETE CASCADE,
 
-      meli_id TEXT,
+      meli_id TEXT NOT NULL,
       title TEXT,
       thumbnail TEXT,
       permalink TEXT,
 
       status TEXT,
-
       health TEXT,
 
       created_at TIMESTAMP,
@@ -16,7 +16,7 @@ CREATE TABLE products (
       stock_init INTEGER,
       stock_available INTEGER,
       qtd_sold INTEGER,
-      visits INTEGER,
+      visits JSONB DEFAULT '{}'::jsonb,
 
       sale_price NUMERIC,
 
@@ -33,7 +33,6 @@ CREATE TABLE products (
       marketplace_fee_percentage NUMERIC,
       marketplace_fee_fixed NUMERIC,
       marketplace_fee_total NUMERIC,
-
 
       tax_meli_unit NUMERIC,
       profit_unit NUMERIC,
@@ -55,7 +54,14 @@ CREATE TABLE products (
 
       variations JSONB,
 
-      fetch_errors JSONB,
-      fetch_data JSONB
+      api_last_checked TIMESTAMP,
+      api_hash TEXT,
+      needs_sync BOOLEAN DEFAULT false,
+      sync_attempts INTEGER DEFAULT 0,
+      last_sync_error TEXT,
 
+      fetch_errors JSONB,
+      fetch_data JSONB,
+
+      UNIQUE(meli_id, connection_id)
 );

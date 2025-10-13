@@ -1,6 +1,8 @@
 import { serverSupabaseClient, serverSupabaseUser } from "#supabase/server";
 import {useServerDefaultValues} from "~/server/utils/useServerDefaultValues.js";
 import {useServerFetchAllPagination} from "~/server/utils/useServerFetchAllPagination.ts";
+import {useOrderSync} from "~/server/utils/useOrderSync.js";
+import { randomUUID } from 'crypto';
 
 export default defineEventHandler(async (event) => {
 
@@ -14,6 +16,7 @@ export default defineEventHandler(async (event) => {
     }
 
     const { meliFetch, getSellerId } = await useServerMeli(event);
+    const { getOrdersFromDatabase, syncOrder } = await useOrderSync(event);
     let query = getQuery(event)
 
     // Validação dos parâmetros de entrada
@@ -25,32 +28,94 @@ export default defineEventHandler(async (event) => {
     }
 
     try {
+        // Adicionar user_id ao query para buscar pedidos do banco
+        query.user_id = user.id;
 
-        query = {
-            ...query,
-            seller: await getSellerId(),
-            sort: 'date_desc',
-            'order.date_created.from': query.date_range[0],
-            'order.date_created.to': query.date_range[1],
-        }
-
-        const allOrders = await useServerFetchAllPagination(meliFetch, 'orders/search', query);
-
-        if (!allOrders.length) {
-            return { data: { orders: [], report: {} } };
-        }
-
-        const ordersDetails = await fetchOrdersDetails(meliFetch, allOrders);
-
-        const {report, report_per_product} = generateOrdersReport(ordersDetails);
-
-        return {
-            data: {
-                orders: ordersDetails,
-                report,
-                report_per_product,
+        // Buscar pedidos do banco de dados
+        let dbOrders = [];
+        try {
+            dbOrders = await getOrdersFromDatabase(query);
+        } catch (error) {
+            if (error.message === 'Conexão não encontrada') {
+                throw createError({
+                    status: 400,
+                    statusMessage: 'Nenhuma conexão com o Mercado Livre encontrada. Por favor, configure uma conexão primeiro.',
+                });
             }
-        };
+            throw error;
+        }
+
+        // Verificar se precisamos buscar da API
+        const needsApiFetch = shouldFetchFromAPI(dbOrders, query.date_range);
+
+        if (needsApiFetch) {
+            console.log('Buscando pedidos da API para garantir dados completos...');
+
+            const apiQuery = {
+                ...query,
+                seller: await getSellerId(),
+                sort: 'date_desc',
+                'order.date_created.from': query.date_range[0],
+                'order.date_created.to': query.date_range[1],
+            };
+
+            const allOrders = await useServerFetchAllPagination(meliFetch, 'orders/search', apiQuery);
+
+            if (!allOrders.length) {
+                return { data: { orders: [], report: {} } };
+            }
+
+            // Processar pedidos da API (primeira vez - busca dados completos)
+            const apiOrdersDetails = await fetchOrdersDetails(meliFetch, allOrders, true, event);
+
+            // Salvar/atualizar pedidos no banco
+            await saveOrdersToDatabase(apiOrdersDetails, user.id, event);
+
+            const {report, report_per_product} = generateOrdersReport(apiOrdersDetails);
+
+            return {
+                data: {
+                    orders: apiOrdersDetails,
+                    report,
+                    report_per_product,
+                }
+            };
+        } else {
+            console.log('Usando dados do banco (dados já estão atualizados)...');
+
+            // Buscar dados básicos da API apenas para verificar se há novos pedidos
+            const apiQuery = {
+                ...query,
+                seller: await getSellerId(),
+                sort: 'date_desc',
+                'order.date_created.from': query.date_range[0],
+                'order.date_created.to': query.date_range[1],
+            };
+
+            const allOrders = await useServerFetchAllPagination(meliFetch, 'orders/search', apiQuery);
+
+            // Se há novos pedidos, processar apenas os novos
+            if (allOrders.length > dbOrders.length) {
+                console.log(`Encontrados ${allOrders.length - dbOrders.length} novos pedidos, processando...`);
+                const newOrders = allOrders.slice(0, allOrders.length - dbOrders.length);
+                const newOrdersDetails = await fetchOrdersDetails(meliFetch, newOrders, false, event);
+                await saveOrdersToDatabase(newOrdersDetails, user.id, event);
+            }
+
+            // Converter dados do banco para o formato esperado pelo frontend
+            const dbOrdersDetails = convertDbOrdersToApiFormat(dbOrders);
+
+            const {report, report_per_product} = generateOrdersReport(dbOrdersDetails);
+
+            return {
+                data: {
+                    orders: dbOrdersDetails,
+                    report,
+                    report_per_product,
+                }
+            };
+        }
+
 
     }
     catch (error) {
@@ -80,7 +145,7 @@ export default defineEventHandler(async (event) => {
 })
 
 // Função para buscar detalhes dos pedidos em lotes
-async function fetchOrdersDetails(meliFetch, allOrders) {
+async function fetchOrdersDetails(meliFetch, allOrders, fetchCompleteData = false, event = null) {
 
     const batchSize = 10;
     const ordersDetails = [];
@@ -90,7 +155,7 @@ async function fetchOrdersDetails(meliFetch, allOrders) {
         const batch = allOrders.slice(i, i + batchSize);
 
         const batchPromises = batch.map(order =>
-            fetchSingleOrderDetails(meliFetch, order)
+            fetchSingleOrderDetails(meliFetch, order, fetchCompleteData, event)
         );
 
         try {
@@ -118,41 +183,94 @@ async function fetchOrdersDetails(meliFetch, allOrders) {
     return ordersDetails;
 }
 
+// Função para buscar custo do produto do banco de dados
+async function getProductCostFromDatabase(meliId, event) {
+    try {
+        const supabase = await serverSupabaseClient(event);
+        const user = await serverSupabaseUser(event);
+
+        if (!user) return 0;
+
+        // Buscar connection_id do usuário
+        const { data: connection } = await supabase
+            .from('connections')
+            .select('id')
+            .eq('profile_id', user.id)
+            .single();
+
+        if (!connection) return 0;
+
+        // Buscar custo do produto
+        const { data: product } = await supabase
+            .from('products')
+            .select('cost_unit')
+            .eq('meli_id', meliId)
+            .eq('connection_id', connection.id)
+            .single();
+
+        return product?.cost_unit || 0;
+    } catch (error) {
+        console.error(`Erro ao buscar custo do produto ${meliId}:`, error);
+        return 0;
+    }
+}
+
 // Função para buscar detalhes de um pedido específico
-async function fetchSingleOrderDetails(meliFetch, order) {
+async function fetchSingleOrderDetails(meliFetch, order, fetchCompleteData = false, event = null) {
 
     const requests = [];
 
-    // Request básicos sempre necessários
-    if (order.order_items?.[0]?.item?.id) {
-        requests.push(
-            meliFetch(`items/${order.order_items[0].item.id}`)
-                .catch(err => ({ error: 'product_fetch_failed', details: err }))
-        );
+    // Se não for busca completa, usar dados do banco para produtos
+    if (!fetchCompleteData) {
+        // Buscar produto do banco
+        const productFromDb = await getProductFromDatabase(order.order_items?.[0]?.item?.id, event);
+        requests.push(Promise.resolve(productFromDb));
     } else {
-        requests.push(Promise.resolve({ error: 'no_product_id' }));
+        // Request básicos sempre necessários (primeira busca)
+        if (order.order_items?.[0]?.item?.id) {
+            requests.push(
+                meliFetch(`items/${order.order_items[0].item.id}`)
+                    .catch(err => ({ error: 'product_fetch_failed', details: err }))
+            );
+        } else {
+            requests.push(Promise.resolve({ error: 'no_product_id' }));
+        }
     }
 
-    if (order.shipping?.id) {
-        requests.push(
-            meliFetch(`shipments/${order.shipping.id}`)
-                .catch(err => ({ error: 'shipping_fetch_failed', details: err }))
-        );
-    } else {
-        requests.push(
-            Promise.resolve({ error: 'no_shipping_id' })
-        );
-    }
+    // Buscar dados de frete apenas se for busca completa
+    if (fetchCompleteData) {
+        if (order.shipping?.id) {
+            requests.push(
+                meliFetch(`shipments/${order.shipping.id}`)
+                    .catch(err => ({ error: 'shipping_fetch_failed', details: err }))
+            );
+        } else {
+            requests.push(
+                Promise.resolve({ error: 'no_shipping_id' })
+            );
+        }
 
-    if (order.shipping?.id) {
-        requests.push(
-            meliFetch(`shipments/${order.shipping.id}/costs`)
-                .catch(err => ({ error: 'shipping_costs_fetch_failed', details: err }))
-        );
+        if (order.shipping?.id) {
+            requests.push(
+                meliFetch(`shipments/${order.shipping.id}/costs`)
+                    .catch(err => ({ error: 'shipping_costs_fetch_failed', details: err }))
+            );
+        } else {
+            requests.push(
+                Promise.resolve({ error: 'no_shipping_id' })
+            );
+        }
     } else {
-        requests.push(
-            Promise.resolve({ error: 'no_shipping_id' })
-        );
+        // Na segunda busca, usar dados básicos de frete do pedido original
+        requests.push(Promise.resolve({
+            logistic_type: order.shipping?.logistic_type || 'unknown',
+            status: order.shipping?.status || 'unknown',
+            base_cost: 0
+        }));
+        requests.push(Promise.resolve({
+            gross_amount: 0,
+            senders: [{ cost: 0 }]
+        }));
     }
 
     if (order.tags?.includes("advertising")) {
@@ -166,13 +284,16 @@ async function fetchSingleOrderDetails(meliFetch, order) {
 
     const [product, shipping, shipping_costs, advertising] = await Promise.all(requests);
 
-    return createOrderData(order, product, shipping, shipping_costs, advertising);
+    // Buscar custo do produto do banco
+    const productCost = await getProductCostFromDatabase(order.order_items?.[0]?.item?.id, event);
+
+    return createOrderData(order, product, shipping, shipping_costs, advertising, productCost);
 }
 
 // Função para criar dados estruturados do pedido
-function createOrderData(order, product, shipping, shipping_costs, advertising) {
+function createOrderData(order, product, shipping, shipping_costs, advertising, productCostUnit = 0) {
 
-    const { productCost, shippingType } = useServerDefaultValues()
+    const { shippingType } = useServerDefaultValues()
 
     const orderItem = order.order_items?.[0] || {};
     const shippingData = shipping?.error ? {} : shipping;
@@ -188,7 +309,7 @@ function createOrderData(order, product, shipping, shipping_costs, advertising) 
     const tax_nfe = calculateNfeTax(order, orderItem)
     const tax_nfe_percent = 0.04
     const advertising_cost = 0
-    const product_cost_unit = productCost[orderItem.item.id] || 0
+    const product_cost_unit = productCostUnit
     const product_cost_total = quantity * product_cost_unit
     const net_revenue = order_total - tax_marketplace - tax_marketplace_shipping_after - advertising_cost - tax_nfe - product_cost_total;
     const net_revenue_percent = (net_revenue / product_cost_total * 100).toFixed(2)
@@ -440,4 +561,236 @@ function getThumbnailUrl(product, order_variation) {
     const variation = product.variations.find(variation => variation.id === order_variation);
     return product.pictures.find(picture => picture.id === variation.picture_ids[0])?.url || product.thumbnail;
 
+}
+
+// Função para salvar pedidos no banco de dados
+async function saveOrdersToDatabase(ordersDetails, userId, event) {
+    const supabase = await serverSupabaseClient(event);
+
+    // Buscar connection_id do usuário
+    const { data: connection } = await supabase
+        .from('connections')
+        .select('id')
+        .eq('profile_id', userId)
+        .single();
+
+    if (!connection) {
+        throw new Error('Conexão não encontrada');
+    }
+
+    // Preparar dados para inserção
+    const ordersToInsert = ordersDetails.map(order => ({
+        id: randomUUID(),
+        order_number: order.order_number,
+        status: order.order_status,
+        order_created_at: order.date_created,
+        order_updated_at: order.date_created,
+        date_closed: order.date_closed,
+
+        connection_id: connection.id,
+        product_meli_id: order.item_meli_id,
+        product_title: order.item_title,
+        product_sku: order.item_sku,
+        product_thumbnail: order.item_thumbnail,
+        product_variation_attributes: order.item_variation_attributes,
+
+        qtd: order.quantity,
+        unit_price: order.unit_price,
+        order_total: order.order_total,
+
+        tax_marketplace: order.tax_marketplace,
+        tax_marketplace_shipping_before: order.tax_marketplace_shipping_before,
+        tax_marketplace_shipping_after: order.tax_marketplace_shipping_after,
+        advertising_cost: order.advertising_cost,
+
+        tax_nfe: order.tax_nfe,
+        tax_nfe_percent: order.tax_nfe_percent,
+
+        product_cost_unit: order.product_cost_unit,
+        product_cost_total: order.product_cost_total,
+
+        net_revenue: order.net_revenue,
+        net_revenue_percent: order.net_revenue_percent,
+
+        shipping_id: order.shipping_id,
+        shipping_type: order.shipping_type,
+        shipping_status: order.shipping_status,
+        shipping_base_cost: order.shipping_base_cost,
+
+        buyer_id: order.buyer_id,
+        buyer_nickname: order.buyer_nickname,
+
+        order_type: order.order_type,
+        tags: order.tags,
+        has_advertising: order.has_advertising,
+        advertising_data: order.advertising_data,
+
+        fetch_errors: order.fetch_errors,
+        fetch_data: order.details_data,
+
+        api_last_checked: new Date().toISOString(),
+        needs_sync: false,
+        sync_attempts: 0
+    }));
+
+    // Inserir ou atualizar pedidos no banco (upsert)
+    const { error } = await supabase
+        .from('orders')
+        .upsert(ordersToInsert, {
+            onConflict: 'order_number,connection_id',
+            ignoreDuplicates: false
+        });
+
+    if (error) {
+        throw new Error(`Erro ao salvar pedidos: ${error.message}`);
+    }
+}
+
+// Função para converter dados do banco para formato da API
+function convertDbOrdersToApiFormat(dbOrders) {
+    return dbOrders.map(order => ({
+        // Dados básicos do pedido
+        order_number: order.order_number,
+        order_status: order.status,
+        date_created: order.order_created_at,
+        date_closed: order.date_closed,
+
+        // Dados do produto
+        item_id: order.product_meli_id,
+        item_title: order.product_title,
+        item_sku: order.product_sku,
+        item_thumbnail: order.product_thumbnail,
+        item_variations: order.product_variation_attributes,
+        item_meli_id: order.product_meli_id,
+        item_variation_attributes: order.product_variation_attributes,
+
+        // Quantidades e valores
+        quantity: order.qtd,
+        unit_price: order.unit_price,
+        order_total: order.order_total,
+
+        // Taxas detalhadas
+        tax_marketplace: order.tax_marketplace,
+        tax_marketplace_shipping_before: order.tax_marketplace_shipping_before,
+        tax_marketplace_shipping_after: order.tax_marketplace_shipping_after,
+        advertising_cost: order.advertising_cost,
+
+        // NFe simulada
+        tax_nfe: order.tax_nfe,
+        tax_nfe_percent: order.tax_nfe_percent,
+
+        // Custo do produto
+        product_cost_unit: order.product_cost_unit,
+        product_cost_total: order.product_cost_total,
+
+        // TOTAL LUCRO
+        net_revenue: order.net_revenue,
+        net_revenue_percent: order.net_revenue_percent,
+
+        // Dados de envio
+        shipping_id: order.shipping_id,
+        shipping_type: order.shipping_type,
+        shipping_status: order.shipping_status,
+        shipping_base_cost: order.shipping_base_cost,
+
+        // Status e tags
+        tags: order.tags || [],
+
+        // Dados de publicidade (se aplicável)
+        has_advertising: order.has_advertising || false,
+        advertising_data: order.advertising_data,
+
+        // Dados do comprador (básicos)
+        buyer_id: order.buyer_id,
+        buyer_nickname: order.buyer_nickname,
+
+        // Metadados
+        order_type: order.order_type,
+
+        // Timestamps para auditoria
+        fetched_at: order.api_last_checked,
+
+        // Flags de erro para debug
+        fetch_errors: order.fetch_errors || {},
+
+        details_data: order.fetch_data || {}
+    }));
+}
+
+// Função para buscar produto do banco de dados
+async function getProductFromDatabase(meliId, event) {
+    if (!meliId) {
+        return { error: 'no_product_id' };
+    }
+
+    try {
+        const supabase = await serverSupabaseClient(event);
+        const { data: product, error } = await supabase
+            .from('products')
+            .select('*')
+            .eq('meli_id', meliId)
+            .single();
+
+        if (error || !product) {
+            return { error: 'product_not_found_in_db' };
+        }
+
+        // Converter dados do banco para formato da API
+        return {
+            id: product.meli_id,
+            title: product.title,
+            thumbnail: product.thumbnail,
+            permalink: product.permalink,
+            status: product.status,
+            health: product.health,
+            variations: product.variations,
+            pictures: product.variations?.map(v => ({ id: v.id, url: v.picture_ids?.[0] })) || []
+        };
+    } catch (error) {
+        return { error: 'database_fetch_failed', details: error.message };
+    }
+}
+
+// Função para determinar se precisa buscar da API
+function shouldFetchFromAPI(dbOrders, dateRange) {
+    // Se não há pedidos no banco, buscar da API
+    if (!dbOrders || dbOrders.length === 0) {
+        return true;
+    }
+
+    // Se há pedidos, verificar se cobrem o range completo
+    const startDate = new Date(dateRange[0]);
+    const endDate = new Date(dateRange[1]);
+
+    // Ordenar pedidos por data
+    const sortedOrders = dbOrders.sort((a, b) => new Date(a.order_created_at) - new Date(b.order_created_at));
+
+    const firstOrderDate = new Date(sortedOrders[0].order_created_at);
+    const lastOrderDate = new Date(sortedOrders[sortedOrders.length - 1].order_created_at);
+
+    // Verificar se o range do banco cobre o range solicitado
+    const coversStartDate = firstOrderDate <= startDate;
+    const coversEndDate = lastOrderDate >= endDate;
+
+    // Se não cobre o range completo, buscar da API
+    if (!coversStartDate || !coversEndDate) {
+        console.log(`Range do banco: ${firstOrderDate.toISOString()} - ${lastOrderDate.toISOString()}`);
+        console.log(`Range solicitado: ${startDate.toISOString()} - ${endDate.toISOString()}`);
+        return true;
+    }
+
+    // Verificar se os dados estão atualizados (última verificação há mais de 1 hora)
+    const lastChecked = dbOrders.find(order => order.api_last_checked);
+    if (lastChecked) {
+        const lastCheckDate = new Date(lastChecked.api_last_checked);
+        const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
+
+        if (lastCheckDate < oneHourAgo) {
+            console.log('Dados do banco estão desatualizados, buscando da API...');
+            return true;
+        }
+    }
+
+    // Se chegou até aqui, usar dados do banco
+    return false;
 }

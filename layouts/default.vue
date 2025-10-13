@@ -1,5 +1,5 @@
 <template>
-    <div id="application" class="bg-[#FEF9F2] font-['Nunito']">
+    <div id="application" class="bg-white font-['Nunito']">
         <div class="flex">
             <SidebarContainer>
                 <template #header>
@@ -43,9 +43,9 @@
                     </SidebarLinkItem>
                 </template>
             </SidebarContainer>
-            <section class="z-0 flex flex-col min-h-screen flex-1 min-w-0 bg-[#FEF9F2] md:w-auto w-0">
+            <section class="z-0 flex flex-col border-l border-neutral-200 min-h-screen flex-1 min-w-0 md:w-auto w-0">
                 <TheHeader class="w-full"/>
-                <main class="flex-1 w-full px-2 md:px-5 pt-7 lg:border lg:rounded-tl-md bg-white pb-10">
+                <main class="flex-1 w-full px-2 md:px-5 pt-7 bg-neutral-50/50 pb-10">
                     <div class="3xl:container mx-auto w-full">
                         <!-- Container responsivo para o conteúdo -->
                         <div class="w-full min-w-0 max-w-full *:space-y-10">
